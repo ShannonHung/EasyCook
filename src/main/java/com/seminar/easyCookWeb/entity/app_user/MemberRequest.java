@@ -3,6 +3,7 @@ package com.seminar.easyCookWeb.entity.app_user;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.seminar.easyCookWeb.entity.app_user.UserAuthority;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
+@ToString
 public class MemberRequest {
     @NotBlank //裡面一定要有內容 不能null or "" or " "
     private String account;

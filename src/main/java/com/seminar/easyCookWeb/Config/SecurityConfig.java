@@ -1,6 +1,7 @@
 package com.seminar.easyCookWeb.Config;
 
 import com.seminar.easyCookWeb.Service.AuthenticationService;
+import com.seminar.easyCookWeb.entity.app_user.UserAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,10 +22,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 //         "/member" 這個API底下的所有GET請求需要透過身分驗證才可以存取
         http.authorizeRequests() // 使用「authorizeRequests」方法開始自訂授權規則
-                .antMatchers(HttpMethod.GET, "/member/allMembers").permitAll() //其他GET請求的API都可以存取
-                .antMatchers("/h2/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/member/allMembers").hasAuthority(UserAuthority.ADMIN.name()) //其他GET請求的API都可以存取
+                .antMatchers("/h2/**").hasAuthority(UserAuthority.ADMIN.name())
                 .antMatchers(HttpMethod.POST, "/member/**").permitAll() //但是POST member可以請求
-                .antMatchers(HttpMethod.GET, "/member/{id}").authenticated()
+                .antMatchers(HttpMethod.GET, "/member/{id}").hasAuthority(UserAuthority.MEMBER.name())
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()
