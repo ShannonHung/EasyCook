@@ -36,6 +36,8 @@ public class MemberService {
         }
         Member member = MemberConverter.toMember(request);
         log.warn("[Save Member]-> db password is ->" + passwordEncoder.encode(request.getPassword()));
+        log.warn("[Save Member]-> db password is ->" + request.toString());
+
         member.setPassword(passwordEncoder.encode(request.getPassword()));
         member = memberRepository.save(member);
         return MemberConverter.toMemberResponse(member);

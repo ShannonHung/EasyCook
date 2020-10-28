@@ -37,11 +37,13 @@ public class Member {
     @Column
     private String email;
 
+
     @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name="employee_week",
+            joinColumns = @JoinColumn(name="employee_id"))
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @Column
     @Enumerated(EnumType.STRING)
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    @CollectionTable(name = "authority", joinColumns = @JoinColumn(name = "member_id"))
     private List<UserAuthority> authorities;
 
 
