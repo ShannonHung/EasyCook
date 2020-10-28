@@ -6,4 +6,4 @@
 
 # 標籤
 @Entity 表示在資料庫的table
-hello
+hello2
