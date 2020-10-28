@@ -1,4 +1,4 @@
-package com.seminar.easyCookWeb.Service;
+package com.seminar.easyCookWeb.Service.User;
 
 import com.seminar.easyCookWeb.Converter.MemberConverter;
 import com.seminar.easyCookWeb.Exception.ConflictException;
