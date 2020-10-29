@@ -1,10 +1,8 @@
 package com.seminar.easyCookWeb.Controller;
 
-import com.seminar.easyCookWeb.Service.MemberService;
-import com.seminar.easyCookWeb.entity.app_user.Member;
+import com.seminar.easyCookWeb.Service.User.MemberService;
 import com.seminar.easyCookWeb.entity.app_user.MemberRequest;
 import com.seminar.easyCookWeb.entity.app_user.MemberResponse;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
