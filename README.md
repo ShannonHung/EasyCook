@@ -1,8 +1,17 @@
 # EasyCook
 
-# 環境建置
+# 基本設定
 在下載該檔案的時候建議先下載maven並且設定環境變數
 參考連結: [「入門篇」「java神器」使用maven搭建spring boot](https://kknews.cc/code/emazpyq.html)
+
+
+- 參考連結: [「入門篇」「java神器」使用maven搭建spring boot](https://kknews.cc/code/emazpyq.html)
+- localhost:8082/h2 的資料庫進入方式
+    1. url: jdbc:h2:mem:easyCook
+    2. username: sa
+    3. password: (不用打直接進入)
+- Servert Port: localhost:8082
+
 
 ### Getting start with VScode
 
@@ -23,3 +32,4 @@ maven install
 6. Login in with the account that you got it in step 3.
 
 7. You can see data with h2 in `http://localhost:{server.port}/h2`
+
