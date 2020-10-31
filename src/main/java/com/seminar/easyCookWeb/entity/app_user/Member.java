@@ -6,13 +6,15 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Nationalized;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @ToString
-public class Member {
+@Data
+public class Member implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="member_id")
@@ -47,70 +49,23 @@ public class Member {
     private List<UserAuthority> authorities;
 
 
-    public Member(){
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
     }
 
-    public long getId() {
-        return id;
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
     }
 
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPhoneNum() {
-        return phoneNum;
-    }
-
-    public void setPhoneNum(String phoneNum) {
-        this.phoneNum = phoneNum;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public List<UserAuthority> getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(List<UserAuthority> authorities) {
-        this.authorities = authorities;
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 }

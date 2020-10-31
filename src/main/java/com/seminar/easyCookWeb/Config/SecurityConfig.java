@@ -30,8 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2/**").hasAuthority(UserAuthority.ADMIN.name())
                 .antMatchers(HttpMethod.POST, "/member").permitAll() //但是POST member可以請求
                 .antMatchers(HttpMethod.GET, "/member/{id}").hasAuthority(UserAuthority.MEMBER.name())
-                .antMatchers(HttpMethod.POST, "/auth").permitAll() //供前端取得token
-                .antMatchers(HttpMethod.POST,"/auth/parse").permitAll() //供前端測試token 解析
+                .antMatchers(HttpMethod.POST, "/auth/**").permitAll() //供前端取得token
                 .anyRequest().authenticated()
                 .and() //加入jwtFilter自己做的, UsernamePasswordAuthenticationFilter是用來處理表單form形式的登入請求
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

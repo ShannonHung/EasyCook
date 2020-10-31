@@ -19,7 +19,7 @@ import java.util.Map;
 public class AuthController {
     @Autowired
     private JWTService jwtService;
-    @PostMapping
+    @PostMapping("/login")
     public ResponseEntity<Map<String, String>> issueToken(@RequestBody AuthRequest request) {
         String token = jwtService.generateToken(request);
         Map<String, String> response = Collections.singletonMap(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX+token);

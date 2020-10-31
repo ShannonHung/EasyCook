@@ -30,11 +30,11 @@ public class MemberController {
         return ResponseEntity.created(location).body(member);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<MemberResponse> getUser(@PathVariable("id") Long id) {
-        MemberResponse member = memberService.getMemberResponseById(id);
-        return ResponseEntity.ok(member);
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<MemberResponse> getUser(@PathVariable("id") Long id) {
+//        MemberResponse member = memberService.getMemberResponseById(id);
+//        return ResponseEntity.ok(member);
+//    }
 
     @GetMapping("/allMembers")
     public ResponseEntity<List<MemberResponse>> getMembers() {

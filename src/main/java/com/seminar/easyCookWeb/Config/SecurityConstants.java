@@ -5,5 +5,5 @@ public class SecurityConstants {
     public static final String SECRET = "oursecretkey";
     public static final int EXPIRATION_TIME_MINUTES = 5; //10day 864000=10*24*60*60s
     public static final String TOKEN_PREFIX = "Bearer ";
-    public static final String HEADER_STRING = "Authorization";
+    public static final String HEADER_STRING = "accessToken";
 }
