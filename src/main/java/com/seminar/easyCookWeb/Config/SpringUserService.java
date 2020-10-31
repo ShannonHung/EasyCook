@@ -1,4 +1,4 @@
-package com.seminar.easyCookWeb.Service;
+package com.seminar.easyCookWeb.Config;
 
 import com.seminar.easyCookWeb.Exception.NotFoundException;
 import com.seminar.easyCookWeb.Repository.MemberRepository;
