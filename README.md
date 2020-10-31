@@ -19,17 +19,18 @@
 
 2. If you do not have Maven, go https://maven.apache.org/download.cgi# and install it
 
-3. install dependence
+3. Install dependences
 ```
-maven install
+mvn install
 ```
+4. Press F5
 
-4. Do post in postman `http://localhost:8082/member` to get a set of account.
+5. Do post in postman `http://localhost:8082/member` to get a set of account.
 
-5. Go `localhost:{server.port}`
+6. Go `localhost:{server.port}`
    `server.port` is in `EasyCook/src/main/resources/application.properties`
 
-6. Login in with the account that you got it in step 3.
+7. Login in with the account that you got it in step 3.
 
-7. You can see data with h2 in `http://localhost:{server.port}/h2`
+8. You can see data with h2 in `http://localhost:{server.port}/h2`
 
