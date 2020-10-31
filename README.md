@@ -19,7 +19,7 @@
 
 2. If you do not have Maven, go https://maven.apache.org/download.cgi# and install it
 
-3. install dependence
+3. install dependences
 ```
-maven install
+mvn install
 ```
