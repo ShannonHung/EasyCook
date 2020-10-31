@@ -1,8 +1,8 @@
 package com.seminar.easyCookWeb.Converter;
 
-import com.seminar.easyCookWeb.entity.app_user.Member;
-import com.seminar.easyCookWeb.entity.app_user.MemberRequest;
-import com.seminar.easyCookWeb.entity.app_user.MemberResponse;
+import com.seminar.easyCookWeb.pojo.app_user.Member;
+import com.seminar.easyCookWeb.entity.User.MemberRequest;
+import com.seminar.easyCookWeb.entity.User.MemberResponse;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,7 +14,7 @@ public class MemberConverter {
         member.setAccount(request.getAccount());
         member.setPassword(request.getPassword());
         member.setEmail(request.getEmail());
-        member.setPhoneNum(request.getPhoneNum());
+        member.setPhone(request.getPhone());
         member.setUsername(request.getUsername());
         member.setRole(request.getRole());
 
@@ -26,7 +26,7 @@ public class MemberConverter {
         response.setId(member.getId());
         response.setAccount(member.getAccount());
         response.setEmail(member.getEmail());
-        response.setPhoneNum(member.getPhoneNum());
+        response.setPhone(member.getPhone());
         response.setRole(member.getRole());
         response.setUsername(member.getUsername());
         return response;

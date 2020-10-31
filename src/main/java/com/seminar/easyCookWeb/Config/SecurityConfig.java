@@ -1,7 +1,6 @@
 package com.seminar.easyCookWeb.Config;
 
-import com.seminar.easyCookWeb.entity.app_user.Role;
-import org.aspectj.weaver.bcel.BcelAccessForInlineMunger;
+import com.seminar.easyCookWeb.pojo.app_user.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -11,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -19,7 +17,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private JWTAuthenticationFilter jwtAuthenticationFilter;
     private UserDetailService userDetailsService;
-//    private AuthenticationService authenticationService;
 
 
     @Autowired
@@ -27,15 +24,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         super();
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userDetailsService = userDetailsService;
-//        this.authenticationService = authenticationService;
     }
 
     @Override //於此設置API的授權規則，若未設計API會恢復到能存取的狀態
     protected void configure(HttpSecurity http) throws Exception {
 //         "/member" 這個API底下的所有GET請求需要透過身分驗證才可以存取
         http.authorizeRequests() // 使用「authorizeRequests」方法開始自訂授權規則
-                .antMatchers("/h2/**").hasAuthority(Role.ADMIN.name())
-                .antMatchers(HttpMethod.POST, "/member").permitAll() //但是POST member可以請求
+                .antMatchers("/h2/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/member","/employee").permitAll() //但是POST member可以請求
                 .antMatchers(HttpMethod.POST, "/auth/**").permitAll() //供前端取得token
                 .anyRequest().authenticated()
                 .and() //加入jwtFilter自己做的, UsernamePasswordAuthenticationFilter是用來處理表單form形式的登入請求
@@ -44,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) //session停用
                 .and()
                 .csrf().disable()
-                .formLogin().disable();
+                .formLogin();
 
         //因為Spring Security預設會禁止iframe的東西，所以我們把它disable，查詢h2-console才能看到frame的畫面
         http.headers().frameOptions().disable();

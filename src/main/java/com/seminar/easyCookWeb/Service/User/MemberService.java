@@ -3,12 +3,11 @@ package com.seminar.easyCookWeb.Service.User;
 import com.seminar.easyCookWeb.Converter.MemberConverter;
 import com.seminar.easyCookWeb.Exception.ConflictException;
 import com.seminar.easyCookWeb.Exception.NotFoundException;
-import com.seminar.easyCookWeb.Repository.MemberRepository;
-import com.seminar.easyCookWeb.entity.app_user.Member;
-import com.seminar.easyCookWeb.entity.app_user.MemberRequest;
-import com.seminar.easyCookWeb.entity.app_user.MemberResponse;
+import com.seminar.easyCookWeb.Repository.Users.MemberRepository;
+import com.seminar.easyCookWeb.pojo.app_user.Member;
+import com.seminar.easyCookWeb.entity.User.MemberRequest;
+import com.seminar.easyCookWeb.entity.User.MemberResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 

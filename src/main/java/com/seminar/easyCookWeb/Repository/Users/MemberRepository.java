@@ -1,6 +1,6 @@
-package com.seminar.easyCookWeb.Repository;
+package com.seminar.easyCookWeb.Repository.Users;
 
-import com.seminar.easyCookWeb.entity.app_user.Member;
+import com.seminar.easyCookWeb.pojo.app_user.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
