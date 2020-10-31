@@ -19,10 +19,10 @@
 
 2. If you do not have Maven, go https://maven.apache.org/download.cgi# and install it
 
-3. install dependence
+3. install dependences
 ```
-maven install
-```
+
+mvn install
 
 4. Do post in postman `http://localhost:8082/member` to get a set of account.
 
