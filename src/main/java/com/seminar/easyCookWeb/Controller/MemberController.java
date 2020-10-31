@@ -1,11 +1,14 @@
 package com.seminar.easyCookWeb.Controller;
 
 import com.seminar.easyCookWeb.Service.User.MemberService;
+import com.seminar.easyCookWeb.entity.app_user.Member;
 import com.seminar.easyCookWeb.entity.app_user.MemberRequest;
 import com.seminar.easyCookWeb.entity.app_user.MemberResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -22,21 +25,18 @@ public class MemberController {
     @PostMapping
     public ResponseEntity<MemberResponse> createMember(@Valid @RequestBody MemberRequest request){
         MemberResponse member = memberService.saveMember(request);
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(member.getId())
-                .toUri();
-        return ResponseEntity.created(location).body(member);
+        return new ResponseEntity<MemberResponse>(member, HttpStatus.CREATED);
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<MemberResponse> getUser(@PathVariable("id") Long id) {
-//        MemberResponse member = memberService.getMemberResponseById(id);
-//        return ResponseEntity.ok(member);
-//    }
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')")
+    public ResponseEntity<MemberResponse> getUser(@PathVariable("id") Long id) {
+        MemberResponse member = memberService.getMemberResponseById(id);
+        return ResponseEntity.ok(member);
+    }
 
     @GetMapping("/allMembers")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')")
     public ResponseEntity<List<MemberResponse>> getMembers() {
         List<MemberResponse> members = memberService.getAllMembers();
         return ResponseEntity.ok(members);

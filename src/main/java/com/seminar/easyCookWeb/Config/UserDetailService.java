@@ -19,7 +19,7 @@ import java.util.Optional;
  **/
 @Slf4j
 @Service
-public class SpringUserService implements UserDetailsService {
+public class UserDetailService implements UserDetailsService {
     @Autowired
     private MemberRepository memberRepository;
 

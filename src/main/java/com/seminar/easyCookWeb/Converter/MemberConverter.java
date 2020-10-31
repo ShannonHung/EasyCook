@@ -16,7 +16,7 @@ public class MemberConverter {
         member.setEmail(request.getEmail());
         member.setPhoneNum(request.getPhoneNum());
         member.setUsername(request.getUsername());
-        member.setAuthorities(request.getAuthorities());
+        member.setRole(request.getRole());
 
         return member;
     }
@@ -27,7 +27,7 @@ public class MemberConverter {
         response.setAccount(member.getAccount());
         response.setEmail(member.getEmail());
         response.setPhoneNum(member.getPhoneNum());
-        response.setAuthorityList(member.getAuthorities());
+        response.setRole(member.getRole());
         response.setUsername(member.getUsername());
         return response;
     }

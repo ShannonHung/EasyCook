@@ -2,7 +2,8 @@ package com.seminar.easyCookWeb.Config;
 
 import com.seminar.easyCookWeb.Repository.MemberRepository;
 import com.seminar.easyCookWeb.entity.app_user.Member;
-import com.seminar.easyCookWeb.entity.app_user.UserAuthority;
+import com.seminar.easyCookWeb.entity.app_user.Role;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,12 +18,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JWTService jwtService;
@@ -41,12 +44,13 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             String accessToken = authHeader.replace("Bearer ","");
             //解析token
             Map<String, Object> claims = jwtService.parseToken(accessToken);
-            String username = (String)claims.get("username");
-            //取得Member的資料
-            Optional<Member> user = memberRepository.findByAccount(username);
+            //因為是HashMap account裡面有所有Member的資料
+            HashMap<String, Object> account = (HashMap<String, Object>) claims.get("UserInfo");
+            //從資料庫 取得Member的資料 get("account")取的帳號資料
+            Optional<Member> user = memberRepository.findByAccount((String) account.get("account"));
             //設定該user的基本資料以及權限: credentials通常指密碼不傳也無妨
             Authentication authentication
-                    = new UsernamePasswordAuthenticationToken(username, null, convertToSimpleAuthorities(user.get().getAuthorities()));
+                    = new UsernamePasswordAuthenticationToken(user.get().getAccount(), null, user.get().getAuthorities());
             //Filter中查詢使用者目的在將該請求代表的authentication資料放進去security的context
             //context是一種比較抽象的概念 可以把他想成該清求再security機制中的狀態
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -54,7 +58,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private List<SimpleGrantedAuthority> convertToSimpleAuthorities(List<UserAuthority> authorities) {
+    private List<SimpleGrantedAuthority> convertToSimpleAuthorities(List<Role> authorities) {
         return authorities.stream()
                 .map(auth -> new SimpleGrantedAuthority(auth.name()))
                 .collect(Collectors.toList());

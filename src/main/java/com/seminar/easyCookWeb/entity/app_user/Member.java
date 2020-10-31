@@ -1,14 +1,19 @@
 package com.seminar.easyCookWeb.entity.app_user;
 
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Nationalized;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -17,55 +22,68 @@ import java.util.List;
 public class Member implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Null
     @Column(name="member_id")
     private long id;
 
-    @Column
+    @NotEmpty
+    @Column(length = 45, unique = true)
     private String account;
 
-    @Column
-    private String salt;
-
-    @Column
+    @NotEmpty
+    @Column(length = 1024)
+    @JsonIgnore
     private String password;
 
     @Column(length = 65)
     @Nationalized
     private String username;
 
-    @Column(length = 65)
+    @Column(columnDefinition = "nvarchar(15)")
     private String phoneNum;//如果你這裡使用Num大寫，寫入資料庫會變成phone_num
 
-    @Column
+    @Column(columnDefinition = "nvarchar(254)")
     private String email;
 
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name="employee_week",
-            joinColumns = @JoinColumn(name="employee_id"))
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    @Column
+    @NotNull
     @Enumerated(EnumType.STRING)
-    private List<UserAuthority> authorities;
+    @Column(length = 8)
+    private Role role;
 
 
+    @Transient
+    @JsonIgnore
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return AuthorityUtils.createAuthorityList(getRole().getName());
+    }
+
+    @Transient
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
+    @Transient
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
+    @Transient
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
+    @Transient
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

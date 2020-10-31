@@ -50,8 +50,7 @@ public class JWTService {
 
         //Claims類別本身實作了Map<String, Object>介面，所以能使用Map的方法來存放或讀取資料
         Claims claims = Jwts.claims();
-        claims.put("account", authentication.getPrincipal());
-        claims.put("authorities", authentication.getAuthorities());
+        claims.put("UserInfo", authentication.getPrincipal());
         claims.setExpiration(calendar.getTime());
         claims.setIssuer("ShannonHung From EasyCook");
 
