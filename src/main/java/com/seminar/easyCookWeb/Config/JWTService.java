@@ -1,6 +1,6 @@
 package com.seminar.easyCookWeb.Config;
 
-import com.seminar.easyCookWeb.entity.User.AuthRequest;
+import com.seminar.easyCookWeb.Entity.User.AuthRequest;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;

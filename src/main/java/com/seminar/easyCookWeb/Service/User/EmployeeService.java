@@ -1,17 +1,13 @@
 package com.seminar.easyCookWeb.Service.User;
 
 import com.seminar.easyCookWeb.Converter.EmployeeConverter;
-import com.seminar.easyCookWeb.Converter.MemberConverter;
 import com.seminar.easyCookWeb.Exception.ConflictException;
-import com.seminar.easyCookWeb.Exception.NotFoundException;
+import com.seminar.easyCookWeb.Exception.EntityNotFoundException;
+import com.seminar.easyCookWeb.Pojo.app_user.Role;
 import com.seminar.easyCookWeb.Repository.Users.EmployeeRepository;
-import com.seminar.easyCookWeb.Repository.Users.MemberRepository;
-import com.seminar.easyCookWeb.entity.User.EmployeeRequest;
-import com.seminar.easyCookWeb.entity.User.EmployeeResponse;
-import com.seminar.easyCookWeb.entity.User.MemberRequest;
-import com.seminar.easyCookWeb.entity.User.MemberResponse;
-import com.seminar.easyCookWeb.pojo.app_user.Employee;
-import com.seminar.easyCookWeb.pojo.app_user.Member;
+import com.seminar.easyCookWeb.Entity.User.EmployeeRequest;
+import com.seminar.easyCookWeb.Entity.User.EmployeeResponse;
+import com.seminar.easyCookWeb.Pojo.app_user.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,19 +35,17 @@ public class EmployeeService {
             throw new ConflictException("[Save Employee] -> {Error} This account Name has been used!");
         }
         Employee employee = EmployeeConverter.toEmployee(request);
-
+        employee.setRole(Role.EMPLOYEE);
         employee.setPassword(passwordEncoder.encode(request.getPassword()));
         employee = employeeRepository.save(employee);
         return EmployeeConverter.toEmployeeResponse(employee);
     }
     public EmployeeResponse getEmployeeResponseById(Long id){
-        Employee employee = Optional.ofNullable(employeeRepository.getOne(id))
-                .orElseThrow(() -> new NotFoundException("[Find Employee By Id] -> {Error} Can't find user."));
+        Employee employee = employeeRepository.findById(id).orElseThrow(() ->new EntityNotFoundException(Employee.class, "id", id.toString()));
         return EmployeeConverter.toEmployeeResponse(employee);
     }
     public EmployeeResponse getEmployeeResponseByName(String account){
-        Employee employee = employeeRepository.findByAccount(account)
-                .orElseThrow(() -> new NotFoundException("[Find Employee By Id] -> {Error} Can't find user."));
+        Employee employee = employeeRepository.findByAccount(account).orElseThrow(() ->new EntityNotFoundException(Employee.class, "account", account));
         return EmployeeConverter.toEmployeeResponse(employee);
     }
     public List<EmployeeResponse> getAllEmployees(){

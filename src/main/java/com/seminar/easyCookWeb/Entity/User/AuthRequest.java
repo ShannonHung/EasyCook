@@ -1,4 +1,4 @@
-package com.seminar.easyCookWeb.entity.app_user;
+package com.seminar.easyCookWeb.Entity.User;
 
 import lombok.Getter;
 import lombok.Setter;

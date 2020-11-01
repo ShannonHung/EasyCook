@@ -1,6 +1,6 @@
 package com.seminar.easyCookWeb.Config;
 
-import com.seminar.easyCookWeb.pojo.app_user.Role;
+import com.seminar.easyCookWeb.Pojo.app_user.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 @EnableWebSecurity //該標記已經冠上@Configuration標記
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private JWTAuthenticationFilter jwtAuthenticationFilter;
@@ -31,16 +30,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //         "/member" 這個API底下的所有GET請求需要透過身分驗證才可以存取
         http.authorizeRequests() // 使用「authorizeRequests」方法開始自訂授權規則
                 .antMatchers("/h2/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/member","/employee").permitAll() //但是POST member可以請求
-                .antMatchers(HttpMethod.POST, "/auth/**").permitAll() //供前端取得token
+                .antMatchers(HttpMethod.POST, "/auth/**", "/member/register", "/employee/register").permitAll() //供前端取得token
                 .anyRequest().authenticated()
                 .and() //加入jwtFilter自己做的, UsernamePasswordAuthenticationFilter是用來處理表單form形式的登入請求
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) //session停用
-                .and()
+                .cors().and()
                 .csrf().disable()
-                .formLogin();
+                .logout().disable()
+                .formLogin().disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         //因為Spring Security預設會禁止iframe的東西，所以我們把它disable，查詢h2-console才能看到frame的畫面
         http.headers().frameOptions().disable();
@@ -69,4 +68,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
 }

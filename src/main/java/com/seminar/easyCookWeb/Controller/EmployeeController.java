@@ -1,9 +1,8 @@
 package com.seminar.easyCookWeb.Controller;
 
 import com.seminar.easyCookWeb.Service.User.EmployeeService;
-import com.seminar.easyCookWeb.Service.User.MemberService;
-import com.seminar.easyCookWeb.entity.User.EmployeeRequest;
-import com.seminar.easyCookWeb.entity.User.EmployeeResponse;
+import com.seminar.easyCookWeb.Entity.User.EmployeeRequest;
+import com.seminar.easyCookWeb.Entity.User.EmployeeResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

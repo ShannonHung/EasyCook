@@ -1,8 +1,8 @@
 package com.seminar.easyCookWeb.Converter;
 
-import com.seminar.easyCookWeb.entity.User.EmployeeRequest;
-import com.seminar.easyCookWeb.entity.User.EmployeeResponse;
-import com.seminar.easyCookWeb.pojo.app_user.Employee;
+import com.seminar.easyCookWeb.Entity.User.EmployeeRequest;
+import com.seminar.easyCookWeb.Entity.User.EmployeeResponse;
+import com.seminar.easyCookWeb.Pojo.app_user.Employee;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 

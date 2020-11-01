@@ -2,7 +2,7 @@ package com.seminar.easyCookWeb.Controller.Auth;
 
 import com.seminar.easyCookWeb.Config.JWTService;
 import com.seminar.easyCookWeb.Config.SecurityConstants;
-import com.seminar.easyCookWeb.entity.User.AuthRequest;
+import com.seminar.easyCookWeb.Entity.User.AuthRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

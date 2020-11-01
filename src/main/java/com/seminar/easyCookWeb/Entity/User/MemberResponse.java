@@ -1,8 +1,7 @@
-package com.seminar.easyCookWeb.entity.app_user;
+package com.seminar.easyCookWeb.Entity.User;
 
+import com.seminar.easyCookWeb.Pojo.app_user.Role;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class MemberResponse {
@@ -11,7 +10,7 @@ public class MemberResponse {
     private String account;
     private String email;
     private String username;
-    private String phoneNum;
+    private String phone;
     private Role role;
 
 }

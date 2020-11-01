@@ -1,11 +1,8 @@
-package com.seminar.easyCookWeb.entity.app_user;
+package com.seminar.easyCookWeb.Entity.User;
 
 import lombok.Data;
-import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import java.util.List;
 
 @Data
 public class MemberRequest {
@@ -16,10 +13,10 @@ public class MemberRequest {
     @NotBlank
     private String username;
     @NotBlank
-    private String phoneNum;
+    private String phone;
     @NotBlank
     private String email;
-    @NotEmpty //不能為null or "" , 可以為 " "
-    private Role role;
+//    @NotEmpty //不能為null or "" , 可以為 " "
+//    private Role role;
 
 }

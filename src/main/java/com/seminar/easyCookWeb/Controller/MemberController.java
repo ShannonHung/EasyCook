@@ -1,8 +1,8 @@
 package com.seminar.easyCookWeb.Controller;
 
 import com.seminar.easyCookWeb.Service.User.MemberService;
-import com.seminar.easyCookWeb.entity.User.MemberRequest;
-import com.seminar.easyCookWeb.entity.User.MemberResponse;
+import com.seminar.easyCookWeb.Entity.User.MemberRequest;
+import com.seminar.easyCookWeb.Entity.User.MemberResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,7 +19,7 @@ public class MemberController {
     @Autowired
     MemberService memberService;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<MemberResponse> createMember(@Valid @RequestBody MemberRequest request){
         MemberResponse member = memberService.saveMember(request);
         return new ResponseEntity<MemberResponse>(member, HttpStatus.CREATED);

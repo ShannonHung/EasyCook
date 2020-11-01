@@ -2,11 +2,12 @@ package com.seminar.easyCookWeb.Service.User;
 
 import com.seminar.easyCookWeb.Converter.MemberConverter;
 import com.seminar.easyCookWeb.Exception.ConflictException;
-import com.seminar.easyCookWeb.Exception.NotFoundException;
+import com.seminar.easyCookWeb.Exception.EntityNotFoundException;
+import com.seminar.easyCookWeb.Pojo.app_user.Role;
 import com.seminar.easyCookWeb.Repository.Users.MemberRepository;
-import com.seminar.easyCookWeb.pojo.app_user.Member;
-import com.seminar.easyCookWeb.entity.User.MemberRequest;
-import com.seminar.easyCookWeb.entity.User.MemberResponse;
+import com.seminar.easyCookWeb.Pojo.app_user.Member;
+import com.seminar.easyCookWeb.Entity.User.MemberRequest;
+import com.seminar.easyCookWeb.Entity.User.MemberResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,21 +35,17 @@ public class MemberService {
             throw new ConflictException("[Save Member] -> {Error} This account Name has been used!");
         }
         Member member = MemberConverter.toMember(request);
-        log.warn("[Save Member]-> db password is ->" + passwordEncoder.encode(request.getPassword()));
-        log.warn("[Save Member]-> db password is ->" + request.toString());
-
+        member.setRole(Role.MEMBER);
         member.setPassword(passwordEncoder.encode(request.getPassword()));
         member = memberRepository.save(member);
         return MemberConverter.toMemberResponse(member);
     }
     public MemberResponse getMemberResponseById(Long id){
-        Member member = Optional.ofNullable(memberRepository.getOne(id))
-                .orElseThrow(() -> new NotFoundException("[Find Member By Id] -> {Error} Can't find user."));
+        Member member = memberRepository.findById(id).orElseThrow(() ->new EntityNotFoundException(Member.class, "id", id.toString()));
         return MemberConverter.toMemberResponse(member);
     }
-    public MemberResponse getMemberResponseByName(String username){
-        Member member = memberRepository.findByAccount(username)
-                .orElseThrow(() -> new NotFoundException("[Find Member By Id] -> {Error} Can't find user."));
+    public MemberResponse getMemberResponseByName(String account){
+        Member member = memberRepository.findByAccount(account).orElseThrow(() ->new EntityNotFoundException(Member.class, "account", account));
         return MemberConverter.toMemberResponse(member);
     }
     public List<MemberResponse> getAllMembers(){
