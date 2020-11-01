@@ -15,7 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 @EnableWebSecurity //該標記已經冠上@Configuration標記
-@EnableGlobalMethodSecurity(prePostEnabled=true)
+@EnableGlobalMethodSecurity(prePostEnabled=true) //prePostEnabled = true 会解锁 @PreAuthorize 和 @PostAuthorize 两个注解
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private JWTAuthenticationFilter jwtAuthenticationFilter;
     private UserDetailService userDetailsService;
