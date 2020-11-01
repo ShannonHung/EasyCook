@@ -1,7 +1,6 @@
 package com.seminar.easyCookWeb.Config;
 
-import com.seminar.easyCookWeb.Repository.MemberRepository;
-import com.seminar.easyCookWeb.entity.app_user.AuthRequest;
+import com.seminar.easyCookWeb.Entity.User.AuthRequest;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -10,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -34,7 +31,7 @@ public class JWTService {
     public String generateToken(AuthRequest request) {
         //如果在SecurityConfig中configure()裡面使用者驗證成功，就會再次得到UsernamePasswordAuthenticationToken
         Authentication authentication =
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
+                new UsernamePasswordAuthenticationToken(request.getAccount(), request.getPassword());
         //當AuthenticationManager進行身分驗證時，會接收到一個Authentication介面的物件
             //其中帳密的驗證所對應的是UsernamePasswordAuthenticationToken
                 //UsernamePasswordAuthenticationToken(principal, credentials)
@@ -50,8 +47,7 @@ public class JWTService {
 
         //Claims類別本身實作了Map<String, Object>介面，所以能使用Map的方法來存放或讀取資料
         Claims claims = Jwts.claims();
-        claims.put("username", authentication.getPrincipal());
-        claims.put("authorities", authentication.getAuthorities());
+        claims.put("UserInfo", authentication.getPrincipal());
         claims.setExpiration(calendar.getTime());
         claims.setIssuer("ShannonHung From EasyCook");
 

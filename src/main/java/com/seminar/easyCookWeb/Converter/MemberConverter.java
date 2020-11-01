@@ -1,8 +1,9 @@
 package com.seminar.easyCookWeb.Converter;
 
-import com.seminar.easyCookWeb.entity.app_user.Member;
-import com.seminar.easyCookWeb.entity.app_user.MemberRequest;
-import com.seminar.easyCookWeb.entity.app_user.MemberResponse;
+import com.seminar.easyCookWeb.Pojo.app_user.Member;
+import com.seminar.easyCookWeb.Entity.User.MemberRequest;
+import com.seminar.easyCookWeb.Entity.User.MemberResponse;
+import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,30 +12,18 @@ public class MemberConverter {
     public MemberConverter(){}
     public static Member toMember(MemberRequest request){
         Member member = new Member();
-        member.setAccount(request.getAccount());
-        member.setPassword(request.getPassword());
-        member.setEmail(request.getEmail());
-        member.setPhoneNum(request.getPhoneNum());
-        member.setUsername(request.getUsername());
-        member.setAuthorities(request.getAuthorities());
-
+        BeanUtils.copyProperties(request, member);
         return member;
     }
 
     public static MemberResponse toMemberResponse(Member member){
         MemberResponse response = new MemberResponse();
-        response.setId(member.getId());
-        response.setAccount(member.getAccount());
-        response.setEmail(member.getEmail());
-        response.setPhoneNum(member.getPhoneNum());
-        response.setAuthorityList(member.getAuthorities());
-        response.setUsername(member.getUsername());
+        BeanUtils.copyProperties(member, response);
         return response;
     }
 
     public static List<MemberResponse> toMemberResponses(List<Member> members){
         members.stream().forEach(System.out::println);
-
         return members.stream()
                 .map(MemberConverter::toMemberResponse)
                 .collect(Collectors.toList());
