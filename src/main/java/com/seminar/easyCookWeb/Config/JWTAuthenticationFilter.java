@@ -67,6 +67,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             //設定該user的基本資料以及權限: credentials通常指密碼不傳也無妨
             Authentication authentication
                     = new UsernamePasswordAuthenticationToken(user.get().getAccount(), null, user.get().getAuthorities());
+            log.warn("[JWTFilter] -> check role -> " + authentication.getAuthorities());
             //Filter中查詢使用者目的在將該請求代表的authentication資料放進去security的context
             //context是一種比較抽象的概念 可以把他想成該清求再security機制中的狀態
             SecurityContextHolder.getContext().setAuthentication(authentication);

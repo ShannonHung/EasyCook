@@ -3,6 +3,8 @@ package com.seminar.easyCookWeb.Controller.Auth;
 import com.seminar.easyCookWeb.Config.JWTService;
 import com.seminar.easyCookWeb.Config.SecurityConstants;
 import com.seminar.easyCookWeb.Entity.User.AuthRequest;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +18,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
+@Api(tags = "取得Token", description = "提供會員及員工Token的 Rest API")
 public class AuthController {
     @Autowired
     private JWTService jwtService;
+
+    @ApiOperation("取得token")
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> issueToken(@RequestBody AuthRequest request) {
         String token = jwtService.generateToken(request);
@@ -27,6 +32,7 @@ public class AuthController {
     }
 
     @PostMapping("/parse")
+    @ApiOperation("解析token")
     public ResponseEntity<Map<String, Object>> parseToken(@RequestBody Map<String, String> request) {
         String Bearer = request.get(SecurityConstants.HEADER_STRING);
         String token = Bearer.replace(SecurityConstants.TOKEN_PREFIX,"");
