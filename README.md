@@ -19,20 +19,17 @@
 
 2. If you do not have Maven, go https://maven.apache.org/download.cgi# and install it
 
-3. install dependences
+3. Install dependences
 ```
-
 mvn install
-
-4. Do post in postman `http://localhost:8082/member` to get a set of account.
-
-5. Go `localhost:{server.port}`
-   `server.port` is in `EasyCook/src/main/resources/application.properties`
-
-6. Login in with the account that you got it in step 3.
-
-7. You can see data with h2 in `http://localhost:{server.port}/h2`
 ```
+4. Press F5
+5. Do post in postman `http://localhost:8082/member` to get a set of account.
+6. Go `localhost:{server.port}`
+   `server.port` is in `EasyCook/src/main/resources/application.properties`
+7. Login in with the account that you got it in step 3.
+8. You can see data with h2 in `http://localhost:{server.port}/h2`
+
 
 ### Swagger操作
 `http://localhost:8082/swagger-ui.html`
@@ -73,5 +70,6 @@ mvn install
 4. 確認response 中 UserInfo的Role為EMPLOYEE表示這個TOKEN權限合法
 3. 當要透過api的獲取資料的時候，拿Bearer Token放到header屬性key為`Authentication`的value裡面 
 請參考 [Header Authentication - Key Value Edit](https://trello-attachments.s3.amazonaws.com/5eecde56c5e18058021a384f/5f9b00bea46dd915a390227d/fac572a50466ff0d48da71b735b2f7f4/image.png) 就可以進行成功的Request囉~~
+
 
 
