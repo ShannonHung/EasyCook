@@ -32,6 +32,7 @@ mvn install
 6. Login in with the account that you got it in step 3.
 
 7. You can see data with h2 in `http://localhost:{server.port}/h2`
+```
 
 ### Swagger操作
 `http://localhost:8082/swagger-ui.html`
