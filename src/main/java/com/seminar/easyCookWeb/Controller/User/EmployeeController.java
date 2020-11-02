@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,8 +32,16 @@ public class EmployeeController {
         return new ResponseEntity<EmployeeResponse>(employee, HttpStatus.CREATED);
     }
 
+    @GetMapping(path = "/me")
+    @ApiOperation("員工取得自己的資料: Employee Get Self Info (Role: ROLE_EMPLOYEE)")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE')")
+    public ResponseEntity<EmployeeResponse> findSelf(Authentication authentication){
+        EmployeeResponse response = employeeService.getEmployeeResponseByName(authentication.getName());
+        return new ResponseEntity<EmployeeResponse>(response, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
-    @ApiOperation("透過ID找尋Employee: Find Employee By Id")
+    @ApiOperation("透過ID找尋Employee: Find Employee By Id (Role: ROLE_EMPLOYEE)")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE')")
     public ResponseEntity<EmployeeResponse> getUser(@PathVariable("id") Long id) {
         //可以設定成 先去ParseToken取得裡面的id是否跟url的id一樣，如果沒有就丟Exception
@@ -41,7 +50,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/allEmployees")
-    @ApiOperation("查看所有員工: Find All Employees")
+    @ApiOperation("查看所有員工: Find All Employees (Role: ROLE_EMPLOYEE)")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE')")
     public ResponseEntity<List<EmployeeResponse>> getEmployees() {
         List<EmployeeResponse> employees = employeeService.getAllEmployees();
