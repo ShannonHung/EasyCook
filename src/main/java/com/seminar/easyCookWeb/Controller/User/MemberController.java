@@ -6,6 +6,7 @@ import com.seminar.easyCookWeb.Entity.User.MemberRequest;
 import com.seminar.easyCookWeb.Entity.User.MemberResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,14 +14,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.function.EntityResponse;
-
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/member" , produces = MediaType.APPLICATION_JSON_VALUE)
-@Api(tags = "會員Member連接口", description = "提供會員Member相關的 Rest API")
+@Api(tags = "會員Member", description = "提供會員Member相關的 Rest API")
 public class MemberController {
     @Autowired
     MemberService memberService;
