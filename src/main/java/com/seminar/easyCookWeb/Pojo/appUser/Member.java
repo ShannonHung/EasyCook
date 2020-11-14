@@ -1,10 +1,7 @@
 package com.seminar.easyCookWeb.Pojo.appUser;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.Nationalized;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -21,6 +18,7 @@ import java.util.Collection;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Member extends User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

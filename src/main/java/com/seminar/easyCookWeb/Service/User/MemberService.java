@@ -3,15 +3,18 @@ package com.seminar.easyCookWeb.Service.User;
 import com.seminar.easyCookWeb.Converter.MemberConverter;
 import com.seminar.easyCookWeb.Exception.ConflictException;
 import com.seminar.easyCookWeb.Exception.EntityNotFoundException;
+import com.seminar.easyCookWeb.Mapper.MemberMapper;
 import com.seminar.easyCookWeb.Pojo.appUser.Role;
 import com.seminar.easyCookWeb.Repository.Users.MemberRepository;
 import com.seminar.easyCookWeb.Pojo.appUser.Member;
 import com.seminar.easyCookWeb.Entity.User.MemberRequest;
 import com.seminar.easyCookWeb.Entity.User.MemberResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -20,16 +23,19 @@ import java.util.Optional;
 @Service
 @Transactional
 public class MemberService {
-    MemberRepository memberRepository;
-    private BCryptPasswordEncoder passwordEncoder;
+    private final MemberRepository memberRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final MemberMapper mapper;
 
-    public MemberService(MemberRepository memberRepository){
+    @Autowired
+    public MemberService(MemberRepository memberRepository, MemberMapper mapper){
         this.memberRepository= memberRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
+        this.mapper = mapper;
     }
 
 
-    public MemberResponse saveMember(MemberRequest request){
+    public Optional<MemberResponse> saveMember(MemberRequest request){
         Optional<Member> existingMember = memberRepository.findByAccount(request.getAccount());
         if(existingMember.isPresent()){
             throw new ConflictException("[Save Member] -> {Error} This account Name has been used!");
@@ -38,18 +44,21 @@ public class MemberService {
         member.setRole(Role.MEMBER);
         member.setPassword(passwordEncoder.encode(request.getPassword()));
         member = memberRepository.save(member);
-        return MemberConverter.toMemberResponse(member);
+//        return MemberConverter.toMemberResponse(member);
+        return Optional.ofNullable(mapper.toModel(member));
     }
-    public MemberResponse getMemberResponseById(Long id){
+    public Optional<MemberResponse> getMemberResponseById(Long id){
         Member member = memberRepository.findById(id).orElseThrow(() ->new EntityNotFoundException(Member.class, "id", id.toString()));
-        return MemberConverter.toMemberResponse(member);
+//        return MemberConverter.toMemberResponse(member);
+        return Optional.ofNullable(mapper.toModel(member));
     }
-    public MemberResponse getMemberResponseByName(String account){
+    public Optional<MemberResponse> getMemberResponseByName(String account){
         Member member = memberRepository.findByAccount(account).orElseThrow(() ->new EntityNotFoundException(Member.class, "account", account));
-        return MemberConverter.toMemberResponse(member);
+//        return MemberConverter.toMemberResponse(member);
+        return Optional.ofNullable(mapper.toModel(member));
     }
-    public List<MemberResponse> getAllMembers(){
+    public Optional<List<MemberResponse>> getAllMembers(){
         List<Member> members = memberRepository.findAll();
-        return MemberConverter.toMemberResponses(members);
+        return Optional.ofNullable(mapper.toModels(members));
     }
 }
