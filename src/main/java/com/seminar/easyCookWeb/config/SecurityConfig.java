@@ -14,6 +14,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+
 @EnableWebSecurity //該標記已經冠上@Configuration標記
 @EnableGlobalMethodSecurity(prePostEnabled=true) //prePostEnabled = true 会解锁 @PreAuthorize 和 @PostAuthorize 两个注解
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -76,6 +82,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean //藉由Bean標記，才可以在spring boot初始化就建立才能Autowired
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "HEAD", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
+        corsConfiguration.applyPermitDefaultValues();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return source;
     }
 
 }
