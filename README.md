@@ -13,6 +13,7 @@
 - Servert Port: localhost:8082
 
 
+
 ### Getting start with VScode
 
 1. Get an extension, 'Lombok'
@@ -37,8 +38,11 @@ mvn install
 
 [詳細圖片Trello: 網頁基礎設定/ 建立API文件檔案Swagger附件](https://trello.com/c/zVwpKjZp)
 
+### MapStruct
+如果使用Intellij，請先Plugin MapStruct的功能
+
 ### 目前權限說明
-前端在進行request的時候不需要放role因為後端已經預設好`employee/register`給予的權限就是`ROLE_EMPLOYEE`，目前`ROLE_EMPLOYEE`的權限可以訪問所有的API, 如果前端透過`member/register`來註冊員工帳號，後端預設給他的權限是`ROLE_MEMBER`，目前甚麼API都不能查看
+前端在進行request的時候不需要放role因為後端已經預設好`employee/register`給予的權限就是`ROLE_EMPLOYEE`，目前`ROLE_EMPLOYEE`的權限可以訪問所有的API, 如果前端透過`member/register`來註冊員工帳號，後端預設給他的權限是`ROLE_MEMBER`，目前甚麼API都不能查看除了自己的個人資料
 
 ### 操作流程說明
 1. 先去`employee/register`註冊員工帳號 (詳細post規則可以查看swagger), 也可以去`member/register`註冊會員帳號
