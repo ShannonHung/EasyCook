@@ -2,8 +2,8 @@ package com.seminar.easyCookWeb.Config;
 
 import com.seminar.easyCookWeb.Repository.Users.EmployeeRepository;
 import com.seminar.easyCookWeb.Repository.Users.MemberRepository;
-import com.seminar.easyCookWeb.Pojo.app_user.Role;
-import com.seminar.easyCookWeb.Pojo.app_user.User;
+import com.seminar.easyCookWeb.Pojo.appUser.Role;
+import com.seminar.easyCookWeb.Pojo.appUser.User;
 import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

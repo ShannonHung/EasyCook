@@ -1,7 +1,10 @@
-package com.seminar.easyCookWeb.Pojo.app_user;
+package com.seminar.easyCookWeb.Pojo.appUser;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.Nationalized;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -14,12 +17,15 @@ import javax.validation.constraints.Null;
 import java.util.Collection;
 
 @Entity
+@ToString
 @Data
-public class Employee extends User implements UserDetails {
+@AllArgsConstructor
+@NoArgsConstructor
+public class Member extends User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Null
-    @Column(name="employee_id")
+    @Column(name="member_id")
     private long id;
 
     @NotEmpty
@@ -35,18 +41,12 @@ public class Employee extends User implements UserDetails {
     @Nationalized
     private String username;
 
-    @Column(name = "department", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Department department;
-
-    @Column(columnDefinition = "nvarchar(30)")
-    private String title;
-
     @Column(columnDefinition = "nvarchar(15)")
-    private String phone;//如果你這裡使用phoneNum大寫，寫入資料庫會變成phone_num
+    private String phone;//如果你這裡使用Num大寫，寫入資料庫會變成phone_num
 
     @Column(columnDefinition = "nvarchar(254)")
     private String email;
+
 
     @NotNull
     @Enumerated(EnumType.STRING)

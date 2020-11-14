@@ -1,6 +1,6 @@
 package com.seminar.easyCookWeb.Entity.User;
 
-import com.seminar.easyCookWeb.Pojo.app_user.Role;
+import com.seminar.easyCookWeb.Pojo.appUser.Role;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

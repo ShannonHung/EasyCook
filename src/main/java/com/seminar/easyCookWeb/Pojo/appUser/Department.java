@@ -1,4 +1,4 @@
-package com.seminar.easyCookWeb.Pojo.app_user;
+package com.seminar.easyCookWeb.Pojo.appUser;
 
 public enum  Department {
     Sales, FoodManagement, CustomerService, Transport;

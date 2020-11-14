@@ -1,6 +1,6 @@
 package com.seminar.easyCookWeb.Converter;
 
-import com.seminar.easyCookWeb.Pojo.app_user.Member;
+import com.seminar.easyCookWeb.Pojo.appUser.Member;
 import com.seminar.easyCookWeb.Entity.User.MemberRequest;
 import com.seminar.easyCookWeb.Entity.User.MemberResponse;
 import org.springframework.beans.BeanUtils;

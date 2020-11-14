@@ -1,6 +1,5 @@
 package com.seminar.easyCookWeb.Config;
 
-import com.seminar.easyCookWeb.Pojo.app_user.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
