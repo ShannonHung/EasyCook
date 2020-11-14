@@ -1,11 +1,8 @@
 package com.seminar.easyCookWeb.mappingTest;
 
-import com.seminar.easyCookWeb.Entity.User.EmployeeResponse;
-import com.seminar.easyCookWeb.Entity.User.MemberResponse;
-import com.seminar.easyCookWeb.Mapper.EmployeeMapper;
-import com.seminar.easyCookWeb.Mapper.MemberMapper;
-import com.seminar.easyCookWeb.Pojo.appUser.Employee;
-import com.seminar.easyCookWeb.Pojo.appUser.Member;
+import com.seminar.easyCookWeb.model.user.MemberResponse;
+import com.seminar.easyCookWeb.mapper.MemberMapper;
+import com.seminar.easyCookWeb.pojo.appUser.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
