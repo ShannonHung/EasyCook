@@ -1,5 +1,6 @@
 package com.seminar.easyCookWeb.config;
 
+import com.seminar.easyCookWeb.exception.AccountException;
 import com.seminar.easyCookWeb.model.user.AuthRequest;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
@@ -32,6 +33,11 @@ public class JWTService {
         //如果在SecurityConfig中configure()裡面使用者驗證成功，就會再次得到UsernamePasswordAuthenticationToken
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(request.getAccount(), request.getPassword());
+        System.out.println("[generateToken] -> "+ authentication.toString());
+        if(!authentication.isAuthenticated()){
+            System.out.println("[generateToken] -> Wrong !!");
+            throw new AccountException("帳號或密碼不正確!");
+        }
         //當AuthenticationManager進行身分驗證時，會接收到一個Authentication介面的物件
             //其中帳密的驗證所對應的是UsernamePasswordAuthenticationToken
                 //UsernamePasswordAuthenticationToken(principal, credentials)

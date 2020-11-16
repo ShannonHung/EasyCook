@@ -24,7 +24,7 @@ public class ApiError {
 
     // This is used for representing multiple errors in a single call.
     // An example would be validation errors in which multiple fields have failed the validation
-    private List<ApiSubError> subErrors;
+//    private List<ApiSubError> subErrors;
 
     private ApiError() {
         timestamp = LocalDateTime.now();
@@ -47,5 +47,11 @@ public class ApiError {
         this.status = status;
         this.message = message;
         this.debugMessage = ex.getLocalizedMessage();
+    }
+
+    ApiError(HttpStatus status, String message){
+        this();
+        this.status = status;
+        this.message = message;
     }
 }

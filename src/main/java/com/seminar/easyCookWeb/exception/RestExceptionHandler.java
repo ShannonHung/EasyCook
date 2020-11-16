@@ -23,6 +23,11 @@ import static org.springframework.http.HttpStatus.*;
 @Slf4j
 public class RestExceptionHandler extends ResponseEntityExceptionHandler{
 
+    @ExceptionHandler(AccountException.class)
+    protected ResponseEntity<Object> handleBusiness(AccountException ex) {
+        return buildResponseEntity(new ApiError(BAD_REQUEST, ex.getMessage(), ex), ex);
+    }
+
 
     //如果發生500 Status錯誤
     @Override
@@ -30,7 +35,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
         ServletWebRequest servletWebRequest = (ServletWebRequest) request;
         log.info("{} to {}", servletWebRequest.getHttpMethod(), servletWebRequest.getRequest().getServletPath());
         String error = "Malformed JSON request. JSON格式怪怪的";
-        return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, ex));
+        return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, ex), ex);
     }
 
 
@@ -44,7 +49,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
     protected ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
         ApiError apiError = new ApiError(NOT_FOUND);
         apiError.setMessage(ex.getMessage());
-        return buildResponseEntity(apiError);
+        return buildResponseEntity(apiError, ex);
     }
 
     @ResponseStatus(FORBIDDEN)
@@ -53,7 +58,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
             AccessDeniedException ex) {
         ApiError apiError = new ApiError(FORBIDDEN);
         apiError.setMessage("你沒有權限!");
-        return buildResponseEntity(apiError);
+        return buildResponseEntity(apiError, ex);
     }
     /**
      * 如果發生資料庫已經存在該帳戶 發出此exception
@@ -65,7 +70,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
             ConflictException ex){
         ApiError apiError = new ApiError(CONFLICT);
         apiError.setMessage("資料庫已經存在該帳戶!");
-        return buildResponseEntity(apiError);
+        return buildResponseEntity(apiError, ex);
     }
     /**
      * Handle HttpMessageNotWritableException.controller将返回参数json化后，返回给前端的时候，报异常
@@ -79,7 +84,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotWritable(HttpMessageNotWritableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         String error = "Error writing JSON output";
-        return buildResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, error, ex));
+        return buildResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, error, ex), ex);
     }
 
     /**
@@ -97,7 +102,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
         ApiError apiError = new ApiError(BAD_REQUEST);
         apiError.setMessage(String.format("Could not find the %s method for URL %s", ex.getHttpMethod(), ex.getRequestURL()));
         apiError.setDebugMessage(ex.getMessage());
-        return buildResponseEntity(apiError);
+        return buildResponseEntity(apiError, ex);
     }
 
     /**
@@ -105,13 +110,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
      */
     @ExceptionHandler(javax.persistence.EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFound(javax.persistence.EntityNotFoundException ex) {
-        return buildResponseEntity(new ApiError(HttpStatus.NOT_FOUND, ex));
+        return buildResponseEntity(new ApiError(HttpStatus.NOT_FOUND, ex), ex);
     }
 
 
 
 
-    private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
+    private ResponseEntity<Object> buildResponseEntity(ApiError apiError, Exception ex) {
+        log.error("The ErrorResponse is {} ", apiError.toString(), ex);
         return new ResponseEntity<>(apiError, apiError.getStatus());
     }
 

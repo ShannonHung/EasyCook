@@ -27,7 +27,9 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> issueToken(@RequestBody AuthRequest request) {
         String token = jwtService.generateToken(request);
+//        System.out.println("[Login] -> token ->" + token);
         Map<String, String> response = Collections.singletonMap(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX+token);
+//        System.out.println("[response] -> " + response.get(SecurityConstants.HEADER_STRING));
         return ResponseEntity.ok(response);
     }
 
