@@ -33,16 +33,18 @@ public class JWTService {
         //如果在SecurityConfig中configure()裡面使用者驗證成功，就會再次得到UsernamePasswordAuthenticationToken
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(request.getAccount(), request.getPassword());
+        System.out.println("[generateToken] -> "+ authentication.isAuthenticated());
         System.out.println("[generateToken] -> "+ authentication.toString());
-        if(!authentication.isAuthenticated()){
-            System.out.println("[generateToken] -> Wrong !!");
-            throw new AccountException("帳號或密碼不正確!");
-        }
+//        if(!authentication.isAuthenticated()){
+//            System.out.println("[generateToken] -> Wrong !!");
+//            throw new AccountException("帳號或密碼不正確!");
+//        }
         //當AuthenticationManager進行身分驗證時，會接收到一個Authentication介面的物件
             //其中帳密的驗證所對應的是UsernamePasswordAuthenticationToken
                 //UsernamePasswordAuthenticationToken(principal, credentials)
                     //principal: 代表與伺服器進行互動的人 | credentials:用來證明自己確實是principal的資料通常是密碼
         authentication = authenticationManager.authenticate(authentication);
+        System.out.println("authentication test " + authentication);
         //得到UsernamePasswordAuthenticationToken物件之後用Authentication介面接收他
             //authntication裡面的資料會變成UserDetailsService回傳的使用者詳情 把她取出轉型為UserDetails物件後續繼續使用
 //        UserDetails userDetails = (UserDetails) authentication.getPrincipal();

@@ -3,6 +3,7 @@ package com.seminar.easyCookWeb.controller.auth;
 import com.seminar.easyCookWeb.config.JWTService;
 import com.seminar.easyCookWeb.config.SecurityConstants;
 import com.seminar.easyCookWeb.model.user.AuthRequest;
+import com.seminar.easyCookWeb.security.JwtTokenProvider;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +18,19 @@ import java.util.Collections;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 @Api(tags = "取得Token", description = "提供會員及員工Token的 Rest API")
 public class AuthController {
     @Autowired
     private JWTService jwtService;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     @ApiOperation("取得token")
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> issueToken(@RequestBody AuthRequest request) {
-        String token = jwtService.generateToken(request);
+//        String token = jwtService.generateToken(request);
+        String token = jwtTokenProvider.createToken(request.getAccount());
 //        System.out.println("[Login] -> token ->" + token);
         Map<String, String> response = Collections.singletonMap(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX+token);
 //        System.out.println("[response] -> " + response.get(SecurityConstants.HEADER_STRING));

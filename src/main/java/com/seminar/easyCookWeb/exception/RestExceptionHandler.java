@@ -1,5 +1,6 @@
 package com.seminar.easyCookWeb.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -52,6 +53,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
         return buildResponseEntity(apiError, ex);
     }
 
+
+
     @ResponseStatus(FORBIDDEN)
     @ExceptionHandler(AccessDeniedException.class)
     protected ResponseEntity<Object> handleAccessDeniedException(
@@ -60,6 +63,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
         apiError.setMessage("你沒有權限!");
         return buildResponseEntity(apiError, ex);
     }
+
+    @ResponseStatus(FORBIDDEN)
+    @ExceptionHandler(ExpiredJwtException.class)
+    protected ResponseEntity<Object> handleExpiredJwtException(
+            ExpiredJwtException ex) {
+        ApiError apiError = new ApiError(FORBIDDEN);
+        apiError.setMessage("JWT Token過期");
+        return buildResponseEntity(apiError, ex);
+    }
+
     /**
      * 如果發生資料庫已經存在該帳戶 發出此exception
      * @param ex the ConflictException
