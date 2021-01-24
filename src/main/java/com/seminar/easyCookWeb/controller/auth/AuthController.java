@@ -23,16 +23,16 @@ public class AuthController {
     @Autowired
     private JWTService jwtService;
 
-    @ApiOperation("取得token")
-    @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> issueToken(@RequestBody AuthRequest request) {
-//        String token = jwtService.generateToken(request);
-        String token = jwtService.generateToken(request.getAccount(), request.getPassword());
-//        System.out.println("[Login] -> token ->" + token);
-        Map<String, String> response = Collections.singletonMap(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX+token);
-//        System.out.println("[response] -> " + response.get(SecurityConstants.HEADER_STRING));
-        return ResponseEntity.ok(response);
-    }
+//    @ApiOperation("取得token")
+//    @PostMapping("/login")
+//    public ResponseEntity<Map<String, String>> issueToken(@RequestBody AuthRequest request) {
+////        String token = jwtService.generateToken(request);
+//        String token = jwtService.generateToken(request.getAccount(), request.getPassword());
+////        System.out.println("[Login] -> token ->" + token);
+//        Map<String, String> response = Collections.singletonMap(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX+token);
+////        System.out.println("[response] -> " + response.get(SecurityConstants.HEADER_STRING));
+//        return ResponseEntity.ok(response);
+//    }
 
     @PostMapping("/parse")
     @ApiOperation("解析token")

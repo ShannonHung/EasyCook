@@ -1,5 +1,6 @@
 package com.seminar.easyCookWeb.exception;
 
+import com.seminar.easyCookWeb.model.error.ErrorResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -26,7 +27,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
 
     @ExceptionHandler(AccountException.class)
     protected ResponseEntity<Object> handleBusiness(AccountException ex) {
-        return buildResponseEntity(new ApiError(BAD_REQUEST, ex.getMessage(), ex), ex);
+        return buildResponseEntity(new ErrorResponse(BAD_REQUEST, ex.getMessage(), ex), ex);
     }
 
 
@@ -35,8 +36,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         ServletWebRequest servletWebRequest = (ServletWebRequest) request;
         log.info("{} to {}", servletWebRequest.getHttpMethod(), servletWebRequest.getRequest().getServletPath());
-        String error = "Malformed JSON request. JSON格式怪怪的";
-        return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, ex), ex);
+        String error = "Malformed JSON request.";
+        return buildResponseEntity(new ErrorResponse(HttpStatus.BAD_REQUEST, error, ex), ex);
     }
 
 
@@ -48,7 +49,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
      */
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
-        ApiError apiError = new ApiError(NOT_FOUND);
+        ErrorResponse apiError = new ErrorResponse(NOT_FOUND);
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError, ex);
     }
@@ -59,17 +60,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
     @ExceptionHandler(AccessDeniedException.class)
     protected ResponseEntity<Object> handleAccessDeniedException(
             AccessDeniedException ex) {
-        ApiError apiError = new ApiError(FORBIDDEN);
-        apiError.setMessage("你沒有權限!");
-        return buildResponseEntity(apiError, ex);
-    }
-
-    @ResponseStatus(FORBIDDEN)
-    @ExceptionHandler(ExpiredJwtException.class)
-    protected ResponseEntity<Object> handleExpiredJwtException(
-            ExpiredJwtException ex) {
-        ApiError apiError = new ApiError(FORBIDDEN);
-        apiError.setMessage("JWT Token過期");
+        ErrorResponse apiError = new ErrorResponse(FORBIDDEN, "NEED AUTHORIZATION", ex);
         return buildResponseEntity(apiError, ex);
     }
 
@@ -81,8 +72,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
     @ExceptionHandler(ConflictException.class)
     protected ResponseEntity<Object> handleConflictException(
             ConflictException ex){
-        ApiError apiError = new ApiError(CONFLICT);
-        apiError.setMessage("資料庫已經存在該帳戶!");
+        ErrorResponse apiError = new ErrorResponse(CONFLICT);
+        apiError.setMessage("ACCOUNT DUPLICATED");
         return buildResponseEntity(apiError, ex);
     }
     /**
@@ -97,7 +88,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotWritable(HttpMessageNotWritableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         String error = "Error writing JSON output";
-        return buildResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, error, ex), ex);
+        return buildResponseEntity(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, error, ex), ex);
     }
 
     /**
@@ -112,8 +103,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(
             NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ApiError apiError = new ApiError(BAD_REQUEST);
-        apiError.setMessage(String.format("Could not find the %s method for URL %s", ex.getHttpMethod(), ex.getRequestURL()));
+        ErrorResponse apiError = new ErrorResponse(BAD_REQUEST);
+        apiError.setMessage(String.format("Could not find the %s method for URL %s", "ACCOUNT OR PASSWORD NOT CORRECT", ex.getRequestURL()));
         apiError.setDebugMessage(ex.getMessage());
         return buildResponseEntity(apiError, ex);
     }
@@ -123,13 +114,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
      */
     @ExceptionHandler(javax.persistence.EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFound(javax.persistence.EntityNotFoundException ex) {
-        return buildResponseEntity(new ApiError(HttpStatus.NOT_FOUND, ex), ex);
+        return buildResponseEntity(new ErrorResponse(HttpStatus.NOT_FOUND, ex), ex);
     }
 
 
 
 
-    private ResponseEntity<Object> buildResponseEntity(ApiError apiError, Exception ex) {
+    private ResponseEntity<Object> buildResponseEntity(ErrorResponse apiError, Exception ex) {
         log.error("The ErrorResponse is {} ", apiError.toString(), ex);
         return new ResponseEntity<>(apiError, apiError.getStatus());
     }
