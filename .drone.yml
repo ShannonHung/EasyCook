@@ -23,8 +23,13 @@ steps:
       - name: docker_socket
         path: /var/run/docker.sock
     commands:
-      - docker-compose -f /drone/src/docker-compose.yml -p down
-      - docker-compose -f /drone/src/docker-compose.yml -p up -d
+      #把原本的container 關掉
+      - docker-compose -f /drone/src/docker-compose.yml -p backend down
+      #重新開啟現在的container
+      - docker-compose -f /drone/src/docker-compose.yml -p backend up -d
+      # docker rmi 表示移除images $(特定ID), docker images -f "dangling=true" -q 會show出所有tag=<none>的無用images, -q表示顯示 id
+      - docker rmi $(docker images -f "dangling=true" -q)
+
 volumes:
   - name: docker_socket
     host:
