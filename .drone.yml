@@ -1,27 +1,22 @@
+---
 kind: pipeline
 type: docker
 name: Staging
 
 steps:
-  - name: build
-    image: node
+  - name: Test application with maven
+    image: maven:3.6.3-adoptopenjdk-11
     commands:
-      - yarn install
+      - mvn test -B
 
-  - name: test
-    image: node
-    commands:
-      - yarn test
-
-  - name: Build docker image
-    image: docker/compose:1.23.2
+  - name: Build image
+    image: docker:20.10.0-dind
     volumes:
       - name: docker_socket
         path: /var/run/docker.sock
     commands:
-      - echo "test"
       - cd /drone/src/
-      - docker build -t dinogame:latest .
+      - docker build -t easycook:latest .
 
   - name: Create service
     image: docker/compose
@@ -29,14 +24,16 @@ steps:
       - name: docker_socket
         path: /var/run/docker.sock
     commands:
-      #把原本的container 關掉
-      - docker-compose -f /drone/src/docker-compose.yml -p backend down
-      #重新開啟現在的container
-      - docker-compose -f /drone/src/docker-compose.yml -p backend up -d
-      # docker rmi 表示移除images $(特定ID), docker images -f "dangling=true" -q 會show出所有tag=<none>的無用images, -q表示顯示 id
-      - docker rmi $(docker images -f "dangling=true" -q)
+      - docker-compose -f /drone/src/docker-compose.yml -p backend-easycook down
+      - docker-compose -f /drone/src/docker-compose.yml -p backend-easycook up -d
 
 volumes:
   - name: docker_socket
     host:
       path: /var/run/docker.sock
+
+trigger:
+  branch:
+    - cicd
+  event:
+    - push
