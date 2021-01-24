@@ -23,8 +23,8 @@ steps:
       - name: docker_socket
         path: /var/run/docker.sock
     commands:
-      - docker-compose -f /drone/src/docker-compose.yml -p backend-easycook down
-      - docker-compose -f /drone/src/docker-compose.yml -p backend-easycook up -d
+      - docker-compose -f /drone/src/docker-compose.yml -p down
+      - docker-compose -f /drone/src/docker-compose.yml -p up -d
 volumes:
   - name: docker_socket
     host:
