@@ -1,7 +1,6 @@
 package com.seminar.easyCookWeb.exception.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.seminar.easyCookWeb.exception.ApiError;
 import com.seminar.easyCookWeb.model.error.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
@@ -39,6 +38,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
         authException.printStackTrace(new PrintWriter(errors));
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED, "LOGIN FAILURE", authException);
         response.setStatus(errorResponse.getStatus().value());
+        response.setContentType("application/json;charset=UTF-8");
         OutputStream out = response.getOutputStream();
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(out, errorResponse);

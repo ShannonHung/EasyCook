@@ -1,17 +1,13 @@
 package com.seminar.easyCookWeb.config;
 
-import com.seminar.easyCookWeb.exception.CustomAuthenticationFailureHandler;
 import com.seminar.easyCookWeb.exception.handler.ExceptionHandlerFilter;
 import com.seminar.easyCookWeb.exception.handler.RestAccessDeniedHandler;
 import com.seminar.easyCookWeb.exception.handler.RestAuthenticationEntryPoint;
-import com.seminar.easyCookWeb.pojo.appUser.Role;
 import com.seminar.easyCookWeb.repository.users.EmployeeRepository;
 import com.seminar.easyCookWeb.repository.users.MemberRepository;
 import com.seminar.easyCookWeb.security.JwtAuthenticationFilter;
 import com.seminar.easyCookWeb.security.JwtAuthorizationFilter;
 import com.seminar.easyCookWeb.security.JwtConfig;
-import com.seminar.easyCookWeb.service.user.EmployeeService;
-import com.seminar.easyCookWeb.service.user.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -24,8 +20,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -92,9 +86,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
     }
 
-    public AuthenticationFailureHandler authenticationFailureHandler(){
-        return new CustomAuthenticationFailureHandler();
-    }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
