@@ -4,14 +4,11 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.seminar.easyCookWeb.config.SecurityConstants;
 import com.seminar.easyCookWeb.config.UserDetailService;
 import com.seminar.easyCookWeb.model.user.AuthRequest;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,11 +17,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -66,7 +60,7 @@ public class JwtTokenProvider {
 
         //payload
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, SecurityConstants.EXPIRATION_TIME_MINUTES); //產生期限五分鐘的JWT
+        calendar.add(Calendar.MINUTE, config.getExpiration()); //產生期限五分鐘的JWT
 
         //Claims類別本身實作了Map<String, Object>介面，所以能使用Map的方法來存放或讀取資料
         Claims claims = Jwts.claims();

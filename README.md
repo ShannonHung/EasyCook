@@ -258,3 +258,15 @@ mvn install
     "debugMessage": null
 }
 ```
+
+## 404 NotFound
+- 沒有此api路徑
+```json
+{
+    "timestamp": "2021-01-24T05:37:48.191+00:00",
+    "status": 404,
+    "error": "Not Found",
+    "message": "",
+    "path": "/api/auth/login"
+}
+```

@@ -2,6 +2,7 @@ package com.seminar.easyCookWeb.config;
 
 import com.seminar.easyCookWeb.exception.AccountException;
 import com.seminar.easyCookWeb.model.user.AuthRequest;
+import com.seminar.easyCookWeb.security.JwtConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -17,13 +18,11 @@ import java.util.Calendar;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+//產生token及parse token的地方
 @Service
 public class JWTService {
-    //主要在幫助進行帳密驗證, 注入元件的來源在SecurityConfig
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    private final String KEY = "ThisIsEasyCookSecretKeyCreatedByShannon";
+    private JwtConfig config;
 
     public String generateToken(String username, String password) {
         //如果在SecurityConfig中configure()裡面使用者驗證成功，就會再次得到UsernamePasswordAuthenticationToken
@@ -46,7 +45,7 @@ public class JWTService {
 
         //payload
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, SecurityConstants.EXPIRATION_TIME_MINUTES); //產生期限五分鐘的JWT
+        calendar.add(Calendar.MINUTE, config.getExpiration()); //產生期限五分鐘的JWT
 
         //Claims類別本身實作了Map<String, Object>介面，所以能使用Map的方法來存放或讀取資料
         Claims claims = Jwts.claims();
@@ -56,7 +55,7 @@ public class JWTService {
 
         //產生密鑰: 產生方式是提供一個字串轉換成位元組陣列byte[]候傳入hmacShaKeyFor方法得到金鑰
         //這個字串經過轉換後壁機要夠長32位元組否則會發生例外
-        Key secretKey = Keys.hmacShaKeyFor(KEY.getBytes());
+        Key secretKey = Keys.hmacShaKeyFor(config.getSecret().getBytes());
 
         //透過Jwts.builder方法得到Builder物件
         return Jwts.builder() //他事先內建了JWT的header
@@ -68,7 +67,7 @@ public class JWTService {
     public Map<String, Object> parseToken(String token){
         //產生密鑰: 產生方式是提供一個字串轉換成位元組陣列byte[]候傳入hmacShaKeyFor方法得到金鑰
             //目的: 產生token字串的簽名
-        Key secretKey = Keys.hmacShaKeyFor(KEY.getBytes());
+        Key secretKey = Keys.hmacShaKeyFor(config.getSecret().getBytes());
 
         //建立JWT解析器 需要將密鑰傳入
         JwtParser parser = Jwts.parserBuilder()
