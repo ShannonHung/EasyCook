@@ -15,7 +15,7 @@ steps:
         path: /var/run/docker.sock
     commands:
       - cd /drone/src/
-      - docker build -t easycook:latest .
+      - docker build -t easycook .
 
   - name: Create service
     image: docker/compose
