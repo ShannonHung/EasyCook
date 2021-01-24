@@ -38,6 +38,6 @@ volumes:
 
 trigger:
   branch:
-    - cicd
+    - master
   event:
     - push
