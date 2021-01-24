@@ -1,61 +1,39 @@
-#kind: pipeline
-#type: docker
-#name: Staging
-#
-#steps:
-#  - name: Test application with maven
-#    image: maven:3.6.3-adoptopenjdk-11
-#    commands:
-#      - mvn test -B
-#
-#  - name: Build image
-#    image: docker:20.10.0-dind
-#    volumes:
-#      - name: docker_socket
-#        path: /var/run/docker.sock
-#    commands:
-#      - cd /drone/src/
-#      - docker build -t easycook:latest .
-#
-#  - name: Create service
-#    image: docker/compose
-#    volumes:
-#      - name: docker_socket
-#        path: /var/run/docker.sock
-#    commands:
-#      - docker-compose -f /drone/src/docker-compose.yml -p down
-#      - docker-compose -f /drone/src/docker-compose.yml -p up -d
-#      - docker rmi $(docker images -f "dangling=true" -q)
-#
-#volumes:
-#  - name: docker_socket
-#    host:
-#      path: /var/run/docker.sock
-#
-#trigger:
-#  branch:
-#    - cicd
-#  event:
-#    - push
+kind: pipeline
+type: docker
+name: Staging
 
-# pull official base image 13.12.0-alpine
-FROM node:13.12.0-alpine
+steps:
+  - name: Test application with maven
+    image: maven:3.6.3-adoptopenjdk-11
+    commands:
+      - mvn test -B
 
-  # set working directory container 裡面的工作目錄
-WORKDIR /app
+  - name: Build image
+    image: docker:20.10.0-dind
+    volumes:
+      - name: docker_socket
+        path: /var/run/docker.sock
+    commands:
+      - cd /drone/src/
+      - docker build -t easycook:latest .
 
-  # add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
+  - name: Create service
+    image: docker/compose
+    volumes:
+      - name: docker_socket
+        path: /var/run/docker.sock
+    commands:
+      - docker-compose -f /drone/src/docker-compose.yml -p down
+      - docker-compose -f /drone/src/docker-compose.yml -p up -d
+      - docker rmi $(docker images -f "dangling=true" -q)
 
-  # install app dependencies
-COPY package.json ./
-RUN yarn install --silent
+volumes:
+  - name: docker_socket
+    host:
+      path: /var/run/docker.sock
 
-  # add app
-COPY . ./
-
-  # 開放對外的PORT
-  # EXPOSE 3000
-
-  # start app
-CMD ["yarn", "start"]
+trigger:
+  branch:
+    - cicd
+  event:
+    - push
