@@ -11,6 +11,7 @@ import com.seminar.easyCookWeb.model.user.EmployeeResponse;
 import com.seminar.easyCookWeb.pojo.appUser.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,13 +41,16 @@ public class EmployeeService {
         Optional<Employee> existingEmployee = employeeRepository.findByAccount(request.getAccount());
         if(existingEmployee.isPresent()){
             throw new ConflictException("[Save Employee] -> {Error} This account Name has been used!");
+        }else if(request.getAccount()==null || request.getPassword()==null){
+            throw new HttpMessageNotReadableException("Account or Password is Empty");
+        }else{
+            Employee employee = EmployeeConverter.toEmployee(request);
+            employee.setRole(Role.EMPLOYEE);
+            employee.setPassword(passwordEncoder.encode(request.getPassword()));
+            employee = employeeRepository.save(employee);
+            System.out.println("<Test Mapping> -> "+Optional.ofNullable(mapper.toModel(employee).toString()));
+            return Optional.ofNullable(mapper.toModel(employee));
         }
-        Employee employee = EmployeeConverter.toEmployee(request);
-        employee.setRole(Role.EMPLOYEE);
-        employee.setPassword(passwordEncoder.encode(request.getPassword()));
-        employee = employeeRepository.save(employee);
-        System.out.println("<Test Mapping> -> "+Optional.ofNullable(mapper.toModel(employee).toString()));
-        return Optional.ofNullable(mapper.toModel(employee));
     }
     public Optional<EmployeeResponse> getEmployeeResponseById(Long id){
         Employee employee = employeeRepository.findById(id).orElseThrow(() ->new EntityNotFoundException(Employee.class, "id", id.toString()));

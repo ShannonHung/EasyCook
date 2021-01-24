@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Component
+//request進行filter
 @Slf4j
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
