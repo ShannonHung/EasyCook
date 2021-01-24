@@ -42,7 +42,7 @@ public class Member extends User implements UserDetails {
     @Column(columnDefinition = "nvarchar(15)")
     private String phone;//如果你這裡使用Num大寫，寫入資料庫會變成phone_num
 
-    @Column(columnDefinition = "nvarchar(254)")
+    @Column(columnDefinition = "nvarchar(512)")
     private String email;
 
 
