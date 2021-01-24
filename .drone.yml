@@ -7,6 +7,7 @@ steps:
 #    image: maven:3.6.3-adoptopenjdk-11
 #    commands:
 #      - mvn test -B
+
   - name: Build image
     image: docker:20.10.0-dind
     volumes:
