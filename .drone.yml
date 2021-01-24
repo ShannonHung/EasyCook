@@ -1,12 +1,13 @@
+---
 kind: pipeline
 type: docker
 name: Staging
 
 steps:
-#  - name: Test application with maven
-#    image: maven:3.6.3-adoptopenjdk-11
-#    commands:
-#      - mvn test -B
+  - name: Test application with maven
+    image: maven:3.6.3-adoptopenjdk-11
+    commands:
+      - mvn test -B
 
   - name: Build image
     image: docker:20.10.0-dind
@@ -15,7 +16,7 @@ steps:
         path: /var/run/docker.sock
     commands:
       - cd /drone/src/
-      - docker build -t easycook .
+      - docker build -t easycook-app:latest .
 
   - name: Create service
     image: docker/compose
@@ -23,11 +24,8 @@ steps:
       - name: docker_socket
         path: /var/run/docker.sock
     commands:
-      #把原本的container 關掉
-      - docker-compose -f /drone/src/docker-compose.yml -p backend down
-      #重新開啟現在的container
-      - docker-compose -f /drone/src/docker-compose.yml -p backend up -d
-      # docker rmi 表示移除images $(特定ID), docker images -f "dangling=true" -q 會show出所有tag=<none>的無用images, -q表示顯示 id
+      - docker-compose -f /drone/src/docker-compose.yml -p backend-easycook down
+      - docker-compose -f /drone/src/docker-compose.yml -p backend-easycook up -d
       - docker rmi $(docker images -f "dangling=true" -q)
 
 volumes:
@@ -37,6 +35,6 @@ volumes:
 
 trigger:
   branch:
-    - master
+    - cicd
   event:
     - push
