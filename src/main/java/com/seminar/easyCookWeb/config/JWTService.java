@@ -25,15 +25,10 @@ public class JWTService {
 
     private final String KEY = "ThisIsEasyCookSecretKeyCreatedByShannon";
 
-    /**
-     * @param request 用來接收帳密的請求主體
-     * @return
-     */
-    public String generateToken(AuthRequest request) {
+    public String generateToken(String username, String password) {
         //如果在SecurityConfig中configure()裡面使用者驗證成功，就會再次得到UsernamePasswordAuthenticationToken
         Authentication authentication =
-                new UsernamePasswordAuthenticationToken(request.getAccount(), request.getPassword());
-        System.out.println("[generateToken] -> "+ authentication.isAuthenticated());
+                new UsernamePasswordAuthenticationToken(username, password);
         System.out.println("[generateToken] -> "+ authentication.toString());
 //        if(!authentication.isAuthenticated()){
 //            System.out.println("[generateToken] -> Wrong !!");
@@ -43,7 +38,7 @@ public class JWTService {
             //其中帳密的驗證所對應的是UsernamePasswordAuthenticationToken
                 //UsernamePasswordAuthenticationToken(principal, credentials)
                     //principal: 代表與伺服器進行互動的人 | credentials:用來證明自己確實是principal的資料通常是密碼
-        authentication = authenticationManager.authenticate(authentication);
+//        authentication = authenticationManager.authenticate(authentication);
         System.out.println("authentication test " + authentication);
         //得到UsernamePasswordAuthenticationToken物件之後用Authentication介面接收他
             //authntication裡面的資料會變成UserDetailsService回傳的使用者詳情 把她取出轉型為UserDetails物件後續繼續使用

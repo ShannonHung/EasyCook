@@ -5,10 +5,13 @@ import com.seminar.easyCookWeb.exception.handler.ExceptionHandlerFilter;
 import com.seminar.easyCookWeb.exception.handler.RestAccessDeniedHandler;
 import com.seminar.easyCookWeb.exception.handler.RestAuthenticationEntryPoint;
 import com.seminar.easyCookWeb.pojo.appUser.Role;
+import com.seminar.easyCookWeb.repository.users.EmployeeRepository;
+import com.seminar.easyCookWeb.repository.users.MemberRepository;
 import com.seminar.easyCookWeb.security.JwtAuthenticationFilter;
 import com.seminar.easyCookWeb.security.JwtAuthorizationFilter;
 import com.seminar.easyCookWeb.security.JwtConfig;
-import com.seminar.easyCookWeb.security.JwtTokenProvider;
+import com.seminar.easyCookWeb.service.user.EmployeeService;
+import com.seminar.easyCookWeb.service.user.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -32,12 +35,24 @@ import java.util.Arrays;
 @EnableWebSecurity //該標記已經冠上@Configuration標記
 @EnableGlobalMethodSecurity(prePostEnabled=true) //prePostEnabled = true 会解锁 @PreAuthorize 和 @PostAuthorize 两个注解
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private UserDetailService userDetailService;
-    private JwtTokenProvider jwtTokenProvider;
+
+//    @Autowired
+//    private JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private JWTService jwtService;
+
+    @Autowired
     private JwtConfig jwtConfig;
-    private BCryptPasswordEncoder passwordEncoder;
-    private RestAuthenticationEntryPoint authenticationEntryPoint;
-    private RestAccessDeniedHandler accessDeniedHandler;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    private UserDetailService userDetailService;
+    private RestAuthenticationEntryPoint authenticationEntryPoint; //帳號密碼不正確 或是尚未登入
+    private RestAccessDeniedHandler accessDeniedHandler; //沒有權限存取
 
     @Autowired
     public SecurityConfig(UserDetailService userDetailService, RestAuthenticationEntryPoint authenticationEntryPoint, RestAccessDeniedHandler accessDeniedHandler) {
@@ -46,15 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.accessDeniedHandler = accessDeniedHandler;
     }
-    @Autowired
-    public void setJwtTokenProvider(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
 
-    @Autowired
-    public void setJwtConfig(JwtConfig jwtConfig) {
-        this.jwtConfig = jwtConfig;
-    }
 
     @Override //於此設置API的授權規則，若未設計API會恢復到能存取的狀態
     protected void configure(HttpSecurity http) throws Exception {
@@ -66,8 +73,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(accessDeniedHandler)
                 .and()
                 .addFilterBefore(new ExceptionHandlerFilter(), JwtAuthorizationFilter.class)
-                .addFilter(new JwtAuthenticationFilter(jwtConfig, authenticationManager(), jwtTokenProvider))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtTokenProvider))
+                .addFilter(new JwtAuthenticationFilter(jwtConfig, authenticationManager(), jwtService))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtService, memberRepository, employeeRepository))
                 .authorizeRequests()
                 .antMatchers(jwtConfig.getUrl()).anonymous()
                 .antMatchers("/h2/**").permitAll()

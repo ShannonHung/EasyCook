@@ -30,6 +30,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         } catch (JWTVerificationException e) {
             this.writeResponse(response, new ErrorResponse(HttpStatus.BAD_REQUEST, "Invalid token", e));
         } catch (Exception e) {
+            e.printStackTrace();
             this.writeResponse(response, new ErrorResponse(HttpStatus.BAD_REQUEST, "Unexpected error", e));
         }
     }

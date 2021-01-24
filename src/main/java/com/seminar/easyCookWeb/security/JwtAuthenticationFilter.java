@@ -1,6 +1,8 @@
 package com.seminar.easyCookWeb.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.seminar.easyCookWeb.config.JWTService;
+import com.seminar.easyCookWeb.model.user.AuthRequest;
 import com.seminar.easyCookWeb.pojo.appUser.User;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,24 +22,25 @@ import java.util.Collections;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final JwtConfig config;
     private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider jwtTokenProvider;
+//    private final JwtTokenProvider jwtTokenProvider;
+    private JWTService jwtService;
     @Autowired
-    public JwtAuthenticationFilter(JwtConfig config, AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
+    public JwtAuthenticationFilter(JwtConfig config, AuthenticationManager authenticationManager,JWTService jwtService) {
         this.config = config;
         this.authenticationManager = authenticationManager;
-        this.jwtTokenProvider = jwtTokenProvider;
+        this.jwtService = jwtService;
     }
 
     @Override
     @SneakyThrows(IOException.class)
     public Authentication attemptAuthentication(HttpServletRequest req,
                                                 HttpServletResponse res) throws AuthenticationException {
-        User creds = new ObjectMapper()
-                .readValue(req.getInputStream(), User.class);
-        System.out.println("JwtAuthenticationFilter=> " + creds.getUsername());
+        AuthRequest creds = new ObjectMapper()
+                .readValue(req.getInputStream(), AuthRequest.class);
+        System.out.println("JwtAuthenticationFilter=> " + creds.toString());
         return authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        creds.getUsername(),
+                        creds.getAccount(),
                         creds.getPassword(),
                         Collections.emptyList())
         );
@@ -48,8 +51,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             HttpServletResponse res,
                                             FilterChain chain,
                                             Authentication auth) throws IOException {
+        System.out.println(auth.getPrincipal());
         User account = (User) auth.getPrincipal();
-        String token = jwtTokenProvider.createToken(account.getUsername(), Collections.singletonList(account.getRole().getName()));
+        System.out.println("successfulAuthentication => "+account.toString());
+        String token = jwtService.generateToken(account.getAccount(), account.getPassword());
         PrintWriter out = res.getWriter();
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");

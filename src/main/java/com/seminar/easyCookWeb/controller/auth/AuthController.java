@@ -3,7 +3,6 @@ package com.seminar.easyCookWeb.controller.auth;
 import com.seminar.easyCookWeb.config.JWTService;
 import com.seminar.easyCookWeb.config.SecurityConstants;
 import com.seminar.easyCookWeb.model.user.AuthRequest;
-import com.seminar.easyCookWeb.security.JwtTokenProvider;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +22,12 @@ import java.util.Map;
 public class AuthController {
     @Autowired
     private JWTService jwtService;
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
 
     @ApiOperation("取得token")
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> issueToken(@RequestBody AuthRequest request) {
 //        String token = jwtService.generateToken(request);
-        String token = jwtTokenProvider.createToken(request.getAccount());
+        String token = jwtService.generateToken(request.getAccount(), request.getPassword());
 //        System.out.println("[Login] -> token ->" + token);
         Map<String, String> response = Collections.singletonMap(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX+token);
 //        System.out.println("[response] -> " + response.get(SecurityConstants.HEADER_STRING));
