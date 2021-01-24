@@ -211,8 +211,6 @@ mvn install
     "debugMessage": "JWT String argument cannot be null or empty."
 }
 ```
-
-
 ### JSON 格式有誤
 如果有以下問題就會回傳`"message": "Malformed JSON request."`
 - 沒有json內容就進行post
