@@ -268,3 +268,7 @@ mvn install
     "path": "/api/auth/login"
 }
 ```
+
+# 建立cicd
+.drone.yml
+Dockerfile
