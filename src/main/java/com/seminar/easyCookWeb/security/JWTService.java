@@ -1,4 +1,4 @@
-package com.seminar.easyCookWeb.config;
+package com.seminar.easyCookWeb.security;
 
 import com.seminar.easyCookWeb.exception.AccountException;
 import com.seminar.easyCookWeb.model.user.AuthRequest;

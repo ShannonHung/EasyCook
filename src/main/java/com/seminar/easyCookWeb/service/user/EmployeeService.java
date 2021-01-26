@@ -56,7 +56,7 @@ public class EmployeeService {
         Employee employee = employeeRepository.findById(id).orElseThrow(() ->new EntityNotFoundException(Employee.class, "id", id.toString()));
         return Optional.ofNullable(mapper.toModel(employee));
     }
-    public Optional<EmployeeResponse> getEmployeeResponseByName(String account){
+    public Optional<EmployeeResponse> getEmployeeResponseByAccount(String account){
         Employee employee = employeeRepository.findByAccount(account).orElseThrow(() ->new EntityNotFoundException(Employee.class, "account", account));
         return Optional.ofNullable(mapper.toModel(employee));
     }

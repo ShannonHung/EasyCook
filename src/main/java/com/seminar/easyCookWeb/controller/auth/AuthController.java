@@ -1,6 +1,6 @@
 package com.seminar.easyCookWeb.controller.auth;
 
-import com.seminar.easyCookWeb.config.JWTService;
+import com.seminar.easyCookWeb.security.JWTService;
 import com.seminar.easyCookWeb.security.JwtConfig;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

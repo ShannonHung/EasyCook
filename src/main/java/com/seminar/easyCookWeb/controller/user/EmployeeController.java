@@ -40,7 +40,7 @@ public class EmployeeController {
     public ResponseEntity<EmployeeResponse> findSelf(Authentication authentication){
 //        EmployeeResponse response = employeeService.getEmployeeResponseByName(authentication.getName());
 //        return new ResponseEntity<EmployeeResponse>(response, HttpStatus.OK);
-        return employeeService.getEmployeeResponseByName(authentication.getName())
+        return employeeService.getEmployeeResponseByAccount(authentication.getName())
                 .map(ResponseEntity::ok)
                 .orElseThrow(()->new EntityNotFoundException(EmployeeController.class, "name", authentication.getName()));
     }

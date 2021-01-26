@@ -33,7 +33,7 @@ public class MemberController {
 
     @GetMapping(path = "/me")
     @ApiOperation("會員取得自己的資料: Member Get Self Info (Role: ROLE_MEMBER)")
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE')")
     public ResponseEntity<MemberResponse> findSelf(Authentication authentication){
         return memberService.getMemberResponseByName(authentication.getName())
                 .map(ResponseEntity::ok)

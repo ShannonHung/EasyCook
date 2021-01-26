@@ -5,6 +5,7 @@ import com.seminar.easyCookWeb.exception.handler.RestAccessDeniedHandler;
 import com.seminar.easyCookWeb.exception.handler.RestAuthenticationEntryPoint;
 import com.seminar.easyCookWeb.repository.users.EmployeeRepository;
 import com.seminar.easyCookWeb.repository.users.MemberRepository;
+import com.seminar.easyCookWeb.security.JWTService;
 import com.seminar.easyCookWeb.security.JwtAuthenticationFilter;
 import com.seminar.easyCookWeb.security.JwtAuthorizationFilter;
 import com.seminar.easyCookWeb.security.JwtConfig;
