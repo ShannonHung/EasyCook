@@ -27,7 +27,7 @@ steps:
       - docker-compose -f /drone/src/docker-compose.yml -p backend-easycook down
       - docker-compose -f /drone/src/docker-compose.yml -p backend-easycook up -d
 #      - docker rmi $(docker images -f "dangling=true" -q)
-      - docker images -q -a | xargs docker inspect --format='{{.Id}}{{range $rt := .RepoTags}} {{$rt}} {{end}}'|grep -v ':'
+#      - docker images -q -a | xargs docker inspect --format='{{.Id}}{{range $rt := .RepoTags}} {{$rt}} {{end}}'|grep -v ':'
 
 
 volumes:
