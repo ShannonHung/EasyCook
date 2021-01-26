@@ -26,7 +26,7 @@ steps:
     commands:
       - docker-compose -f /drone/src/docker-compose.yml -p backend-easycook down
       - docker-compose -f /drone/src/docker-compose.yml -p backend-easycook up -d
-      - docker rmi $(docker images -f "dangling=true" -q)
+      - docker rmi $$(docker images -f "dangling=true" -q)
 
 volumes:
   - name: docker_socket
