@@ -9,14 +9,14 @@ steps:
 #    commands:
 #      - mvn test -B
 
-#  - name: Build image
-#    image: docker:20.10.0-dind
-#    volumes:
-#      - name: docker_socket
-#        path: /var/run/docker.sock
-#    commands:
-#      - cd /drone/src/
-#      - docker build -t easycook-app:latest .
+  - name: Build image
+    image: docker:20.10.0-dind
+    volumes:
+      - name: docker_socket
+        path: /var/run/docker.sock
+    commands:
+      - cd /drone/src/
+      - docker build -t easycook-app:latest .
 
   - name: Create service
     image: docker/compose
@@ -24,8 +24,8 @@ steps:
       - name: docker_socket
         path: /var/run/docker.sock
     commands:
-      - docker-compose -f /drone/src/docker-compose.yml -p backend down
-      - docker-compose -f /drone/src/docker-compose.yml -p backend up -d
+      - docker-compose -f /drone/src/docker-compose.yml -p backend-easycook down
+      - docker-compose -f /drone/src/docker-compose.yml -p backend-easycook up -d
 #      - docker rmi $(docker images -f "dangling=true" -q)
 #      - docker images -q -a | xargs docker inspect --format='{{.Id}}{{range $rt := .RepoTags}} {{$rt}} {{end}}'|grep -v ':'
 
