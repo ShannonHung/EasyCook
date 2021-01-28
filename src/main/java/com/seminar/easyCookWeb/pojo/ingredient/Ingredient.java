@@ -18,24 +18,24 @@ public class Ingredient {
     @Column(name="ingredient_id")
     private long id;
 
-    @Column(length = 256)
+    @Column(columnDefinition = "nvarchar(256)")
     @Nationalized
     private String name;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(length = 40)
+    @Column(columnDefinition = "nvarchar(30)")
     private Category category;
 
-    @Column(length = 40)
+    @Column(columnDefinition = "nvarchar(20)")
     private String unit;
 
     @Column(columnDefinition = "decimal(28,4)")
     private Double kcal;
 
-    @Column(length = 65)
+    @Column(columnDefinition = "nvarchar(60)")
     private String country;
 
-    @Column(length = 65)
+    @Column(columnDefinition = "nvarchar(60)")
     private String city;
 
     private int price;

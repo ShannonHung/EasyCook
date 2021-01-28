@@ -3,7 +3,7 @@ package com.seminar.easyCookWeb.service.user;
 import com.seminar.easyCookWeb.converter.EmployeeConverter;
 import com.seminar.easyCookWeb.exception.ConflictException;
 import com.seminar.easyCookWeb.exception.EntityNotFoundException;
-import com.seminar.easyCookWeb.mapper.EmployeeMapper;
+import com.seminar.easyCookWeb.mapper.user.EmployeeMapper;
 import com.seminar.easyCookWeb.pojo.appUser.Role;
 import com.seminar.easyCookWeb.repository.users.EmployeeRepository;
 import com.seminar.easyCookWeb.model.user.EmployeeRequest;

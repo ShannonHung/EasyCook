@@ -1,5 +1,7 @@
 package com.seminar.easyCookWeb.pojo.recipe;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,12 +23,13 @@ public class RecipeStep {
     @Column(length = 65)
     private String startTime;
 
-    @Column(length = 2000)
+    @Column(columnDefinition = "nvarchar(2000)")
     private String note;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id")
+    @JsonBackReference
     private Recipe recipe;
 
 }

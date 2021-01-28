@@ -1,5 +1,6 @@
 package com.seminar.easyCookWeb.pojo.recipe;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
 
@@ -21,7 +22,7 @@ public class Recipe {
     @Column(name="recipe_id")
     private long id;
 
-    @Column(length = 65)
+    @Column(columnDefinition = "nvarchar(256)")
     @Nationalized
     private String name;
 
@@ -35,10 +36,12 @@ public class Recipe {
 
     private int likesCount;
 
-    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<RecipeStep> recipeSteps;
 
-    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<RecipeIngredient> recipeIngredients;
 
 }

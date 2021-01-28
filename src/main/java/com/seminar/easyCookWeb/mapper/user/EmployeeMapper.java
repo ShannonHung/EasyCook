@@ -1,4 +1,4 @@
-package com.seminar.easyCookWeb.mapper;
+package com.seminar.easyCookWeb.mapper.user;
 
 import com.seminar.easyCookWeb.model.user.EmployeeRequest;
 import com.seminar.easyCookWeb.model.user.EmployeeResponse;

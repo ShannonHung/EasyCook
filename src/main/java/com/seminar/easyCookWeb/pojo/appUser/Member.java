@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -26,23 +27,23 @@ public class Member extends User implements UserDetails {
     @Column(name="member_id")
     private long id;
 
-    @NotEmpty
+    @NotBlank
     @Column(length = 45, unique = true)
     private String account;
 
-    @NotEmpty
+    @NotBlank
     @Column(length = 1024)
     @JsonIgnore
     private String password;
 
-    @Column(length = 65)
+    @Column(columnDefinition = "nvarchar(128)")
     @Nationalized
     private String username;
 
     @Column(columnDefinition = "nvarchar(15)")
     private String phone;//如果你這裡使用Num大寫，寫入資料庫會變成phone_num
 
-    @Column(columnDefinition = "nvarchar(512)")
+    @Column(columnDefinition = "nvarchar(128)")
     private String email;
 
 

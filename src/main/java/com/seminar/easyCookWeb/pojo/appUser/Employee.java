@@ -41,7 +41,7 @@ public class Employee extends User implements UserDetails {
     @Nationalized
     private String username;
 
-    @Column(name = "department", nullable = false)
+    @Column(name = "department", nullable = false, columnDefinition = "nvarchar(30)")
     @Enumerated(EnumType.STRING)
     private Department department;
 
