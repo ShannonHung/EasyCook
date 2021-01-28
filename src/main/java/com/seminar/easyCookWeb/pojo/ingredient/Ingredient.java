@@ -1,7 +1,4 @@
 package com.seminar.easyCookWeb.pojo.ingredient;
-
-import com.seminar.easyCookWeb.pojo.recipe.Recipe;
-import com.seminar.easyCookWeb.pojo.recipe.RecipeIngredient;
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
 
@@ -21,7 +18,7 @@ public class Ingredient {
     @Column(name="ingredient_id")
     private long id;
 
-    @Column(length = 65)
+    @Column(length = 256)
     @Nationalized
     private String name;
 

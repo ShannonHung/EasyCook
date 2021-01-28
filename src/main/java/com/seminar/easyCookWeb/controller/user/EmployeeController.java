@@ -36,7 +36,7 @@ public class EmployeeController {
 
     @GetMapping(path = "/me")
     @ApiOperation("員工取得自己的資料: Employee Get Self Info (Role: ROLE_EMPLOYEE)")
-    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE')")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     public ResponseEntity<EmployeeResponse> findSelf(Authentication authentication){
 //        EmployeeResponse response = employeeService.getEmployeeResponseByName(authentication.getName());
 //        return new ResponseEntity<EmployeeResponse>(response, HttpStatus.OK);

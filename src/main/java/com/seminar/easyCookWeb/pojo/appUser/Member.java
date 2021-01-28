@@ -48,7 +48,7 @@ public class Member extends User implements UserDetails {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(length = 8)
+    @Column(length = 20)
     private Role role;
 
 
