@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/employee" , produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/employee" , produces = MediaType.APPLICATION_JSON_VALUE)
 @Api(tags = "員工Employee連接口", description = "提供員工相關的 Rest API")
 public class EmployeeController {
     @Autowired

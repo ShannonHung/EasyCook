@@ -28,7 +28,7 @@ public class Member extends User implements UserDetails {
     private long id;
 
     @NotBlank
-    @Column(length = 45, unique = true)
+    @Column(length = 45, unique = true, nullable = false)
     private String account;
 
     @NotBlank

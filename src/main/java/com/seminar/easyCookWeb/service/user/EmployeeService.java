@@ -41,7 +41,7 @@ public class EmployeeService {
         Optional<Employee> existingEmployee = employeeRepository.findByAccount(request.getAccount());
         if(existingEmployee.isPresent()){
             throw new ConflictException("[Save Employee] -> {Error} This account Name has been used!");
-        }else if(request.getAccount()==null || request.getPassword()==null){
+        }else if(request.getAccount()==null || request.getPassword()==null || request.getAccount()=="" || request.getPassword()==""){
             throw new HttpMessageNotReadableException("Account or Password is Empty");
         }else{
             Employee employee = EmployeeConverter.toEmployee(request);

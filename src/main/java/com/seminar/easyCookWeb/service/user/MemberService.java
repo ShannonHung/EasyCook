@@ -37,7 +37,7 @@ public class MemberService {
 
     public Optional<MemberResponse> saveMember(MemberRequest request){
         log.info("[recieve member register request] => " + request);
-        if (request.getAccount()==null || request.getPassword()==null){
+        if (request.getAccount()==null || request.getPassword()==null || request.getAccount()=="" || request.getPassword()==""){
             throw new HttpMessageNotReadableException("Account or Password is Empty");
         }else{
 

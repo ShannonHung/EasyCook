@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/member" , produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/member" , produces = MediaType.APPLICATION_JSON_VALUE)
 @Api(tags = "會員Member", description = "提供會員Member相關的 Rest API")
 public class MemberController {
     @Autowired
