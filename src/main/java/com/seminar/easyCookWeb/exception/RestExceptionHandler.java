@@ -84,6 +84,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
         return buildResponseEntity(new EntitiesErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), errors, ex), ex);
     }
 
+    /**
+     * 處理刪除的錯誤
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(BusinessException.class)
+    protected ResponseEntity<Object> handleBusiness(BusinessException ex) {
+        return buildResponseEntity(new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), ex), ex);
+    }
+
 
     @ResponseStatus(FORBIDDEN)
     @ExceptionHandler(AccessDeniedException.class)

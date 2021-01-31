@@ -65,6 +65,8 @@ public class IngredientService {
      * @return
      */
     public Optional<IngredientModel> delete(Long id){
+        System.out.println("[delete ingredient]" + id);
+        System.out.println("[delete ingredient] find ingredient=> "  + repository.findById(id));
         return repository.findById(id)
                 .map(it ->{
                     repository.deleteById(it.getId());
@@ -72,6 +74,5 @@ public class IngredientService {
                 })
                 .map(mapper::toModel);
     }
-
 
 }
