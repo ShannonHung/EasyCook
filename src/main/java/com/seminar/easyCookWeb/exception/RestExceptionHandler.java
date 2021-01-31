@@ -1,5 +1,7 @@
 package com.seminar.easyCookWeb.exception;
 
+import com.seminar.easyCookWeb.model.error.EntitiesErrorResponse;
+import com.seminar.easyCookWeb.model.error.EntityErrorResponse;
 import com.seminar.easyCookWeb.model.error.ErrorResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,11 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import javax.validation.ConstraintViolationException;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.springframework.http.HttpStatus.*;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -54,6 +61,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
         return buildResponseEntity(apiError, ex);
     }
 
+    //負責處理Validation也就是@NotNull, NotEmpty, NotBlank的部分驗證
+    @ExceptionHandler(ConstraintViolationException.class)
+    protected ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex) {
+        List<EntityErrorResponse> errors = ex.getConstraintViolations().stream()
+                .map(it -> new EntityErrorResponse(it.getPropertyPath().toString(), it.getMessage()))
+                .collect(Collectors.toList());
+        return buildResponseEntity(new EntitiesErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), errors, ex), ex);
+    }
 
 
     @ResponseStatus(FORBIDDEN)

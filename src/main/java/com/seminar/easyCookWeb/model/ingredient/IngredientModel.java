@@ -20,7 +20,6 @@ import javax.validation.constraints.NotNull;
 public class IngredientModel {
     private long id;
 
-    @NotBlank
     private String name;
 
     private Category category = Category.OTHER;
@@ -33,10 +32,11 @@ public class IngredientModel {
 
     private String city;
 
+    @Builder.Default
     private int price = 0;
-
+    @Builder.Default
     private Double satefyStock = 0D;
-
+    @Builder.Default
     private Double stock = 0D;
 
 

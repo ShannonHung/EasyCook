@@ -44,9 +44,9 @@ public class EmployeeService {
         }else if(request.getAccount()==null || request.getPassword()==null || request.getAccount()=="" || request.getPassword()==""){
             throw new HttpMessageNotReadableException("Account or Password is Empty");
         }else{
-            Employee employee = EmployeeConverter.toEmployee(request);
+            request.setPassword(passwordEncoder.encode(request.getPassword()));
+            Employee employee = mapper.toPOJO(request);
             employee.setRole(Role.EMPLOYEE);
-            employee.setPassword(passwordEncoder.encode(request.getPassword()));
             employee = employeeRepository.save(employee);
             System.out.println("<Test Mapping> -> "+Optional.ofNullable(mapper.toModel(employee).toString()));
             return Optional.ofNullable(mapper.toModel(employee));

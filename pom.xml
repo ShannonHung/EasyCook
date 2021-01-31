@@ -20,6 +20,19 @@
 	</properties>
 
 	<dependencies>
+		<!--	for @NotNull, @NotEmpty, @NotBlank	-->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>5.3.5.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.el</artifactId>
+			<version>3.0.1-b12</version>
+		</dependency>
+		<!--	end	-->
+
 		<!--@Entity會需要-->
 		<dependency>
 			<groupId>javax.persistence</groupId>

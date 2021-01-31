@@ -16,7 +16,6 @@ import javax.validation.constraints.Null;
 public class RecipeStep {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Null
     @Column(name="recipe_step_id")
     private long id;
 

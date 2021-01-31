@@ -3,15 +3,13 @@ package com.seminar.easyCookWeb.pojo.appUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import java.util.Collection;
 
 @Entity
@@ -23,7 +21,6 @@ import java.util.Collection;
 public class Member extends User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Null
     @Column(name="member_id")
     private long id;
 
@@ -36,6 +33,7 @@ public class Member extends User implements UserDetails {
     @JsonIgnore
     private String password;
 
+    @NotBlank
     @Column(columnDefinition = "nvarchar(128)")
     @Nationalized
     private String username;

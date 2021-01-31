@@ -3,6 +3,7 @@ import lombok.*;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 
 @Entity
@@ -14,12 +15,12 @@ import javax.validation.constraints.Null;
 public class Ingredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Null
     @Column(name="ingredient_id")
     private long id;
 
     @Column(columnDefinition = "nvarchar(256)")
     @Nationalized
+    @NotBlank
     private String name;
 
     @Enumerated(value = EnumType.STRING)
@@ -41,10 +42,12 @@ public class Ingredient {
     private int price;
 
     @Column(columnDefinition = "decimal(28,4)")
-    private Double satefyStock;
+    @Builder.Default
+    private Double satefyStock = 0D;
 
     @Column(columnDefinition = "decimal(28,4)")
-    private Double stock;
+    @Builder.Default
+    private Double stock= 0D;
 
 
 }

@@ -18,7 +18,6 @@ import java.util.List;
 public class RecipeIngredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Null
     @Column(name="recipe_ingredient_id")
     private long id;
 
@@ -33,6 +32,7 @@ public class RecipeIngredient {
     private Ingredient ingredient;
 
     @Column(columnDefinition = "decimal(28,4)")
-    private Double Quantityrequired;
+    @Builder.Default
+    private Double Quantityrequired = 0D;
 
 }

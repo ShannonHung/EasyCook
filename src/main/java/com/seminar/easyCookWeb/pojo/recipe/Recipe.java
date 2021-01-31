@@ -3,10 +3,12 @@ package com.seminar.easyCookWeb.pojo.recipe;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Null;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -18,12 +20,12 @@ import java.util.List;
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Null
     @Column(name="recipe_id")
     private long id;
 
     @Column(columnDefinition = "nvarchar(256)")
     @Nationalized
+    @NotBlank
     private String name;
 
     //image bytes can have large lengths so we specify a value
@@ -38,10 +40,12 @@ public class Recipe {
 
     @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<RecipeStep> recipeSteps;
+    @Builder.Default
+    private List<RecipeStep> recipeSteps = new LinkedList<>();
 
     @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<RecipeIngredient> recipeIngredients;
+    @Builder.Default
+    private List<RecipeIngredient> recipeIngredients = new LinkedList<>();
 
 }
