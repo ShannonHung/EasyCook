@@ -4,6 +4,7 @@ import com.seminar.easyCookWeb.pojo.ingredient.Category;
 import com.seminar.easyCookWeb.pojo.ingredient.Ingredient;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.swing.text.html.Option;
@@ -12,7 +13,8 @@ import java.util.Optional;
 
 @Repository
 public interface IngredientRepository extends CrudRepository<Ingredient, Long> {
-    Optional<Ingredient> findByName(String name);
+    @Query("SELECT m FROM Ingredient m WHERE m.name LIKE %:title%")
+    Optional<List<Ingredient>> findByName(@Param("title") String title);
     Optional<Ingredient> findById(Long id);
     Optional<List<Ingredient>> findAllByCategory(Category category);
     Optional<List<Ingredient>> findAllByCountry(String country);

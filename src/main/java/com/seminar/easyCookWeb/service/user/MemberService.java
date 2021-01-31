@@ -1,7 +1,7 @@
 package com.seminar.easyCookWeb.service.user;
 
 import com.seminar.easyCookWeb.converter.MemberConverter;
-import com.seminar.easyCookWeb.exception.ConflictException;
+import com.seminar.easyCookWeb.exception.EntityCreatedConflictException;
 import com.seminar.easyCookWeb.exception.EntityNotFoundException;
 import com.seminar.easyCookWeb.mapper.user.MemberMapper;
 import com.seminar.easyCookWeb.pojo.appUser.Role;
@@ -43,7 +43,7 @@ public class MemberService {
 
             Optional<Member> existingMember = memberRepository.findByAccount(request.getAccount());
             if(existingMember.isPresent()){
-                throw new ConflictException("[Save Member] -> {Error} This account Name has been used!");
+                throw new EntityCreatedConflictException(("[Save Member] -> {Error} This account Name has been used!"));
             }
             Member member = MemberConverter.toMember(request);
             member.setRole(Role.MEMBER);

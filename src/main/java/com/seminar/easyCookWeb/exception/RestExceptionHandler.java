@@ -37,6 +37,20 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
         return buildResponseEntity(new ErrorResponse(BAD_REQUEST, ex.getMessage(), ex), ex);
     }
 
+    /**
+     * 如果create的時候發生錯誤
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler({EntitiesErrorException.class})
+    protected ResponseEntity<Object> handleEntitiesNotFound(EntitiesErrorException ex) {
+        List<EntityErrorResponse> errors = ex.getFieldExceptionList().stream()
+                .map(it -> new EntityErrorResponse(it.getField(), it.getMessage()))
+                .collect(Collectors.toList());
+        return buildResponseEntity(new EntitiesErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), errors, ex), ex);
+    }
+
+
 
     //如果發生500 Status錯誤
     @Override
@@ -84,13 +98,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
      * @param ex the ConflictException
      * @return
      */
-    @ExceptionHandler(ConflictException.class)
-    protected ResponseEntity<Object> handleConflictException(
-            ConflictException ex){
-        ErrorResponse apiError = new ErrorResponse(CONFLICT);
-        apiError.setMessage("ACCOUNT DUPLICATED");
-        return buildResponseEntity(apiError, ex);
+    @ExceptionHandler(EntityCreatedConflictException.class)
+    protected ResponseEntity<Object> handleEntityCreatedConflict(EntityCreatedConflictException ex) {
+        return buildResponseEntity(new ErrorResponse(HttpStatus.CONFLICT, ex.getMessage(), ex), ex);
     }
+
     /**
      * Handle HttpMessageNotWritableException.controller将返回参数json化后，返回给前端的时候，报异常
      *

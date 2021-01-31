@@ -8,8 +8,7 @@ import javax.persistence.ManyToOne;
 
 @Mapper(componentModel = "spring")
 public interface IngredientMapper {
-    //因為我id是自己產生的所以我ignore targe's id
-    @Mapping(target = "id",ignore = true)
+
     Ingredient toPOJO(IngredientModel ingredientModel);
 
     IngredientModel toModel(Ingredient ingredient);

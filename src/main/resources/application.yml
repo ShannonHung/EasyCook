@@ -7,11 +7,13 @@
 #       and provide the credentials below to access it //http://140.118.110.164/
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/easyCook?serverTimezone=UTC
-#    url: jdbc:mysql://140.118.9.145:3306/easycook?serverTimezone=UTC
+#    url: jdbc:mysql://localhost:3306/easyCook?serverTimezone=UTC
+    url: jdbc:mysql://140.118.9.145:3306/easycook?serverTimezone=UTC
     username: shannon
     password: hung0602
     initialization-mode: always
+    data:
+      - classpath:/db/dev/data.sql
   jpa:
     # uncomment the below lines to view sql output in console
     show-sql: true

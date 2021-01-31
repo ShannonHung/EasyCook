@@ -1,7 +1,6 @@
 package com.seminar.easyCookWeb.service.user;
 
-import com.seminar.easyCookWeb.converter.EmployeeConverter;
-import com.seminar.easyCookWeb.exception.ConflictException;
+import com.seminar.easyCookWeb.exception.EntityCreatedConflictException;
 import com.seminar.easyCookWeb.exception.EntityNotFoundException;
 import com.seminar.easyCookWeb.mapper.user.EmployeeMapper;
 import com.seminar.easyCookWeb.pojo.appUser.Role;
@@ -40,7 +39,7 @@ public class EmployeeService {
     public Optional<EmployeeResponse> saveEmployee(EmployeeRequest request){
         Optional<Employee> existingEmployee = employeeRepository.findByAccount(request.getAccount());
         if(existingEmployee.isPresent()){
-            throw new ConflictException("[Save Employee] -> {Error} This account Name has been used!");
+            throw new EntityCreatedConflictException("[Save Employee] -> {Error} This account Name has been used!");
         }else if(request.getAccount()==null || request.getPassword()==null || request.getAccount()=="" || request.getPassword()==""){
             throw new HttpMessageNotReadableException("Account or Password is Empty");
         }else{
