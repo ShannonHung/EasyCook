@@ -8,11 +8,11 @@ import javax.persistence.*;
 import javax.validation.constraints.Null;
 
 @Entity
-@ToString
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString(exclude = {"recipe"})
 public class RecipeStep {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -10,11 +10,11 @@ import javax.validation.constraints.Null;
 import java.util.List;
 
 @Entity
-@ToString
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString(exclude = {"recipe"})
 public class RecipeIngredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,5 +34,4 @@ public class RecipeIngredient {
     @Column(columnDefinition = "decimal(28,4)")
     @Builder.Default
     private Double Quantityrequired = 0D;
-
 }

@@ -20,7 +20,7 @@ import java.util.List;
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="recipe_id")
+        @Column(name="recipe_id")
     private long id;
 
     @Column(columnDefinition = "nvarchar(256)")
@@ -30,8 +30,9 @@ public class Recipe {
 
     //image bytes can have large lengths so we specify a value
     //which is more than the default length for picByte column
-    @Column(length = 1000)
-    private byte[] photo;
+    @Builder.Default
+    @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<RecipeImage> photos = new LinkedList<>();
 
     @Column(columnDefinition = "nvarchar(254)")
     private String link;
