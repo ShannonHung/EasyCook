@@ -1,6 +1,14 @@
 package com.seminar.easyCookWeb.config;
 
-import com.seminar.easyCookWeb.pojo.appUser.Role;
+import com.seminar.easyCookWeb.exception.handler.ExceptionHandlerFilter;
+import com.seminar.easyCookWeb.exception.handler.RestAccessDeniedHandler;
+import com.seminar.easyCookWeb.exception.handler.RestAuthenticationEntryPoint;
+import com.seminar.easyCookWeb.repository.users.EmployeeRepository;
+import com.seminar.easyCookWeb.repository.users.MemberRepository;
+import com.seminar.easyCookWeb.security.JWTService;
+import com.seminar.easyCookWeb.security.JwtAuthenticationFilter;
+import com.seminar.easyCookWeb.security.JwtAuthorizationFilter;
+import com.seminar.easyCookWeb.security.JwtConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -13,7 +21,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -23,37 +30,64 @@ import java.util.Arrays;
 @EnableWebSecurity //該標記已經冠上@Configuration標記
 @EnableGlobalMethodSecurity(prePostEnabled=true) //prePostEnabled = true 会解锁 @PreAuthorize 和 @PostAuthorize 两个注解
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private JWTAuthenticationFilter jwtAuthenticationFilter;
-    private UserDetailService userDetailsService;
 
+//    @Autowired
+//    private JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private JWTService jwtService;
 
     @Autowired
-    public SecurityConfig(JWTAuthenticationFilter jwtAuthenticationFilter, UserDetailService userDetailsService){
+    private JwtConfig jwtConfig;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    private UserDetailService userDetailService;
+    private RestAuthenticationEntryPoint authenticationEntryPoint; //帳號密碼不正確 或是尚未登入
+    private RestAccessDeniedHandler accessDeniedHandler; //沒有權限存取
+
+    @Autowired
+    public SecurityConfig(UserDetailService userDetailService, RestAuthenticationEntryPoint authenticationEntryPoint, RestAccessDeniedHandler accessDeniedHandler) {
         super();
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-        this.userDetailsService = userDetailsService;
+        this.userDetailService = userDetailService;
+        this.authenticationEntryPoint = authenticationEntryPoint;
+        this.accessDeniedHandler = accessDeniedHandler;
     }
+
 
     @Override //於此設置API的授權規則，若未設計API會恢復到能存取的狀態
     protected void configure(HttpSecurity http) throws Exception {
 //         "/member" 這個API底下的所有GET請求需要透過身分驗證才可以存取
         http.authorizeRequests() // 使用「authorizeRequests」方法開始自訂授權規則
-                .antMatchers("/h2/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/auth/**", "/member/register", "/employee/register").permitAll() //供前端取得token
-                .anyRequest().authenticated()
                 .and() //加入jwtFilter自己做的, UsernamePasswordAuthenticationFilter是用來處理表單form形式的登入請求
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .accessDeniedHandler(accessDeniedHandler)
+                .and()
+                .addFilterBefore(new ExceptionHandlerFilter(), JwtAuthorizationFilter.class)
+                .addFilter(new JwtAuthenticationFilter(jwtConfig, authenticationManager(), jwtService))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtService, memberRepository, employeeRepository))
+                .authorizeRequests()
+                .antMatchers(jwtConfig.getUrl()).anonymous()
+                .antMatchers("/h2/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/login","/member/register", "/employee/register", "/ingredient/**").permitAll() //供前端取得token
+                .antMatchers(HttpMethod.GET, "/ingredient/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
                 .cors().and()
                 .csrf().disable()
                 .logout().disable()
                 .formLogin().disable()
-                .formLogin().and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         //因為Spring Security預設會禁止iframe的東西，所以我們把它disable，查詢h2-console才能看到frame的畫面
         http.headers().frameOptions().disable();
     }
+
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -73,15 +107,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
+        auth.userDetailsService(userDetailService)
                 .passwordEncoder(new BCryptPasswordEncoder());
     }
+
 
     //會在JWTService.class被Autowire
     @Override
     @Bean //藉由Bean標記，才可以在spring boot初始化就建立才能Autowired
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+
     }
 
     @Bean

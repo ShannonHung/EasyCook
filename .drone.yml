@@ -1,0 +1,41 @@
+---
+kind: pipeline
+type: docker
+name: Staging
+
+steps:
+#  - name: Test application with maven
+#    image: maven:3.6.3-adoptopenjdk-11
+#    commands:
+#      - mvn test -B
+
+  - name: Build image
+    image: docker:20.10.0-dind
+    volumes:
+      - name: docker_socket
+        path: /var/run/docker.sock
+    commands:
+      - cd /drone/src/
+      - docker build -t easycook-app:latest .
+
+  - name: Create service
+    image: docker/compose
+    volumes:
+      - name: docker_socket
+        path: /var/run/docker.sock
+    commands:
+      - docker-compose -f /drone/src/docker-compose.yml -p backend-easycook down
+      - docker-compose -f /drone/src/docker-compose.yml -p backend-easycook up -d
+      # we need to force to remove the images which tag is none
+      - docker rmi --force $(docker images -f "dangling=true" -q)
+
+volumes:
+  - name: docker_socket
+    host:
+      path: /var/run/docker.sock
+
+trigger:
+  branch:
+    - master
+  event:
+    - push

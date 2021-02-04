@@ -1,9 +1,9 @@
 package com.seminar.easyCookWeb.service.user;
 
 import com.seminar.easyCookWeb.converter.MemberConverter;
-import com.seminar.easyCookWeb.exception.ConflictException;
+import com.seminar.easyCookWeb.exception.EntityCreatedConflictException;
 import com.seminar.easyCookWeb.exception.EntityNotFoundException;
-import com.seminar.easyCookWeb.mapper.MemberMapper;
+import com.seminar.easyCookWeb.mapper.user.MemberMapper;
 import com.seminar.easyCookWeb.pojo.appUser.Role;
 import com.seminar.easyCookWeb.repository.users.MemberRepository;
 import com.seminar.easyCookWeb.pojo.appUser.Member;
@@ -11,6 +11,7 @@ import com.seminar.easyCookWeb.model.user.MemberRequest;
 import com.seminar.easyCookWeb.model.user.MemberResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,15 +36,21 @@ public class MemberService {
 
 
     public Optional<MemberResponse> saveMember(MemberRequest request){
-        Optional<Member> existingMember = memberRepository.findByAccount(request.getAccount());
-        if(existingMember.isPresent()){
-            throw new ConflictException("[Save Member] -> {Error} This account Name has been used!");
+        log.info("[recieve member register request] => " + request);
+        if (request.getAccount()==null || request.getPassword()==null || request.getAccount()=="" || request.getPassword()==""){
+            throw new HttpMessageNotReadableException("Account or Password is Empty");
+        }else{
+
+            Optional<Member> existingMember = memberRepository.findByAccount(request.getAccount());
+            if(existingMember.isPresent()){
+                throw new EntityCreatedConflictException(("[Save Member] -> {Error} This account Name has been used!"));
+            }
+            Member member = MemberConverter.toMember(request);
+            member.setRole(Role.MEMBER);
+            member.setPassword(passwordEncoder.encode(request.getPassword()));
+            member = memberRepository.save(member);
+            return Optional.ofNullable(mapper.toModel(member));
         }
-        Member member = MemberConverter.toMember(request);
-        member.setRole(Role.MEMBER);
-        member.setPassword(passwordEncoder.encode(request.getPassword()));
-        member = memberRepository.save(member);
-        return Optional.ofNullable(mapper.toModel(member));
     }
     public Optional<MemberResponse> getMemberResponseById(Long id){
         Member member = memberRepository.findById(id).orElseThrow(() ->new EntityNotFoundException(Member.class, "id", id.toString()));

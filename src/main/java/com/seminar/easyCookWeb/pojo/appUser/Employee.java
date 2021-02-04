@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Nationalized;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import java.util.Collection;
 
 @Entity
@@ -24,28 +24,29 @@ import java.util.Collection;
 public class Employee extends User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Null
     @Column(name="employee_id")
     private long id;
 
-    @NotEmpty
     @Column(length = 45, unique = true)
+    @NotBlank
     private String account;
 
-    @NotEmpty
+    @NotNull
     @Column(length = 1024)
     @JsonIgnore
+    @NotBlank
     private String password;
 
     @Column(length = 65)
     @Nationalized
+    @NotBlank
     private String username;
 
-    @Column(name = "department", nullable = false)
+    @Column(name = "department", nullable = false, columnDefinition = "nvarchar(30)")
     @Enumerated(EnumType.STRING)
     private Department department;
 
-    @Column(columnDefinition = "nvarchar(30)")
+    @Column(columnDefinition = "nvarchar(30)", nullable = false)
     private String title;
 
     @Column(columnDefinition = "nvarchar(15)")
@@ -56,9 +57,8 @@ public class Employee extends User implements UserDetails {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(length = 8)
+    @Column(length = 20)
     private Role role;
-
 
     @Transient
     @JsonIgnore

@@ -4,6 +4,7 @@ import com.seminar.easyCookWeb.repository.users.EmployeeRepository;
 import com.seminar.easyCookWeb.repository.users.MemberRepository;
 import com.seminar.easyCookWeb.pojo.appUser.Role;
 import com.seminar.easyCookWeb.pojo.appUser.User;
+import com.seminar.easyCookWeb.security.JWTService;
 import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Component
+//request進行filter
 @Slf4j
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
     @Autowired

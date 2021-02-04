@@ -1,9 +1,8 @@
 package com.seminar.easyCookWeb.service.user;
 
-import com.seminar.easyCookWeb.converter.EmployeeConverter;
-import com.seminar.easyCookWeb.exception.ConflictException;
+import com.seminar.easyCookWeb.exception.EntityCreatedConflictException;
 import com.seminar.easyCookWeb.exception.EntityNotFoundException;
-import com.seminar.easyCookWeb.mapper.EmployeeMapper;
+import com.seminar.easyCookWeb.mapper.user.EmployeeMapper;
 import com.seminar.easyCookWeb.pojo.appUser.Role;
 import com.seminar.easyCookWeb.repository.users.EmployeeRepository;
 import com.seminar.easyCookWeb.model.user.EmployeeRequest;
@@ -11,6 +10,7 @@ import com.seminar.easyCookWeb.model.user.EmployeeResponse;
 import com.seminar.easyCookWeb.pojo.appUser.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,20 +39,23 @@ public class EmployeeService {
     public Optional<EmployeeResponse> saveEmployee(EmployeeRequest request){
         Optional<Employee> existingEmployee = employeeRepository.findByAccount(request.getAccount());
         if(existingEmployee.isPresent()){
-            throw new ConflictException("[Save Employee] -> {Error} This account Name has been used!");
+            throw new EntityCreatedConflictException("[Save Employee] -> {Error} This account Name has been used!");
+        }else if(request.getAccount()==null || request.getPassword()==null || request.getAccount()=="" || request.getPassword()==""){
+            throw new HttpMessageNotReadableException("Account or Password is Empty");
+        }else{
+            request.setPassword(passwordEncoder.encode(request.getPassword()));
+            Employee employee = mapper.toPOJO(request);
+            employee.setRole(Role.EMPLOYEE);
+            employee = employeeRepository.save(employee);
+            System.out.println("<Test Mapping> -> "+Optional.ofNullable(mapper.toModel(employee).toString()));
+            return Optional.ofNullable(mapper.toModel(employee));
         }
-        Employee employee = EmployeeConverter.toEmployee(request);
-        employee.setRole(Role.EMPLOYEE);
-        employee.setPassword(passwordEncoder.encode(request.getPassword()));
-        employee = employeeRepository.save(employee);
-        System.out.println("<Test Mapping> -> "+Optional.ofNullable(mapper.toModel(employee).toString()));
-        return Optional.ofNullable(mapper.toModel(employee));
     }
     public Optional<EmployeeResponse> getEmployeeResponseById(Long id){
         Employee employee = employeeRepository.findById(id).orElseThrow(() ->new EntityNotFoundException(Employee.class, "id", id.toString()));
         return Optional.ofNullable(mapper.toModel(employee));
     }
-    public Optional<EmployeeResponse> getEmployeeResponseByName(String account){
+    public Optional<EmployeeResponse> getEmployeeResponseByAccount(String account){
         Employee employee = employeeRepository.findByAccount(account).orElseThrow(() ->new EntityNotFoundException(Employee.class, "account", account));
         return Optional.ofNullable(mapper.toModel(employee));
     }

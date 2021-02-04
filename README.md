@@ -48,7 +48,7 @@ mvn install
 
 ### 操作流程說明
 1. 先去`employee/register`註冊員工帳號 (詳細post規則可以查看swagger), 也可以去`member/register`註冊會員帳號
-2. 去`/auth/login`取得token
+2. 去`/login`取得token
 3. 去`/auth/parse` Post json 去解析 token 樣式如下，查看目前登入的這個帳號的資料以及權限
 ```
 //request
@@ -77,3 +77,198 @@ mvn install
 
 
 
+
+# `/login` api 取得Token流程
+## 若成功會回傳200 OK 並且回傳token(如下)
+```json
+{
+    "token": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJVc2VySW5mbyI6Im1lbWJlcjAwMiIsImV4cCI6MTYxMTQ2MjMxMiwiaXNzIjoiU2hhbm5vbkh1bmcgRnJvbSBFYXN5Q29vayJ9.BmG28RK9-2_dJd3LJlhswjNiykGM3wyFICIosVkB9ik"
+}
+```
+## 登入失敗的狀況有以下幾種
+- 格式錯誤,必須符合以下格式
+- 帳號或密碼錯誤
+
+> 回應格式
+```json
+{
+  "account": "username",
+  "password": "password"
+}
+```
+> Unauthorized 401錯誤回應
+```json
+{
+    "status": "UNAUTHORIZED",
+    "timestamp": {
+        "nano": 132550600,
+        "year": 2021,
+        "monthValue": 1,
+        "dayOfMonth": 24,
+        "hour": 12,
+        "minute": 27,
+        "second": 0,
+        "dayOfWeek": "SUNDAY",
+        "dayOfYear": 24,
+        "month": "JANUARY",
+        "chronology": {
+            "id": "ISO",
+            "calendarType": "iso8601"
+        }
+    },
+    "message": "LOGIN FAILURE", //可能帳號或密碼錯或request格式不正確
+    "debugMessage": "Full authentication is required to access this resource"
+}
+```
+
+# http status 錯誤
+## 401 登入失敗
+1. `/login` 失敗 可能因為帳號密碼有誤或是格式不正確
+> 401 Unauthorized
+```json
+{
+    "status": "UNAUTHORIZED",
+    "timestamp": {
+        "nano": 132550600,
+        "year": 2021,
+        "monthValue": 1,
+        "dayOfMonth": 24,
+        "hour": 12,
+        "minute": 27,
+        "second": 0,
+        "dayOfWeek": "SUNDAY",
+        "dayOfYear": 24,
+        "month": "JANUARY",
+        "chronology": {
+            "id": "ISO",
+            "calendarType": "iso8601"
+        }
+    },
+    "message": "LOGIN FAILURE", //可能帳號或密碼錯或request格式不正確
+    "debugMessage": "Full authentication is required to access this resource"
+}
+```
+
+
+
+## 403 權限問題
+1. `/api/member/allMembers` 只能employee才可以存取，但若權限不足的使用者進行REQUEST會回傳403錯誤如下
+```JSON
+{
+    "status": "FORBIDDEN",
+    "timestamp": "24-01-2021 12:34:24",
+    "message": "NEED AUTHORIZATION",
+    "debugMessage": "Access is denied"
+}
+```
+
+## 400 Bad Request
+### JWT Token Expired
+如果TOKEN超過期限則會拒絕REQUEST並且回應DEBUG MESSAGE `JWT  expired...`內容
+```json
+{
+    "status": "BAD_REQUEST",
+    "timestamp": {
+        "nano": 237947000,
+        "year": 2021,
+        "monthValue": 1,
+        "dayOfMonth": 24,
+        "hour": 12,
+        "minute": 31,
+        "second": 12,
+        "dayOfWeek": "SUNDAY",
+        "dayOfYear": 24,
+        "month": "JANUARY",
+        "chronology": {
+            "id": "ISO",
+            "calendarType": "iso8601"
+        }
+    },
+    "message": "Unexpected error",
+    "debugMessage": "JWT expired at 2021-01-24T04:13:27Z. Current time: 2021-01-24T04:31:12Z, a difference of 1065236 milliseconds.  Allowed clock skew: 0 milliseconds."
+}
+```
+### Header沒有放Authorization: Bearer Token
+會回傳以下錯誤
+```json
+{
+    "status": "BAD_REQUEST",
+    "timestamp": {
+        "nano": 357116800,
+        "year": 2021,
+        "monthValue": 1,
+        "dayOfMonth": 24,
+        "hour": 12,
+        "minute": 38,
+        "second": 4,
+        "dayOfWeek": "SUNDAY",
+        "dayOfYear": 24,
+        "month": "JANUARY",
+        "chronology": {
+            "id": "ISO",
+            "calendarType": "iso8601"
+        }
+    },
+    "message": "Unexpected error",
+    "debugMessage": "JWT String argument cannot be null or empty."
+}
+```
+### JSON 格式有誤
+如果有以下問題就會回傳`"message": "Malformed JSON request."`
+- 沒有json內容就進行post
+- json的格式有問題像是少一個冒號
+> 沒有傳json就進行post傳json就進行post
+```json
+{
+    "status": "BAD_REQUEST",
+    "timestamp": "24-01-2021 12:52:46",
+    "message": "Malformed JSON request.",
+    "debugMessage": "Required request body is missing: public org.springframework.http.ResponseEntity<com.seminar.easyCookWeb.model.user.MemberResponse> com.seminar.easyCookWeb.controller.user.MemberController.createMember(com.seminar.easyCookWeb.model.user.MemberRequest)"
+}
+```
+
+> request json裡面的key: account, password格式有問題
+```json
+//account不小心打成account1
+{
+  "account1": 123,
+  "password1": 123,
+  "phone1": 123,
+  "usernam1e": 123
+}
+//錯誤回應
+{
+    "status": "BAD_REQUEST",
+    "timestamp": "24-01-2021 01:01:36",
+    "message": "Malformed JSON request.",
+    "debugMessage": "Account or Password is Empty"
+}
+```
+
+
+## 409 Confict
+- 如果資料庫已經有該使用者會回傳以下錯誤
+```json
+{
+    "status": "CONFLICT",
+    "timestamp": "24-01-2021 12:51:23",
+    "message": "ACCOUNT DUPLICATED",
+    "debugMessage": null
+}
+```
+
+## 404 NotFound
+- 沒有此api路徑
+```json
+{
+    "timestamp": "2021-01-24T05:37:48.191+00:00",
+    "status": 404,
+    "error": "Not Found",
+    "message": "",
+    "path": "/api/auth/login"
+}
+```
+
+# 建立cicd
+.drone.yml
+Dockerfile
