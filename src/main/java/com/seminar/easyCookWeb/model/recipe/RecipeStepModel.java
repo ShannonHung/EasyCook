@@ -21,6 +21,4 @@ public class RecipeStepModel {
 
     private String note;
 
-    private Recipe recipe;
-
 }

@@ -6,8 +6,6 @@ import org.hibernate.annotations.Nationalized;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Null;
 import java.util.LinkedList;
 import java.util.List;
 

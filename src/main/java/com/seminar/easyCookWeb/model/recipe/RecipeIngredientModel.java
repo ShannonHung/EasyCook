@@ -19,10 +19,7 @@ import javax.validation.constraints.Null;
 public class RecipeIngredientModel {
     private long id;
 
-    private Recipe recipe;
-
     private Ingredient ingredient;
 
     private Double Quantityrequired = 0D;
-
 }

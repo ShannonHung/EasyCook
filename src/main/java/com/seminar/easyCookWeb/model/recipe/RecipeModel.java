@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotNull;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,9 +16,8 @@ import java.util.List;
 public class RecipeModel {
     private long id;
 
+    @NotNull
     private String name;
-
-    private byte[] photo;
 
     private String link;
 

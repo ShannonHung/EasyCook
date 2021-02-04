@@ -1,28 +1,26 @@
-package com.seminar.easyCookWeb.RecipeTest;
+package com.seminar.easyCookWeb.config;
 
-import com.seminar.easyCookWeb.EasyCookWebApplication;
 import com.seminar.easyCookWeb.pojo.recipe.Recipe;
 import com.seminar.easyCookWeb.pojo.recipe.RecipeStep;
 import com.seminar.easyCookWeb.repository.recipe.RecipeRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
-@Transactional
-@Slf4j
-@SpringBootTest(classes = EasyCookWebApplication.class)
-public class RecipeTest {
+@Component
+public class DefaultDataConfig implements ApplicationRunner {
+
     @Autowired
     RecipeRepository recipeRepository;
 
-    @Test
-    public void testRecipe(){
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+
         Recipe recipe = Recipe.builder()
                 .name("三明治")
                 .link("..//")
@@ -39,6 +37,5 @@ public class RecipeTest {
         recipe.setRecipeSteps(steps);
 
         Recipe dbre = recipeRepository.save(recipe);
-        Assertions.assertEquals(dbre.getId(), 1);
     }
 }
