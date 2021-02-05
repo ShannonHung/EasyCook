@@ -42,9 +42,19 @@ public class RecipeService {
                         ).build());
     }
 
+    /**
+     * 透過食譜Id尋找食譜
+     * @param id - 食譜id
+     * @return 找到的食譜DTO物件
+     */
     public Optional<RecipeModel> findById(Long id){
         return recipeRepository.findById(id)
                 .map(mapper::toModel);
+    }
+
+    public Optional<Iterable<RecipeModel>> findByName(String name){
+        return recipeRepository.findByName(name)
+                .map(mapper::toIterableModel);
     }
 
     public Optional<Iterable<RecipeModel>> findAll(){
