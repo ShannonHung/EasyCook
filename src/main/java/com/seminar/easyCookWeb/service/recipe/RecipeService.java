@@ -1,6 +1,8 @@
 package com.seminar.easyCookWeb.service.recipe;
 
+import com.seminar.easyCookWeb.exception.BusinessException;
 import com.seminar.easyCookWeb.mapper.recipe.RecipeMapper;
+import com.seminar.easyCookWeb.model.ingredient.IngredientModel;
 import com.seminar.easyCookWeb.model.recipe.RecipeModel;
 import com.seminar.easyCookWeb.pojo.recipe.Recipe;
 import com.seminar.easyCookWeb.repository.recipe.RecipeRepository;
@@ -22,6 +24,8 @@ public class RecipeService {
     @Autowired
     private RecipeStepService recipeStepService;
     @Autowired
+    private RecipeIngredientService recipeIngredientService;
+    @Autowired
     private RecipeMapper mapper;
 
     /**
@@ -31,6 +35,7 @@ public class RecipeService {
      */
     public Optional<RecipeModel> createRecipe(RecipeModel recipeModel){
         return Optional.of(mapper.toPOJO(recipeModel))
+                .filter(pojo-> recipeRepository.findByName(pojo.getName()).isEmpty())
                 .map(recipeRepository::save)
                 .map(mapper::toModel)
                 .map(it -> it.toBuilder()
@@ -39,7 +44,14 @@ public class RecipeService {
                                 .map(recipeStepModel -> recipeStepService.createStep(it.getId(), recipeStepModel))
                                 .map(Optional::get)
                                 .collect(Collectors.toList())
-                        ).build());
+                        )
+                        .recipeIngredients(
+                                recipeModel.getRecipeIngredients().stream()
+                                .map(recipeIngredientModel -> recipeIngredientService.createIngredient(it.getId(),recipeIngredientModel))
+                                .map(Optional::get)
+                                .collect(Collectors.toList())
+                        )
+                        .build());
     }
 
     /**
@@ -60,5 +72,18 @@ public class RecipeService {
     public Optional<Iterable<RecipeModel>> findAll(){
         return Optional.of(recipeRepository.findAll())
                 .map(mapper::toIterableModel);
+    }
+
+    public Optional<RecipeModel> delete(Long id){
+        return recipeRepository.findById(id)
+                .map(it ->{
+                    try {
+                        recipeRepository.deleteById(it.getId());
+                        return it;
+                    }catch (Exception ex){
+                        throw new BusinessException("Cannot Deleted " +it.getId()+ " recipe");
+                    }
+                })
+                .map(mapper::toModel);
     }
 }

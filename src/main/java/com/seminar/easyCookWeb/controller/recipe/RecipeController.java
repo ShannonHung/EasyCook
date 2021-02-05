@@ -1,7 +1,9 @@
 package com.seminar.easyCookWeb.controller.recipe;
 
+import com.seminar.easyCookWeb.exception.BusinessException;
 import com.seminar.easyCookWeb.exception.EntitiesErrorException;
 import com.seminar.easyCookWeb.exception.EntityNotFoundException;
+import com.seminar.easyCookWeb.model.ingredient.IngredientModel;
 import com.seminar.easyCookWeb.model.recipe.RecipeModel;
 import com.seminar.easyCookWeb.service.recipe.RecipeService;
 import io.swagger.annotations.Api;
@@ -28,7 +30,7 @@ public class RecipeController {
         log.info("[recipe create] => " + recipeModel);
         return recipeService.createRecipe(recipeModel)
                 .map(ResponseEntity::ok)
-                .orElseThrow(()-> new EntitiesErrorException("Cannot create Recipe!"));
+                .orElseThrow(()-> new EntitiesErrorException("Cannot create Recipe! Maybe have Duplicated Recipe Name"));
     }
 
     @GetMapping("/{recipeId}")
@@ -54,4 +56,13 @@ public class RecipeController {
                 .map(ResponseEntity::ok)
                 .orElseThrow(()-> new EntityNotFoundException("Cann not find any recipes"));
     }
+
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    @DeleteMapping(path = "/delete/{recipeId}")
+    public ResponseEntity<RecipeModel> deleteById(@PathVariable Long recipeId) {
+        return recipeService.delete(recipeId)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new BusinessException("Delete Ingredient fail"));
+    }
+
 }

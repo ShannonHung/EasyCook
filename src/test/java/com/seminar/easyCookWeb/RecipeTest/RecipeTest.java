@@ -1,8 +1,11 @@
 package com.seminar.easyCookWeb.RecipeTest;
 
 import com.seminar.easyCookWeb.EasyCookWebApplication;
+import com.seminar.easyCookWeb.pojo.ingredient.Ingredient;
 import com.seminar.easyCookWeb.pojo.recipe.Recipe;
+import com.seminar.easyCookWeb.pojo.recipe.RecipeIngredient;
 import com.seminar.easyCookWeb.pojo.recipe.RecipeStep;
+import com.seminar.easyCookWeb.repository.ingredient.IngredientRepository;
 import com.seminar.easyCookWeb.repository.recipe.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
@@ -20,6 +23,8 @@ import java.util.List;
 public class RecipeTest {
     @Autowired
     RecipeRepository recipeRepository;
+    @Autowired
+    IngredientRepository ingredientRepository;
 
     @Test
     public void testRecipe(){
@@ -33,12 +38,14 @@ public class RecipeTest {
                 .note("切水果")
                 .startTime("0:51").build();
 
+        RecipeIngredient ingredient = RecipeIngredient.builder()
+                .ingredient(Ingredient.builder().name("ingredient").build())
+                .Quantityrequired(10D)
+                .build();
+
         List<RecipeStep> steps = new LinkedList<>();
+        List<RecipeIngredient> ingredients = new LinkedList<>();
+        ingredients.add(ingredient);
         steps.add(step1);
-
-        recipe.setRecipeSteps(steps);
-
-        Recipe dbre = recipeRepository.save(recipe);
-        Assertions.assertEquals(dbre.getId(), 1);
     }
 }

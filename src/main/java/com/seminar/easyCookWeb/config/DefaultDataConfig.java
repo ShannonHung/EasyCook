@@ -1,7 +1,10 @@
 package com.seminar.easyCookWeb.config;
 
+import com.seminar.easyCookWeb.pojo.ingredient.Ingredient;
 import com.seminar.easyCookWeb.pojo.recipe.Recipe;
+import com.seminar.easyCookWeb.pojo.recipe.RecipeIngredient;
 import com.seminar.easyCookWeb.pojo.recipe.RecipeStep;
+import com.seminar.easyCookWeb.repository.ingredient.IngredientRepository;
 import com.seminar.easyCookWeb.repository.recipe.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -17,6 +20,8 @@ public class DefaultDataConfig implements ApplicationRunner {
 
     @Autowired
     RecipeRepository recipeRepository;
+    @Autowired
+    IngredientRepository ingredientRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -31,10 +36,19 @@ public class DefaultDataConfig implements ApplicationRunner {
                 .note("切水果")
                 .startTime("0:51").build();
 
+        RecipeIngredient ingredient = RecipeIngredient.builder()
+                .ingredient(Ingredient.builder().name("ingredient").build())
+                .Quantityrequired(10D)
+                .recipe(recipe)
+                .build();
+
         List<RecipeStep> steps = new LinkedList<>();
+        List<RecipeIngredient> ingredients = new LinkedList<>();
+        ingredients.add(ingredient);
         steps.add(step1);
 
         recipe.setRecipeSteps(steps);
+        recipe.setRecipeIngredients(ingredients);
 
         Recipe dbre = recipeRepository.save(recipe);
     }

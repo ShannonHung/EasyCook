@@ -1,7 +1,9 @@
 package com.seminar.easyCookWeb.service.recipe;
 
+import com.seminar.easyCookWeb.exception.BusinessException;
 import com.seminar.easyCookWeb.mapper.recipe.RecipeImageMapper;
 import com.seminar.easyCookWeb.mapper.recipe.RecipeMapper;
+import com.seminar.easyCookWeb.model.ingredient.IngredientModel;
 import com.seminar.easyCookWeb.model.recipe.RecipeImageModel;
 import com.seminar.easyCookWeb.pojo.recipe.RecipeImage;
 import com.seminar.easyCookWeb.repository.recipe.RecipeImageRepository;
@@ -52,12 +54,25 @@ public class RecipeImageService {
         return imageRepository.findById(id);
     }
 
+    public Optional<RecipeImageModel> delete(Long id){
+        return imageRepository.findById(id)
+                .map(it ->{
+                    try {
+                        imageRepository.deleteById(it.getId());
+                        return it;
+                    }catch (Exception ex){
+                        throw new BusinessException("Cannot Deleted ImagesId => " +it.getId());
+                    }
+                })
+                .map(imageMapper::toModel);
+    }
+
     public List<RecipeImageModel> getFileByRecipeId(Long recipeId){
         return StreamSupport.stream(imageRepository.findByRecipeId(recipeId).spliterator(), false)
                 .map(file -> {
                     String fileDownloadUri = ServletUriComponentsBuilder
                             .fromCurrentContextPath()
-                            .path("/images/")
+                            .path("/recipe/images/")
                             .path(file.getId().toString())
                             .toUriString();
 
