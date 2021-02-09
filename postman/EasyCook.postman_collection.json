@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "7316b8a3-db1b-4c0d-a373-53af48e406ae",
-		"name": "EasyCook",
+		"_postman_id": "beb0087f-da1a-483e-b246-cf7924619122",
+		"name": "EasyCook Copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -307,6 +307,39 @@
 					"response": []
 				},
 				{
+					"name": "Find Food By Name",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ingredientName\":\"酒\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{addr}}/ingredient/name",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"ingredient",
+								"name"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "All Ingredient",
 					"request": {
 						"method": "GET",
@@ -332,39 +365,6 @@
 					"response": []
 				},
 				{
-					"name": "Find Food By Name",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"ingredientName\":\"台灣\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{addr}}/ingredient/name",
-							"host": [
-								"{{addr}}"
-							],
-							"path": [
-								"ingredient",
-								"name"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Delete Ingredient",
 					"request": {
 						"method": "DELETE",
@@ -376,14 +376,14 @@
 							}
 						],
 						"url": {
-							"raw": "{{addr}}/ingredient/delete/5",
+							"raw": "{{addr}}/ingredient/delete/18",
 							"host": [
 								"{{addr}}"
 							],
 							"path": [
 								"ingredient",
 								"delete",
-								"5"
+								"18"
 							]
 						}
 					},
@@ -395,7 +395,215 @@
 			"name": "Recipe",
 			"item": [
 				{
-					"name": "Upload Recipe File",
+					"name": "Create Recipe",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"name\": \"水果沙拉6\",\r\n        \"link\": \"..//\",\r\n        \"likesCount\": 10,\r\n        \"recipeSteps\": [\r\n            {\r\n                \"startTime\": \"0:51\",\r\n                \"note\": \"切水果\"\r\n            },\r\n            {\r\n                \"startTime\": \"0:52\",\r\n                \"note\": \"切生菜\"\r\n            },\r\n            {\r\n                \"startTime\": \"0:52\",\r\n                \"note\": \"加入沙拉\"\r\n            }\r\n        ],\r\n        \"recipeIngredients\": [\r\n            {\r\n                \"ingredient\": {\r\n                    \"id\": 5\r\n                },\r\n                \"quantityrequired\": 10.0\r\n            },\r\n            {\r\n                \"ingredient\": {\r\n                    \"id\": 2\r\n                },\r\n                \"quantityrequired\": 10.0\r\n            }\r\n        ]\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{addr}}/recipe/create",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"recipe",
+								"create"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create Recipe",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"漬風三明治\",\r\n    \"link\": \"https://youtu.be/QDXk0SYyagg\",\r\n    \"likesCount\": 10,\r\n    \"recipeSteps\": [\r\n        { \r\n            \"startTime\": \"0:47\",\r\n            \"note\":\"去掉骨頭&脂肪\"\r\n        },{\r\n            \"startTime\": \"0:53\",\r\n            \"note\":\"撒鹽巴&黑胡椒\"\r\n        }\r\n    ],\r\n    \"recipeIngredients\":[\r\n        {\r\n            \"id\":3\r\n        },\r\n        {\r\n            \"id\":2\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{addr}}/recipe/create",
+									"host": [
+										"{{addr}}"
+									],
+									"path": [
+										"recipe",
+										"create"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json;charset=UTF-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 Feb 2021 12:49:56 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"BAD_REQUEST\",\n    \"timestamp\": \"05-02-2021 08:49:56\",\n    \"message\": \"Cannot create Recipe! Maybe have Duplicated Recipe Name\",\n    \"debugMessage\": \"Cannot create Recipe! Maybe have Duplicated Recipe Name\",\n    \"entityErrorResponses\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Find Recipe By Recipe Name",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"水果\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{addr}}/recipe/name",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"recipe",
+								"name"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Recipe",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{addr}}/recipe/all",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"recipe",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Recipe By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{addr}}/recipe/delete/2",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"recipe",
+								"delete",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "RecipeImage",
+			"item": [
+				{
+					"name": "Upload Recipe Images",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -431,7 +639,7 @@
 					"response": []
 				},
 				{
-					"name": "Get All Recipe Files",
+					"name": "Get All Recipe Images",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -468,104 +676,14 @@
 							}
 						],
 						"url": {
-							"raw": "{{addr}}/recipe/files/1",
+							"raw": "{{addr}}/recipe/images/1",
 							"host": [
 								"{{addr}}"
 							],
 							"path": [
 								"recipe",
-								"files",
+								"images",
 								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Recipe",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"雞腿南蠻漬風三明治\",\r\n    \"link\": \"https://youtu.be/QDXk0SYyagg\",\r\n    \"likesCount\": 10,\r\n    \"recipeSteps\": [\r\n        { \r\n            \"index\": 0,\r\n            \"startTime\": \"0:47\",\r\n            \"note\":\"去掉骨頭&脂肪\"\r\n        },{\r\n            \"startTime\": \"0:53\",\r\n            \"note\":\"撒鹽巴&黑胡椒\"\r\n        },{\r\n            \"index\": 1,\r\n            \"startTime\": \"1:00\",\r\n            \"note\":\"均等沾太白粉，表面拍打一下，去掉多餘的粉\"\r\n        },{\r\n            \"index\": 2,\r\n            \"startTime\": \"1:20\",\r\n            \"note\":\"加入油輕輕放入雞肉\"\r\n        },{\r\n            \"index\": 3,\r\n            \"startTime\": \"1:30\",\r\n            \"note\":\"翻面後轉小火\"\r\n        },{\r\n            \"index\": 4,\r\n            \"startTime\": \"1:39\",\r\n            \"note\":\"清酒-1大匙\"\r\n        }\r\n    ]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{addr}}/recipe/create",
-							"host": [
-								"{{addr}}"
-							],
-							"path": [
-								"recipe",
-								"create"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get All Recipe",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{token}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{addr}}/recipe/all",
-							"host": [
-								"{{addr}}"
-							],
-							"path": [
-								"recipe",
-								"all"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Find Recipe By Recipe Name",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"台灣\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{addr}}/recipe/name",
-							"host": [
-								"{{addr}}"
-							],
-							"path": [
-								"recipe",
-								"name"
 							]
 						}
 					},
@@ -590,31 +708,6 @@
 							"path": [
 								"recipe",
 								"images",
-								"delete",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Recipe By Id",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{token}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{addr}}/recipe/delete/1",
-							"host": [
-								"{{addr}}"
-							],
-							"path": [
-								"recipe",
 								"delete",
 								"1"
 							]
