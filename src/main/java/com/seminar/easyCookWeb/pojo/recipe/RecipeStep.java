@@ -8,11 +8,11 @@ import javax.persistence.*;
 import javax.validation.constraints.Null;
 
 @Entity
-@ToString
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(toBuilder = true)
+@ToString(exclude = {"recipe"})
 public class RecipeStep {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,6 @@ public class RecipeStep {
 
     @Column(columnDefinition = "nvarchar(2000)")
     private String note;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id")

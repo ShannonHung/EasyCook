@@ -68,12 +68,13 @@ public class IngredientController {
                     content = @Content(schema = @Schema(implementation = IngredientModel.class))),
             @ApiResponse(responseCode = "400", description = "Cannot find the account")
     })
+
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     @DeleteMapping(path = "/delete/{ingredientId}")
     public ResponseEntity<IngredientModel> deleteById(@PathVariable Long ingredientId) {
         return service.delete(ingredientId)
                 .map(ResponseEntity::ok)
-                .orElseThrow(() -> new BusinessException("Delete account fail"));
+                .orElseThrow(() -> new BusinessException("Delete Ingredient fail"));
     }
 
 }

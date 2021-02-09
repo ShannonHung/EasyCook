@@ -14,6 +14,7 @@ spring:
     initialization-mode: always
     data:
       - classpath:/db/dev/data.sql
+      - classpath:/db/dev/ingredient.sql
   jpa:
     # uncomment the below lines to view sql output in console
     show-sql: true

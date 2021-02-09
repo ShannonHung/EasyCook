@@ -1,5 +1,6 @@
 package com.seminar.easyCookWeb.service.ingredient;
 
+import com.seminar.easyCookWeb.exception.BusinessException;
 import com.seminar.easyCookWeb.exception.EntityCreatedConflictException;
 import com.seminar.easyCookWeb.mapper.ingredient.IngredientMapper;
 import com.seminar.easyCookWeb.model.ingredient.IngredientModel;
@@ -69,8 +70,12 @@ public class IngredientService {
         System.out.println("[delete ingredient] find ingredient=> "  + repository.findById(id));
         return repository.findById(id)
                 .map(it ->{
-                    repository.deleteById(it.getId());
-                    return it;
+                    try {
+                        repository.deleteById(it.getId());
+                        return it;
+                    }catch (Exception ex){
+                        throw new BusinessException("Cannot Deleted " +it.getId()+ " ingredient, maybe this ingredient was used by recipe");
+                    }
                 })
                 .map(mapper::toModel);
     }

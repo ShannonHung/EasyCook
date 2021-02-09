@@ -1,10 +1,12 @@
 package com.seminar.easyCookWeb.mapper.recipe;
 
 import com.seminar.easyCookWeb.mapper.user.EmployeeMapper;
+import com.seminar.easyCookWeb.model.recipe.RecipeModel;
 import com.seminar.easyCookWeb.model.recipe.RecipeStepModel;
 import com.seminar.easyCookWeb.model.user.EmployeeRequest;
 import com.seminar.easyCookWeb.model.user.EmployeeResponse;
 import com.seminar.easyCookWeb.pojo.appUser.Employee;
+import com.seminar.easyCookWeb.pojo.recipe.Recipe;
 import com.seminar.easyCookWeb.pojo.recipe.RecipeStep;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
