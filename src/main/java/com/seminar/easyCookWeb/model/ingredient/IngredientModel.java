@@ -46,5 +46,4 @@ public class IngredientModel {
     @Builder.Default
     private Double stock = 0D;
 
-
 }

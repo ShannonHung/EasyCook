@@ -1,7 +1,9 @@
 package com.seminar.easyCookWeb.mapper.recipe;
 
 import com.seminar.easyCookWeb.model.recipe.RecipeIngredientModel;
+import com.seminar.easyCookWeb.model.recipe.RecipeModel;
 import com.seminar.easyCookWeb.model.recipe.RecipeStepModel;
+import com.seminar.easyCookWeb.pojo.recipe.Recipe;
 import com.seminar.easyCookWeb.pojo.recipe.RecipeIngredient;
 import com.seminar.easyCookWeb.pojo.recipe.RecipeStep;
 import org.mapstruct.Mapper;
@@ -18,4 +20,6 @@ public interface RecipeIngredientMapper {
     RecipeIngredient toPOJO(RecipeIngredientModel recipeIngredientModel);
 
     List<RecipeIngredientModel> toModels(List<RecipeIngredient> recipeIngredients);
+
+    Iterable<RecipeIngredientModel> toIterableModel(Iterable<RecipeIngredient> recipes);
 }

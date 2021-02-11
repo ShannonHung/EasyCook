@@ -74,7 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(jwtConfig.getUrl()).anonymous()
                 .antMatchers("/h2/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/login","/member/register", "/employee/register", "/ingredient/**").permitAll() //供前端取得token
-                .antMatchers(HttpMethod.GET, "/ingredient/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/ingredient/**", "/recipe/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .cors().and()
