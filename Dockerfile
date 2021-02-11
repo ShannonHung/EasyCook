@@ -1,5 +1,6 @@
 # 為了mvn clean pacakge
-FROM maven:3.6.3-adoptopenjdk-11 AS build
+#FROM maven:3.6.3-adoptopenjdk-11 AS build
+FROM maven:3.6.3-jdk-11 AS build
 COPY . /tmp
 WORKDIR /tmp
 #RUN mvn -Dmaven.test.skip=true -Dmaven.javadoc.skip=true clean package -B -V -X
