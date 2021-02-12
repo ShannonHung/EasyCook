@@ -57,8 +57,9 @@ public class Employee extends User implements UserDetails {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(length = 20)
-    private Role role;
+    @Column(length = 20, nullable = false)
+    @Builder.Default
+    private Role role = Role.EMPLOYEE;
 
     @Transient
     @JsonIgnore

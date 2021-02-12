@@ -45,10 +45,10 @@ public class EmployeeService {
         }else{
             request.setPassword(passwordEncoder.encode(request.getPassword()));
             Employee employee = mapper.toPOJO(request);
-            employee.setRole(Role.EMPLOYEE);
+//            employee.setRole(Role.EMPLOYEE);
             employee = employeeRepository.save(employee);
-            System.out.println("<Test Mapping> -> "+Optional.ofNullable(mapper.toModel(employee).toString()));
-            return Optional.ofNullable(mapper.toModel(employee));
+            System.out.println("<Test Mapping> -> "+ Optional.of(mapper.toModel(employee).toString()));
+            return Optional.of(mapper.toModel(employee));
         }
     }
     public Optional<EmployeeResponse> getEmployeeResponseById(Long id){

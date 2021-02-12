@@ -26,6 +26,7 @@ public class EmployeeController {
 
     @PostMapping("/register")
     @ApiOperation("員工註冊: Employee Register")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<EmployeeResponse> createEmployee(@Valid @RequestBody EmployeeRequest request){
 //        EmployeeResponse employee = employeeService.saveEmployee(request);
 //        return new ResponseEntity<EmployeeResponse>(employee, HttpStatus.CREATED);
