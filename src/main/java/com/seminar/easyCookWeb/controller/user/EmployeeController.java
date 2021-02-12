@@ -1,6 +1,9 @@
 package com.seminar.easyCookWeb.controller.user;
 
+import com.seminar.easyCookWeb.exception.BusinessException;
+import com.seminar.easyCookWeb.exception.EntitiesErrorException;
 import com.seminar.easyCookWeb.exception.EntityNotFoundException;
+import com.seminar.easyCookWeb.model.recipe.RecipeModel;
 import com.seminar.easyCookWeb.pojo.appUser.Employee;
 import com.seminar.easyCookWeb.service.user.EmployeeService;
 import com.seminar.easyCookWeb.model.user.EmployeeRequest;
@@ -68,5 +71,24 @@ public class EmployeeController {
                 .map(ResponseEntity::ok)
                 .orElseThrow(()->new EntityNotFoundException(Employee.class, "Employee List Not Found"));
     }
+
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    @ApiOperation("透過id刪除特定員工: Delete Employees By Id (Role: ROLE_ADMIN)")
+    @DeleteMapping(path = "/delete/{employeeId}")
+    public ResponseEntity<EmployeeResponse> deleteById(@PathVariable Long employeeId) {
+        return employeeService.delete(employeeId)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new BusinessException("Delete Employee fail"));
+    }
+
+    @PatchMapping("/update/{employeeId}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    @ApiOperation("透過id來更新員工: Update Employees By Id (Role: ROLE_ADMIN, ROLE_EMPLOYEE)")
+    public ResponseEntity<EmployeeResponse> update(@PathVariable Long employeeId, @RequestBody EmployeeRequest employeeRequest) {
+        return employeeService.update(employeeId, employeeRequest)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntitiesErrorException("Cannot update employee"));
+    }
+
 
 }

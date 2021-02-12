@@ -1,8 +1,10 @@
 package com.seminar.easyCookWeb.service.user;
 
+import com.seminar.easyCookWeb.exception.BusinessException;
 import com.seminar.easyCookWeb.exception.EntityCreatedConflictException;
 import com.seminar.easyCookWeb.exception.EntityNotFoundException;
 import com.seminar.easyCookWeb.mapper.user.EmployeeMapper;
+import com.seminar.easyCookWeb.model.recipe.RecipeModel;
 import com.seminar.easyCookWeb.pojo.appUser.Role;
 import com.seminar.easyCookWeb.repository.users.EmployeeRepository;
 import com.seminar.easyCookWeb.model.user.EmployeeRequest;
@@ -62,5 +64,28 @@ public class EmployeeService {
     public Optional<List<EmployeeResponse>> getAllEmployees(){
         List<Employee> employees = employeeRepository.findAll();
         return Optional.ofNullable(mapper.toModels(employees));
+    }
+    public Optional<EmployeeResponse> delete(Long id){
+        return employeeRepository.findById(id)
+                .map(it ->{
+                    try {
+                        employeeRepository.deleteById(it.getId());
+                        return it;
+                    }catch (Exception ex){
+                        throw new BusinessException("Cannot Deleted " +it.getId()+ " recipe");
+                    }
+                })
+                .map(mapper::toModel);
+    }
+
+    public Optional<EmployeeResponse> update(Long iid, EmployeeRequest employeeRequest) {
+        return Optional.of(employeeRepository.findById(iid))
+                .map(it -> {
+                    Employee originEmployee = it.orElseThrow(() -> new EntityNotFoundException("Cannot find employee"));
+                    mapper.update(employeeRequest, originEmployee);
+                    return originEmployee;
+                })
+                .map(employeeRepository::save)
+                .map(mapper::toModel);
     }
 }

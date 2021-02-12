@@ -3,7 +3,7 @@ package com.seminar.easyCookWeb.mapper.user;
 import com.seminar.easyCookWeb.model.user.EmployeeRequest;
 import com.seminar.easyCookWeb.model.user.EmployeeResponse;
 import com.seminar.easyCookWeb.pojo.appUser.Employee;
-import org.mapstruct.Mapper;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -17,4 +17,9 @@ public interface EmployeeMapper {
     Employee toPOJO(EmployeeRequest request);
 
     List<EmployeeResponse> toModels(List<Employee> employees);
+
+    @Mapping(target = "id",ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void update(EmployeeRequest employeeRequest, @MappingTarget Employee employee);
+
 }
