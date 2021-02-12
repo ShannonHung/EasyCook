@@ -1,6 +1,10 @@
 package com.seminar.easyCookWeb.controller.user;
 
+import com.seminar.easyCookWeb.exception.BusinessException;
+import com.seminar.easyCookWeb.exception.EntitiesErrorException;
 import com.seminar.easyCookWeb.exception.EntityNotFoundException;
+import com.seminar.easyCookWeb.model.user.EmployeeRequest;
+import com.seminar.easyCookWeb.model.user.EmployeeResponse;
 import com.seminar.easyCookWeb.service.user.MemberService;
 import com.seminar.easyCookWeb.model.user.MemberRequest;
 import com.seminar.easyCookWeb.model.user.MemberResponse;
@@ -42,7 +46,7 @@ public class MemberController {
 
     @GetMapping("/{id}")
     @ApiOperation("透過ID找尋Member: Find Member By Id (Role: ROLE_EMPLOYEE)")
-    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE')")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     public ResponseEntity<MemberResponse> getUser(@PathVariable("id") Long id) {
         //可以設定成 先去ParseToken取得裡面的id是否跟url的id一樣，如果沒有就丟Exception
         return memberService.getMemberResponseById(id)
@@ -52,11 +56,41 @@ public class MemberController {
 
     @GetMapping("/allMembers")
     @ApiOperation("查看所有會員: Find All Members")
-    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE')") //'ROLE_EMPLOYEE'
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')") //'ROLE_EMPLOYEE'
     public ResponseEntity<List<MemberResponse>> getMembers() {
         return memberService.getAllMembers()
                 .map(ResponseEntity::ok)
                 .orElseThrow(()-> new EntityNotFoundException("Cannot found Enitty"));
     }
+
+    @ApiOperation("透過id刪除特定會員: Delete Member By Id (Role: ROLE_ADMIN)")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')") //'ROLE_EMPLOYEE'
+            @DeleteMapping(path = "/delete/{memberId}")
+    public ResponseEntity<MemberResponse> deleteById(@PathVariable Long memberId) {
+        return memberService.delete(memberId)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new BusinessException("Delete member fail"));
+
+    }
+
+    @PatchMapping("/update/{memberId}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN', 'ROLE_MEMBER')")
+    @ApiOperation("透過id來更新員工(個人資料): Update Employees By Id (Role: ROLE_ADMIN, ROLE_EMPLOYEE, ROLE_MEMBER)")
+    public ResponseEntity<MemberResponse> update(@PathVariable Long memberId, @RequestBody MemberRequest memberRequest, Authentication authentication) {
+        return memberService.update(memberId, memberRequest, authentication)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntitiesErrorException("Cannot update member"));
+
+    }
+
+    @PatchMapping("/update/role/{memberId}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    @ApiOperation("透過id來更新員工(Role): Update Employees By Id (Role: ROLE_ADMIN, ROLE_EMPLOYEE)")
+    public ResponseEntity<MemberResponse> updateByEmployee(@PathVariable Long memberId, @RequestBody MemberRequest memberRequest) {
+        return memberService.updateByEmployee(memberId, memberRequest)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntitiesErrorException("Cannot update member"));
+    }
+
 
 }

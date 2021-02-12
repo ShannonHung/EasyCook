@@ -72,7 +72,7 @@ public class EmployeeService {
                         employeeRepository.deleteById(it.getId());
                         return it;
                     }catch (Exception ex){
-                        throw new BusinessException("Cannot Deleted " +it.getId()+ " recipe");
+                        throw new BusinessException("Cannot Deleted " +it.getId()+ " employee");
                     }
                 })
                 .map(mapper::toModel);

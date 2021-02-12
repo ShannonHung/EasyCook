@@ -1,8 +1,11 @@
 package com.seminar.easyCookWeb.model.user;
 
+import com.seminar.easyCookWeb.pojo.appUser.Role;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import javax.validation.constraints.NotNull;
 
 @Data
 @ApiModel("Member請求Entity樣式")
@@ -17,7 +20,7 @@ public class MemberRequest {
     private String phone;
     @ApiModelProperty(value = "會員信箱", required = true, example = "email@gmail.com")
     private String email;
-//    @NotEmpty //不能為null or "" , 可以為 " "
-//    private Role role;
+    @ApiModelProperty(value = "會員權限", required = true, example = "VIP, MEMBER")
+    private Role role;
 
 }
