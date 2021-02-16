@@ -62,8 +62,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/allEmployees")
-    @ApiOperation("查看所有員工: Find All Employees (Role: ROLE_EMPLOYEE)")
-    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE')")
+    @ApiOperation("查看所有員工: Find All Employees (Role: 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<List<EmployeeResponse>> getEmployees() {
 //        List<EmployeeResponse> employees = employeeService.getAllEmployees();
 //        return ResponseEntity.ok(employees);

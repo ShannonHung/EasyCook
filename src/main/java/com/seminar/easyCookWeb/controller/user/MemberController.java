@@ -27,7 +27,7 @@ public class MemberController {
     @Autowired
     MemberService memberService;
 
-    @ApiOperation("會員註冊: Member Register (Role: ROLE_EMPLOYEE)")
+    @ApiOperation("會員註冊: Member Register (Role: ALL)")
     @PostMapping("/register")
     public ResponseEntity<MemberResponse> createMember(@Valid @RequestBody MemberRequest request){
         return memberService.saveMember(request)
@@ -55,7 +55,7 @@ public class MemberController {
     }
 
     @GetMapping("/allMembers")
-    @ApiOperation("查看所有會員: Find All Members")
+    @ApiOperation("查看所有會員: Find All Members (Role: 'ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')") //'ROLE_EMPLOYEE'
     public ResponseEntity<List<MemberResponse>> getMembers() {
         return memberService.getAllMembers()
@@ -63,7 +63,7 @@ public class MemberController {
                 .orElseThrow(()-> new EntityNotFoundException("Cannot found Enitty"));
     }
 
-    @ApiOperation("透過id刪除特定會員: Delete Member By Id (Role: ROLE_ADMIN)")
+    @ApiOperation("透過id刪除特定會員: Delete Member By Id (Role: 'ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')") //'ROLE_EMPLOYEE'
             @DeleteMapping(path = "/delete/{memberId}")
     public ResponseEntity<MemberResponse> deleteById(@PathVariable Long memberId) {
