@@ -13,6 +13,7 @@ import com.seminar.easyCookWeb.pojo.appUser.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -83,19 +84,24 @@ public class EmployeeService {
                 .map(mapper::toModel);
     }
 
-    public Optional<EmployeeResponse> update(Long iid, EmployeeRequest employeeRequest) {
+    public Optional<EmployeeResponse> update(Long iid, EmployeeRequest employeeRequest, Authentication authentication) {
         return Optional.of(employeeRepository.findById(iid))
                 .map(it -> {
                     Employee originEmployee = it.orElseThrow(() -> new EntityNotFoundException("Cannot find employee"));
 
-                    if(employeeRequest.getPassword() != null){
-                        employeeRequest.setPassword(passwordEncoder.encode(employeeRequest.getPassword()));
-                    }
-                    else if(employeeRepository.ExistAccountandEmail(employeeRequest.getAccount(), employeeRequest.getEmail(), originEmployee.getId()) > 0) {
+                    log.info("check query => " + employeeRepository.ExistAccountandEmail(employeeRequest.getAccount(), employeeRequest.getEmail(), originEmployee.getId()));
+                    log.info("check role  => " + !authentication.getAuthorities().equals(Role.ADMIN));
+                    if(authentication.getName() != originEmployee.getAccount() && !authentication.getAuthorities().stream().findFirst().get().toString().equals(Role.ROLE_ADMIN)){
+                        throw new BusinessException("You are not the employee you want to update, so you cannot update this employee");
+                    }else if(employeeRepository.ExistAccountandEmail(employeeRequest.getAccount(), employeeRequest.getEmail(), originEmployee.getId()) > 0){
                         throw new EntityCreatedConflictException("this account or email have already in used!");
+                    }else{
+                        if(employeeRequest.getPassword() != null){
+                            employeeRequest.setPassword(passwordEncoder.encode(employeeRequest.getPassword()));
+                        }
+                        mapper.update(employeeRequest, originEmployee);
+                        return originEmployee;
                     }
-                    mapper.update(employeeRequest, originEmployee);
-                    return originEmployee;
                 })
                 .map(employeeRepository::save)
                 .map(mapper::toModel);

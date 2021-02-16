@@ -84,8 +84,8 @@ public class EmployeeController {
     @PatchMapping("/update/{employeeId}")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     @ApiOperation("透過id來更新員工: Update Employees By Id (Role: ROLE_ADMIN, ROLE_EMPLOYEE)")
-    public ResponseEntity<EmployeeResponse> update(@PathVariable Long employeeId, @RequestBody EmployeeRequest employeeRequest) {
-        return employeeService.update(employeeId, employeeRequest)
+    public ResponseEntity<EmployeeResponse> update(@PathVariable Long employeeId, @RequestBody EmployeeRequest employeeRequest, Authentication authentication) {
+        return employeeService.update(employeeId, employeeRequest, authentication)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new EntitiesErrorException("Cannot update employee"));
     }

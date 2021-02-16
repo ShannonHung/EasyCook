@@ -86,7 +86,7 @@ public class MemberService {
         return Optional.of(memberRepository.findById(id))
                 .map(it -> {
                     log.info("auth.getName => " + authentication.getName() + "auth.getDetails=>" + authentication.getDetails());
-                    if(!it.get().getAccount().equals(authentication.getName())) throw  new BusinessException("You are not the member you want to update, so you cannot update this member");
+                    if(!it.get().getAccount().equals(authentication.getName())) throw new BusinessException("You are not the member you want to update, so you cannot update this member");
                     Member originMember = it.orElseThrow(() -> new EntityNotFoundException("Cannot find member"));
                     mapper.update(memberRequest, originMember);
                     return originMember;
