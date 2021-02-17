@@ -1,7 +1,16 @@
-version: '3.3'
+version: '3.7'
 services:
   easycook-app:
     image: easycook-app
     build: .
     ports:
       - '8082:8082'
+    networks:
+      - backend_easycook_network
+
+networks:
+  backend_easycook_network:
+    external: true
+    name: my-easycook_network
+
+
