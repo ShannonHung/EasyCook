@@ -19,6 +19,8 @@ public interface EmployeeMapper {
     List<EmployeeResponse> toModels(List<Employee> employees);
 
     @Mapping(target = "id",ignore = true)
+    @Mapping(target = "password",ignore = true)
+    @Mapping(target = "role",ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void update(EmployeeRequest employeeRequest, @MappingTarget Employee employee);
 

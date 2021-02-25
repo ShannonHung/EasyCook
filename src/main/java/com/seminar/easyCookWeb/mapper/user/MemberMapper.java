@@ -22,6 +22,7 @@ public interface MemberMapper {
 
     @Mapping(target = "id",ignore = true)
     @Mapping(target = "role",ignore = true)
+    @Mapping(target = "password",ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void update(MemberRequest memberRequest, @MappingTarget Member member);
 

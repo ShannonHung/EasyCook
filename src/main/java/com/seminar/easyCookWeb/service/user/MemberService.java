@@ -5,14 +5,12 @@ import com.seminar.easyCookWeb.exception.BusinessException;
 import com.seminar.easyCookWeb.exception.EntityCreatedConflictException;
 import com.seminar.easyCookWeb.exception.EntityNotFoundException;
 import com.seminar.easyCookWeb.mapper.user.MemberMapper;
-import com.seminar.easyCookWeb.model.user.EmployeeRequest;
-import com.seminar.easyCookWeb.model.user.EmployeeResponse;
+import com.seminar.easyCookWeb.model.user.*;
 import com.seminar.easyCookWeb.pojo.appUser.Employee;
 import com.seminar.easyCookWeb.pojo.appUser.Role;
+import com.seminar.easyCookWeb.repository.users.EmployeeRepository;
 import com.seminar.easyCookWeb.repository.users.MemberRepository;
 import com.seminar.easyCookWeb.pojo.appUser.Member;
-import com.seminar.easyCookWeb.model.user.MemberRequest;
-import com.seminar.easyCookWeb.model.user.MemberResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -29,25 +27,23 @@ import java.util.Optional;
 @Transactional
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final EmployeeRepository employeeRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final MemberMapper mapper;
 
     @Autowired
-    public MemberService(MemberRepository memberRepository, MemberMapper mapper){
+    public MemberService(MemberRepository memberRepository, MemberMapper mapper, EmployeeRepository employeeRepository){
         this.memberRepository= memberRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
+        this.employeeRepository = employeeRepository;
         this.mapper = mapper;
     }
 
 
     public Optional<MemberResponse> saveMember(MemberRequest request){
         log.info("[recieve member register request] => " + request);
-        if (request.getAccount()==null || request.getPassword()==null || request.getAccount()=="" || request.getPassword()==""){
-            throw new HttpMessageNotReadableException("Account or Password is Empty");
-        }else{
-
             Optional<Member> existingMember = memberRepository.findByAccount(request.getAccount());
-            if(existingMember.isPresent()){
+            if(existingMember.isPresent() || employeeRepository.findByAccount(request.getAccount()).isPresent()){
                 throw new EntityCreatedConflictException(("[Save Member] -> {Error} This account Name has been used!"));
             }
             Member member = MemberConverter.toMember(request);
@@ -55,7 +51,6 @@ public class MemberService {
             member.setPassword(passwordEncoder.encode(request.getPassword()));
             member = memberRepository.save(member);
             return Optional.ofNullable(mapper.toModel(member));
-        }
     }
     public Optional<MemberResponse> getMemberResponseById(Long id){
         Member member = memberRepository.findById(id).orElseThrow(() ->new EntityNotFoundException(Member.class, "id", id.toString()));
@@ -105,4 +100,19 @@ public class MemberService {
                 .map(memberRepository::save)
                 .map(mapper::toModel);
     }
+
+    public Optional<MemberResponse> updatePwd(UpdatePwd updatePwd, Authentication authentication){
+        return Optional.of(memberRepository.findByAccount(updatePwd.getAccount()).get())
+                .map(it -> {
+                    log.info("change pwd => " + it);
+                    if(passwordEncoder.matches(updatePwd.getPrepassword(), it.getPassword())){
+                        it.setPassword(passwordEncoder.encode(updatePwd.getNewpassword()));
+                        return it;
+                    }
+                    throw new BusinessException("password are not correct");
+                })
+                .map(memberRepository::save)
+                .map(mapper::toModel);
+    }
+
 }

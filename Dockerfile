@@ -1,5 +1,8 @@
 # 為了mvn clean pacakge
 FROM maven:3.6.3-adoptopenjdk-11 AS build
+# Docker file creator
+MAINTAINER b10709036@gapps.ntust.edu.tw
+
 #FROM maven:3.6.3-jdk-11 AS build
 COPY . /tmp
 WORKDIR /tmp

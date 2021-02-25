@@ -13,10 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +51,7 @@ public class RecipeImageController {
                 .map(model -> {
                     String fileDownloadUri = ServletUriComponentsBuilder
                             .fromCurrentContextPath()
-                            .path("/files/")
+                            .path("/recipe/images/")
                             .path(model.getId().toString())
                             .toUriString();
 
@@ -77,10 +74,32 @@ public class RecipeImageController {
     @ApiOperation("透過相片Id下載食譜相片: Download Photo By Photo Id {EVERYONE CAN ACCESS}")
     public ResponseEntity<byte[]> getFile(@PathVariable Long id){
         return imageService.getFile(id)
-                .map(file -> file.getPicByte())
+                .map(it -> it.getPicByte())
                 .map(ResponseEntity::ok)
                 .orElseThrow(()->new BusinessException("Get file " + id + "Failure"));
     }
+
+    @GetMapping("/downloadtolocal/{id}")
+    @ApiOperation("透過相片Id下載食譜相片: Download Photo By Photo Id {EVERYONE CAN ACCESS}")
+    public ResponseEntity<byte[]> saveFileToLocal(@PathVariable Long id){
+        return imageService.getFile(id)
+                .map(file -> {
+                    ContentDisposition contentDisposition = ContentDisposition.builder("inline")
+                            .filename(file.getName())
+                            .build();
+
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentDisposition(contentDisposition);
+                    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+
+                    return ResponseEntity.ok().contentLength(file.getPicByte().length)
+                            .headers(headers)
+                            .body(file.getPicByte());
+                })
+                .orElseThrow(()->new BusinessException("Get file " + id + "Failure"));
+
+    }
+
 
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     @DeleteMapping(path = "/delete/{Id}")

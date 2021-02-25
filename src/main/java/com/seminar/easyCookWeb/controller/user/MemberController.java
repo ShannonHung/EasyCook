@@ -3,11 +3,8 @@ package com.seminar.easyCookWeb.controller.user;
 import com.seminar.easyCookWeb.exception.BusinessException;
 import com.seminar.easyCookWeb.exception.EntitiesErrorException;
 import com.seminar.easyCookWeb.exception.EntityNotFoundException;
-import com.seminar.easyCookWeb.model.user.EmployeeRequest;
-import com.seminar.easyCookWeb.model.user.EmployeeResponse;
+import com.seminar.easyCookWeb.model.user.*;
 import com.seminar.easyCookWeb.service.user.MemberService;
-import com.seminar.easyCookWeb.model.user.MemberRequest;
-import com.seminar.easyCookWeb.model.user.MemberResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.aspectj.weaver.Member;
@@ -73,7 +70,7 @@ public class MemberController {
 
     }
 
-    @PatchMapping("/update/{memberId}")
+    @PatchMapping("/update/data/{memberId}")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN', 'ROLE_MEMBER')")
     @ApiOperation("透過id來更新員工(個人資料): Update Employees By Id (Role: ROLE_ADMIN, ROLE_EMPLOYEE, ROLE_MEMBER)")
     public ResponseEntity<MemberResponse> update(@PathVariable Long memberId, @RequestBody MemberRequest memberRequest, Authentication authentication) {
@@ -92,5 +89,13 @@ public class MemberController {
                 .orElseThrow(() -> new EntitiesErrorException("Cannot update member"));
     }
 
+    @PatchMapping("/update/pwd/{memberId}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN', 'ROLE_MEMBER')")
+    @ApiOperation("透過id來更新會員密碼: Update Employees' password By Id (Role: 'ROLE_EMPLOYEE', 'ROLE_ADMIN', 'ROLE_MEMBER')")
+    public ResponseEntity<MemberResponse> updatePassword(@Valid @RequestBody UpdatePwd updatePwd, Authentication authentication){
+        return memberService.updatePwd(updatePwd, authentication)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntitiesErrorException("Cannot update employee"));
+    }
 
 }
