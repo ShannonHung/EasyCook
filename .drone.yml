@@ -16,6 +16,7 @@ steps:
      commands:
        - cd /drone/src/
        - docker build -t easycook-app:latest .
+
   - name: Create service
     image: docker/compose
     volumes:
