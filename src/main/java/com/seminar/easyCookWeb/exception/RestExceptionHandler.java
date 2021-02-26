@@ -1,5 +1,7 @@
 package com.seminar.easyCookWeb.exception;
 
+import com.seminar.easyCookWeb.model.error.EntitiesErrorResponse;
+import com.seminar.easyCookWeb.model.error.EntityErrorResponse;
 import com.seminar.easyCookWeb.model.error.ErrorResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,11 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import javax.validation.ConstraintViolationException;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.springframework.http.HttpStatus.*;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -29,6 +36,20 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
     protected ResponseEntity<Object> handleBusiness(AccountException ex) {
         return buildResponseEntity(new ErrorResponse(BAD_REQUEST, ex.getMessage(), ex), ex);
     }
+
+    /**
+     * 如果create的時候發生錯誤
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler({EntitiesErrorException.class})
+    protected ResponseEntity<Object> handleEntitiesNotFound(EntitiesErrorException ex) {
+        List<EntityErrorResponse> errors = ex.getFieldExceptionList().stream()
+                .map(it -> new EntityErrorResponse(it.getField(), it.getMessage()))
+                .collect(Collectors.toList());
+        return buildResponseEntity(new EntitiesErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), errors, ex), ex);
+    }
+
 
 
     //如果發生500 Status錯誤
@@ -54,6 +75,24 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
         return buildResponseEntity(apiError, ex);
     }
 
+    //負責處理Validation也就是@NotNull, NotEmpty, NotBlank的部分驗證
+    @ExceptionHandler(ConstraintViolationException.class)
+    protected ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex) {
+        List<EntityErrorResponse> errors = ex.getConstraintViolations().stream()
+                .map(it -> new EntityErrorResponse(it.getPropertyPath().toString(), it.getMessage()))
+                .collect(Collectors.toList());
+        return buildResponseEntity(new EntitiesErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), errors, ex), ex);
+    }
+
+    /**
+     * 處理刪除的錯誤
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(BusinessException.class)
+    protected ResponseEntity<Object> handleBusiness(BusinessException ex) {
+        return buildResponseEntity(new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), ex), ex);
+    }
 
 
     @ResponseStatus(FORBIDDEN)
@@ -69,13 +108,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
      * @param ex the ConflictException
      * @return
      */
-    @ExceptionHandler(ConflictException.class)
-    protected ResponseEntity<Object> handleConflictException(
-            ConflictException ex){
-        ErrorResponse apiError = new ErrorResponse(CONFLICT);
-        apiError.setMessage("ACCOUNT DUPLICATED");
-        return buildResponseEntity(apiError, ex);
+    @ExceptionHandler(EntityCreatedConflictException.class)
+    protected ResponseEntity<Object> handleEntityCreatedConflict(EntityCreatedConflictException ex) {
+        return buildResponseEntity(new ErrorResponse(HttpStatus.CONFLICT, ex.getMessage(), ex), ex);
     }
+
     /**
      * Handle HttpMessageNotWritableException.controller将返回参数json化后，返回给前端的时候，报异常
      *

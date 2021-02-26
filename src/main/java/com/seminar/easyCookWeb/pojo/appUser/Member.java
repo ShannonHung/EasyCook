@@ -3,14 +3,13 @@ package com.seminar.easyCookWeb.pojo.appUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import java.util.Collection;
 
 @Entity
@@ -22,33 +21,33 @@ import java.util.Collection;
 public class Member extends User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Null
     @Column(name="member_id")
     private long id;
 
-    @NotEmpty
-    @Column(length = 45, unique = true)
+    @NotBlank
+    @Column(length = 45, unique = true, nullable = false)
     private String account;
 
-    @NotEmpty
+    @NotBlank
     @Column(length = 1024)
     @JsonIgnore
     private String password;
 
-    @Column(length = 65)
+    @NotBlank
+    @Column(columnDefinition = "nvarchar(128)")
     @Nationalized
     private String username;
 
     @Column(columnDefinition = "nvarchar(15)")
     private String phone;//如果你這裡使用Num大寫，寫入資料庫會變成phone_num
 
-    @Column(columnDefinition = "nvarchar(254)")
+    @Column(columnDefinition = "nvarchar(128)")
     private String email;
 
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(length = 8)
+    @Column(length = 20)
     private Role role;
 
 

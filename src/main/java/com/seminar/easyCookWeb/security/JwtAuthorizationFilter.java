@@ -1,11 +1,8 @@
 package com.seminar.easyCookWeb.security;
 
-import com.seminar.easyCookWeb.config.JWTService;
 import com.seminar.easyCookWeb.pojo.appUser.User;
 import com.seminar.easyCookWeb.repository.users.EmployeeRepository;
 import com.seminar.easyCookWeb.repository.users.MemberRepository;
-import com.seminar.easyCookWeb.service.user.EmployeeService;
-import com.seminar.easyCookWeb.service.user.MemberService;
 import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +12,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 

@@ -1,6 +1,6 @@
 package com.seminar.easyCookWeb.controller.auth;
 
-import com.seminar.easyCookWeb.config.JWTService;
+import com.seminar.easyCookWeb.security.JWTService;
 import com.seminar.easyCookWeb.security.JwtConfig;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/api/auth", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 @Api(tags = "取得Token", description = "提供會員及員工Token的 Rest API")
 public class AuthController {
     @Autowired

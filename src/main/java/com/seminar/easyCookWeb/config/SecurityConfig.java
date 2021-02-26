@@ -5,6 +5,7 @@ import com.seminar.easyCookWeb.exception.handler.RestAccessDeniedHandler;
 import com.seminar.easyCookWeb.exception.handler.RestAuthenticationEntryPoint;
 import com.seminar.easyCookWeb.repository.users.EmployeeRepository;
 import com.seminar.easyCookWeb.repository.users.MemberRepository;
+import com.seminar.easyCookWeb.security.JWTService;
 import com.seminar.easyCookWeb.security.JwtAuthenticationFilter;
 import com.seminar.easyCookWeb.security.JwtAuthorizationFilter;
 import com.seminar.easyCookWeb.security.JwtConfig;
@@ -72,7 +73,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(jwtConfig.getUrl()).anonymous()
                 .antMatchers("/h2/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/auth/**", "/api/member/register", "/api/employee/register").permitAll() //供前端取得token
+                .antMatchers(HttpMethod.POST,"/login","/member/register", "/employee/register", "/ingredient/**").permitAll() //供前端取得token
+                .antMatchers(HttpMethod.GET, "/ingredient/**", "/recipe/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .cors().and()
@@ -105,8 +107,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.inMemoryAuthentication()
-//                .withUser("admin").password(new BCryptPasswordEncoder().encode("123")).roles(Role.ROLE_ADMIN);
         auth.userDetailsService(userDetailService)
                 .passwordEncoder(new BCryptPasswordEncoder());
     }
