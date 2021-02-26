@@ -11,8 +11,6 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {RecipeStepMapper.class, RecipeIngredientMapper.class})
 public interface RecipeMapper {
-    RecipeMapper MAPPER = Mappers.getMapper( RecipeMapper.class );
-
     RecipeModel toModel(Recipe recipe);
 
     //因為service那邊會先存一次，在存之前要確保step是空的不然會先把step重複存進去

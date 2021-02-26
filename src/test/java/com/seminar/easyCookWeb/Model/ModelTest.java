@@ -5,6 +5,8 @@ import com.seminar.easyCookWeb.pojo.ingredient.Category;
 import com.seminar.easyCookWeb.pojo.ingredient.Ingredient;
 import com.seminar.easyCookWeb.pojo.recipe.Recipe;
 import com.seminar.easyCookWeb.pojo.recipe.RecipeIngredient;
+import com.seminar.easyCookWeb.pojo.supplier.Supplier;
+import com.seminar.easyCookWeb.pojo.supplier.SupplierPerson;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -42,6 +44,16 @@ public class ModelTest {
 //                .account("admin")
 //                .password("123")
 //                .username("hung").build();
+    }
+    @Test
+    public void SupplierTest() {
+        SupplierPerson person = new SupplierPerson();
+
+
+        SupplierPerson person1 = SupplierPerson.builder()
+                .name("person")
+                .phone("09")
+                .build();
     }
 
 }
