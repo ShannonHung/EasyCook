@@ -18,7 +18,7 @@ import java.util.List;
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name="recipe_id")
+    @Column(name="recipe_id")
     private long id;
 
     @Column(columnDefinition = "nvarchar(256)")
