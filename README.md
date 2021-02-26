@@ -17,9 +17,7 @@
 ### Getting start with VScode
 
 1. Get an extension, 'Lombok'
-
 2. If you do not have Maven, go https://maven.apache.org/download.cgi# and install it
-
 3. Install dependences
 ```
 mvn install
@@ -50,7 +48,7 @@ mvn install
 1. 先去`employee/register`註冊員工帳號 (詳細post規則可以查看swagger), 也可以去`member/register`註冊會員帳號
 2. 去`/login`取得token
 3. 去`/auth/parse` Post json 去解析 token 樣式如下，查看目前登入的這個帳號的資料以及權限
-```
+```json
 //request
 {
     "accessToken": "Bearer 請在這裡放Token"

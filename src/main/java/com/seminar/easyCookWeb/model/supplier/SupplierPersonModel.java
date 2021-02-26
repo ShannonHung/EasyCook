@@ -20,10 +20,10 @@ public class SupplierPersonModel {
     @NotBlank
     private String name;
 
-    @ApiModelProperty(value = "XXX", required = true, example = "大雄")
+    @ApiModelProperty(value = "合作商聯絡人職位", required = true, example = "大雄")
     private String position;
 
-    @ApiModelProperty(value = "合作商姓名", required = true, example = "大雄")
+    @ApiModelProperty(value = "聯絡人電話", required = true, example = "大雄")
     private String phone;
 
     @ApiModelProperty(value = "合作商姓名", required = true, example = "大雄")
