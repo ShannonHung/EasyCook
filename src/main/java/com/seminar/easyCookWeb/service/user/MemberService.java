@@ -1,17 +1,20 @@
 package com.seminar.easyCookWeb.service.user;
 
 import com.seminar.easyCookWeb.converter.MemberConverter;
-import com.seminar.easyCookWeb.exception.ConflictException;
+import com.seminar.easyCookWeb.exception.BusinessException;
+import com.seminar.easyCookWeb.exception.EntityCreatedConflictException;
 import com.seminar.easyCookWeb.exception.EntityNotFoundException;
-import com.seminar.easyCookWeb.mapper.MemberMapper;
+import com.seminar.easyCookWeb.mapper.user.MemberMapper;
+import com.seminar.easyCookWeb.model.user.*;
+import com.seminar.easyCookWeb.pojo.appUser.Employee;
 import com.seminar.easyCookWeb.pojo.appUser.Role;
+import com.seminar.easyCookWeb.repository.users.EmployeeRepository;
 import com.seminar.easyCookWeb.repository.users.MemberRepository;
 import com.seminar.easyCookWeb.pojo.appUser.Member;
-import com.seminar.easyCookWeb.model.user.MemberRequest;
-import com.seminar.easyCookWeb.model.user.MemberResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,33 +27,30 @@ import java.util.Optional;
 @Transactional
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final EmployeeRepository employeeRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final MemberMapper mapper;
 
     @Autowired
-    public MemberService(MemberRepository memberRepository, MemberMapper mapper){
+    public MemberService(MemberRepository memberRepository, MemberMapper mapper, EmployeeRepository employeeRepository){
         this.memberRepository= memberRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
+        this.employeeRepository = employeeRepository;
         this.mapper = mapper;
     }
 
 
     public Optional<MemberResponse> saveMember(MemberRequest request){
         log.info("[recieve member register request] => " + request);
-        if (request.getAccount()==null || request.getPassword()==null){
-            throw new HttpMessageNotReadableException("Account or Password is Empty");
-        }else{
-
             Optional<Member> existingMember = memberRepository.findByAccount(request.getAccount());
-            if(existingMember.isPresent()){
-                throw new ConflictException("[Save Member] -> {Error} This account Name has been used!");
+            if(existingMember.isPresent() || employeeRepository.findByAccount(request.getAccount()).isPresent()){
+                throw new EntityCreatedConflictException(("[Save Member] -> {Error} This account Name has been used!"));
             }
             Member member = MemberConverter.toMember(request);
             member.setRole(Role.MEMBER);
             member.setPassword(passwordEncoder.encode(request.getPassword()));
             member = memberRepository.save(member);
             return Optional.ofNullable(mapper.toModel(member));
-        }
     }
     public Optional<MemberResponse> getMemberResponseById(Long id){
         Member member = memberRepository.findById(id).orElseThrow(() ->new EntityNotFoundException(Member.class, "id", id.toString()));
@@ -64,4 +64,55 @@ public class MemberService {
         List<Member> members = memberRepository.findAll();
         return Optional.ofNullable(mapper.toModels(members));
     }
+    public Optional<MemberResponse> delete(Long id){
+        return memberRepository.findById(id)
+                .map(it ->{
+                    try {
+                        memberRepository.deleteById(it.getId());
+                        return it;
+                    }catch (Exception ex){
+                        throw new BusinessException("Cannot Deleted " +it.getId()+ " member");
+                    }
+                })
+                .map(mapper::toModel);
+    }
+
+    public Optional<MemberResponse> update(Long id, MemberRequest memberRequest, Authentication authentication) {
+        return Optional.of(memberRepository.findById(id))
+                .map(it -> {
+                    log.info("auth.getName => " + authentication.getName() + "auth.getDetails=>" + authentication.getDetails());
+                    if(!it.get().getAccount().equals(authentication.getName())) throw new BusinessException("You are not the member you want to update, so you cannot update this member");
+                    Member originMember = it.orElseThrow(() -> new EntityNotFoundException("Cannot find member"));
+                    mapper.update(memberRequest, originMember);
+                    return originMember;
+                })
+                .map(memberRepository::save)
+                .map(mapper::toModel);
+    }
+
+    public Optional<MemberResponse> updateByEmployee(Long id, MemberRequest memberRequest) {
+        return Optional.of(memberRepository.findById(id))
+                .map(it -> {
+                    Member originMember = it.orElseThrow(() -> new EntityNotFoundException("Cannot find member"));
+                    mapper.updateByEmployee(memberRequest, originMember);
+                    return originMember;
+                })
+                .map(memberRepository::save)
+                .map(mapper::toModel);
+    }
+
+    public Optional<MemberResponse> updatePwd(UpdatePwd updatePwd, Authentication authentication){
+        return Optional.of(memberRepository.findByAccount(updatePwd.getAccount()).get())
+                .map(it -> {
+                    log.info("change pwd => " + it);
+                    if(passwordEncoder.matches(updatePwd.getPrepassword(), it.getPassword())){
+                        it.setPassword(passwordEncoder.encode(updatePwd.getNewpassword()));
+                        return it;
+                    }
+                    throw new BusinessException("password are not correct");
+                })
+                .map(memberRepository::save)
+                .map(mapper::toModel);
+    }
+
 }

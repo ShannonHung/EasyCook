@@ -1,0 +1,721 @@
+{
+	"info": {
+		"_postman_id": "beb0087f-da1a-483e-b246-cf7924619122",
+		"name": "EasyCook Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Member",
+			"item": [
+				{
+					"name": "Member Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"account\": \"member001\",\r\n  \"password\": 123,\r\n  \"phone\": \"0987654321\",\r\n  \"email\": \"member001@gmail.com\",\r\n  \"username\": \"黃美\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{addr}}/member/register",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"member",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Member login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"pm.environment.set(\"token\", data.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"account\": \"member001\",\r\n  \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{addr}}/login",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Members",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{addr}}/member/allMembers",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"member",
+								"allMembers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Member Me",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{addr}}/member/me",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"member",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employee",
+			"item": [
+				{
+					"name": "Employee Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"account\": \"employee005\",\r\n  \"department\": \"FoodManagement\",\r\n  \"email\": \"amy@gamil.com\",\r\n  \"password\": \"123\",\r\n  \"phone\": \"0900299309\",\r\n  \"role\": \"助理\",\r\n  \"username\": \"王慧婷\",\r\n  \"title\":\"sales\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{addr}}/employee/register",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"employee",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Employee Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"pm.environment.set(\"token\", data.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"account\": \"admin\",\r\n  \"password\": 123\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{addr}}/login",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Employee Me",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJVc2VySW5mbyI6ImVtcGxveWVlMDAyIiwiZXhwIjoxNjExOTA0MzE5LCJpc3MiOiJTaGFubm9uSHVuZyBGcm9tIEVhc3lDb29rIn0.zxSRtcD2NLMu4mqR6ELTRRbSSy7u8lgufG5IFbmiUNw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{addr}}/employee/me",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"employee",
+								"me"
+							]
+						},
+						"description": "find yourself infor"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Auth",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJVc2VySW5mbyI6ImVtcGxveWVlMDAyIiwiZXhwIjoxNjExOTA0NjU4LCJpc3MiOiJTaGFubm9uSHVuZyBGcm9tIEVhc3lDb29rIn0.zv_MMDZfQzHkqcoVl5YBQ-m6iF-0n21zHQGzKvUmS5c",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Authorization\": \"Bearer eyJhbGciOiJIUzI1NiJ9.eyJVc2VySW5mbyI6ImVtcGxveWVlMDAyIiwiZXhwIjoxNjExOTA0MzE5LCJpc3MiOiJTaGFubm9uSHVuZyBGcm9tIEVhc3lDb29rIn0.zxSRtcD2NLMu4mqR6ELTRRbSSy7u8lgufG5IFbmiUNw\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{addr}}/auth/parse",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"auth",
+								"parse"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ingredient",
+			"item": [
+				{
+					"name": "create Ingredient",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"category\": \"VEGETABLE\",\r\n  \"city\": \"TAIPEI\",\r\n  \"country\": \"TAIWAN\",\r\n  \"id\": 0,\r\n  \"kcal\": 100.567,\r\n  \"name\": \"中國水梨\",\r\n  \"price\": 100,\r\n  \"satefyStock\": 10,\r\n  \"stock\": 100,\r\n  \"unit\": \"顆\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{addr}}/ingredient/create",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"ingredient",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find Food By Name",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ingredientName\":\"酒\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{addr}}/ingredient/name",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"ingredient",
+								"name"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Ingredient",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{addr}}/ingredient/all",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"ingredient",
+								"all"
+							]
+						},
+						"description": "取得所有食材清單"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Ingredient",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{addr}}/ingredient/delete/18",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"ingredient",
+								"delete",
+								"18"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Recipe",
+			"item": [
+				{
+					"name": "Create Recipe",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"name\": \"水果沙拉6\",\r\n        \"link\": \"..//\",\r\n        \"likesCount\": 10,\r\n        \"recipeSteps\": [\r\n            {\r\n                \"startTime\": \"0:51\",\r\n                \"note\": \"切水果\"\r\n            },\r\n            {\r\n                \"startTime\": \"0:52\",\r\n                \"note\": \"切生菜\"\r\n            },\r\n            {\r\n                \"startTime\": \"0:52\",\r\n                \"note\": \"加入沙拉\"\r\n            }\r\n        ],\r\n        \"recipeIngredients\": [\r\n            {\r\n                \"ingredient\": {\r\n                    \"id\": 5\r\n                },\r\n                \"quantityrequired\": 10.0\r\n            },\r\n            {\r\n                \"ingredient\": {\r\n                    \"id\": 2\r\n                },\r\n                \"quantityrequired\": 10.0\r\n            }\r\n        ]\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{addr}}/recipe/create",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"recipe",
+								"create"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create Recipe",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"漬風三明治\",\r\n    \"link\": \"https://youtu.be/QDXk0SYyagg\",\r\n    \"likesCount\": 10,\r\n    \"recipeSteps\": [\r\n        { \r\n            \"startTime\": \"0:47\",\r\n            \"note\":\"去掉骨頭&脂肪\"\r\n        },{\r\n            \"startTime\": \"0:53\",\r\n            \"note\":\"撒鹽巴&黑胡椒\"\r\n        }\r\n    ],\r\n    \"recipeIngredients\":[\r\n        {\r\n            \"id\":3\r\n        },\r\n        {\r\n            \"id\":2\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{addr}}/recipe/create",
+									"host": [
+										"{{addr}}"
+									],
+									"path": [
+										"recipe",
+										"create"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json;charset=UTF-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 05 Feb 2021 12:49:56 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"BAD_REQUEST\",\n    \"timestamp\": \"05-02-2021 08:49:56\",\n    \"message\": \"Cannot create Recipe! Maybe have Duplicated Recipe Name\",\n    \"debugMessage\": \"Cannot create Recipe! Maybe have Duplicated Recipe Name\",\n    \"entityErrorResponses\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Find Recipe By Recipe Name",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"水果\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{addr}}/recipe/name",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"recipe",
+								"name"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Recipe",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{addr}}/recipe/all",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"recipe",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Recipe By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{addr}}/recipe/delete/2",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"recipe",
+								"delete",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "RecipeImage",
+			"item": [
+				{
+					"name": "Upload Recipe Images",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/micky/OneDrive/圖片/QRcode.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{addr}}/recipe/images/upload/1",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"recipe",
+								"images",
+								"upload",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Recipe Images",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{addr}}/recipe/images/all/1",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"recipe",
+								"images",
+								"all",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recipe Image By Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{addr}}/recipe/images/1",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"recipe",
+								"images",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Image By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{addr}}/recipe/images/delete/1",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"recipe",
+								"images",
+								"delete",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

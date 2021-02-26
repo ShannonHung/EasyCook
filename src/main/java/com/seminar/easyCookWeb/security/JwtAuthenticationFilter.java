@@ -1,7 +1,6 @@
 package com.seminar.easyCookWeb.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.seminar.easyCookWeb.config.JWTService;
 import com.seminar.easyCookWeb.model.user.AuthRequest;
 import com.seminar.easyCookWeb.pojo.appUser.User;
 import lombok.SneakyThrows;

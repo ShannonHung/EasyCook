@@ -20,6 +20,19 @@
 	</properties>
 
 	<dependencies>
+		<!--	for @NotNull, @NotEmpty, @NotBlank	-->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>5.3.5.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.el</artifactId>
+			<version>3.0.1-b12</version>
+		</dependency>
+		<!--	end	-->
+
 		<!--@Entity會需要-->
 		<dependency>
 			<groupId>javax.persistence</groupId>
@@ -36,10 +49,17 @@
 			<artifactId>spring-boot-starter-data-jdbc</artifactId>
 		</dependency>
 		<!--Lombok 可以省略getter and setter等-->
+<!--		<dependency>-->
+<!--			<groupId>io.mateu</groupId>-->
+<!--			<artifactId>lombok</artifactId>-->
+<!--			<version>1.18.11.97</version>-->
+<!--		</dependency>-->
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
-			<groupId>io.mateu</groupId>
+			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.11.97</version>
+			<version>1.18.12</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
@@ -65,7 +85,7 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>0.11.2</version>
 		</dependency>
-<!--as same as reinsured-->
+		<!--as same as reinsured-->
 		<dependency>
 			<groupId>com.auth0</groupId>
 			<artifactId>java-jwt</artifactId>
@@ -163,12 +183,14 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
 			<version>5.7.0</version>
 			<scope>test</scope>
 		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -177,6 +199,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
 			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
