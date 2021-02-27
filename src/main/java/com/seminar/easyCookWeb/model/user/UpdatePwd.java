@@ -12,9 +12,6 @@ import javax.validation.constraints.NotNull;
 @Data
 @ApiModel("Employee更新請求Entity樣式")
 public class UpdatePwd {
-    @ApiModelProperty(value = "員工帳號", example = "employee001", required = true)
-    @NotBlank
-    private String account;
     @NotBlank
     @ApiModelProperty(value = "員工新密碼", example = "123", required = true)
     private String newpassword;
