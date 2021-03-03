@@ -186,7 +186,7 @@ mvn install
     "debugMessage": "JWT expired at 2021-01-24T04:13:27Z. Current time: 2021-01-24T04:31:12Z, a difference of 1065236 milliseconds.  Allowed clock skew: 0 milliseconds."
 }
 ```
-### Header沒有放Authorization: Bearer Token
+### Header的Authorization存在，並為空值: Bearer Token
 會回傳以下錯誤
 ```json
 {
