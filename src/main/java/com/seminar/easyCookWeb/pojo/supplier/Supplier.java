@@ -29,13 +29,13 @@ public class Supplier {
     @NotBlank
     private String companyName;
 
-    @Column(columnDefinition = "TIMESTAMP")
+    @Column(columnDefinition = "TIMESTAMP",name = "start_date")
     private OffsetDateTime startDate;
 
-    @Column(columnDefinition = "TIMESTAMP")
+    @Column(columnDefinition = "TIMESTAMP",name = "end_date")
     private OffsetDateTime endDate;
 
-    @Column(columnDefinition = "nvarchar(20)")
+    @Column(columnDefinition = "nvarchar(20)",name = "tax_id_number")
     private String taxIdNumber;
 
     @Column(columnDefinition = "nvarchar(256)", name = "supplier_address")

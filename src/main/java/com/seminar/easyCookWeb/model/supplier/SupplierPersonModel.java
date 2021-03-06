@@ -16,14 +16,14 @@ public class SupplierPersonModel {
     @ApiModelProperty(value = "合作商ID", required = true, example = "supplier001")
     private long iid;
 
-    @ApiModelProperty(value = "合作商姓名", required = true, example = "大雄")
+    @ApiModelProperty(value = "合作商姓名", required = true, example = "葉大雄")
     @NotBlank
     private String name;
 
-    @ApiModelProperty(value = "合作商聯絡人職位", required = true, example = "大雄")
+    @ApiModelProperty(value = "合作商聯絡人職位", required = true, example = "經理")
     private String position;
 
-    @ApiModelProperty(value = "聯絡人電話", required = true, example = "大雄")
+    @ApiModelProperty(value = "聯絡人電話", required = true, example = "0912345678")
     private String phone;
 
     @ApiModelProperty(value = "合作商姓名", required = true, example = "大雄")

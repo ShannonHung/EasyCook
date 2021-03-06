@@ -20,27 +20,28 @@ public class SupplierPerson {
     @Column(name="contact_id")
     private long iid;
 
-    @Column(columnDefinition = "nvarchar(256)")
+    @Column(columnDefinition = "nvarchar(256)",name = "name")
     @Nationalized
     @NotBlank
     private String name;
 
-    @Column(columnDefinition = "nvarchar(100)")
+    @Column(columnDefinition = "nvarchar(100)",name = "position")
     @NotBlank
     private String position;
 
-    @Column(columnDefinition = "nvarchar(15)")
+    @Column(columnDefinition = "nvarchar(15)",name = "phone")
     private String phone;
 
-    @Column(columnDefinition = "nvarchar(10)")
+    @Column(columnDefinition = "nvarchar(10)",name = "ext")
     private String ext;
 
-    @Column(columnDefinition = "nvarchar(15)")
+    @Column(columnDefinition = "nvarchar(15)",name = "fax")
     private String fax;
 
-    @Column(columnDefinition = "nvarchar(254)")
+    @Column(columnDefinition = "nvarchar(254)",name = "email")
     private String email;
 
+    //設定"多對一"關聯後，記得另一邊也要設定"一對多"關聯
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supplier_id")
     @JsonBackReference
