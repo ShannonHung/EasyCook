@@ -34,8 +34,8 @@ public class RecipeIngredientService {
                                 ingredientRepository.findById(ingredientModel.getIngredient().getId())
                                     .orElseThrow(()-> new EntityNotFoundException("Cannot find IngredinetId =>"+ingredientModel.getIngredient().getId() +" for recipe"))
                         )
-                        .Quantityrequired(
-                                ingredientModel.getQuantityrequired()
+                        .quantityRequired(
+                                ingredientModel.getQuantityRequired()
                         )
                         .build()
                 ).map(recipeIngredientRepository::save)

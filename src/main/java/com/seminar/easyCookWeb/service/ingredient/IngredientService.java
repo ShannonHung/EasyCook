@@ -28,7 +28,7 @@ public class IngredientService {
                 .filter(it -> repository.findByName(it.getName()).isEmpty())
                 .map(repository::save)
                 .map(mapper::toModel)
-                .orElseThrow(() -> new EntityCreatedConflictException("No data!")));
+                .orElseThrow(() -> new EntityCreatedConflictException("An ingredient with same name have already existed!")));
     }
 
     /**

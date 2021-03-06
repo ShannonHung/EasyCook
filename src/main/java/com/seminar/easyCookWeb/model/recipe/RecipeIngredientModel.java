@@ -22,5 +22,5 @@ public class RecipeIngredientModel {
 
     private IngredientModel ingredient;
 
-    private Double Quantityrequired = 0D;
+    private Double quantityRequired = 0D;
 }

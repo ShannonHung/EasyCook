@@ -6,6 +6,11 @@
 # Note: Users must create a mysql db that they will reference here, create a user that has access to it on localhost
 #       and provide the credentials below to access it //http://140.118.110.164/
 spring:
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+
   datasource:
 #    url: jdbc:mysql://localhost:3306/easyCook?serverTimezone=UTC
     url: jdbc:mysql://140.118.9.145:3306/easycook?serverTimezone=UTC
@@ -16,13 +21,16 @@ spring:
       - classpath:/db/dev/employeelist.sql
       - classpath:/db/dev/ingredient.sql
       - classpath:/db/dev/memberlist.sql
+      - classpath:/db/product/recipe.sql
+      - classpath:/db/product/recipe_ingredient.sql
+      - classpath:/db/product/recipe_step.sql
   jpa:
     # uncomment the below lines to view sql output in console
     show-sql: true
     properties:
       hibernate:
         format_sql: true
-    hibernate.ddl-auto: create-drop
+    hibernate.ddl-auto: create
 
 # Server port is arbitrary
 server:
@@ -37,3 +45,7 @@ server:
 security:
   jwt:
     secret: ThisIsEasyCookSecretKeyCreatedByShannon
+  account:
+    admin:
+      username: admin
+      password: 04978e1501880f99e2bc3fe5934db30d28fee6bda18989122221611c7ad75797

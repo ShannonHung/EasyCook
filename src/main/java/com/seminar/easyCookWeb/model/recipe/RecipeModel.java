@@ -29,6 +29,10 @@ public class RecipeModel {
     @ApiModelProperty(value = "食譜按讚次數", example = "10")
     private int likesCount;
 
+    @ApiModelProperty(value = "食譜描述", example = "使用高山高麗菜的青蔬炒五花，兼顧您的健康與味覺享受...")
+    private String description;
+
+
     @Builder.Default
     @ApiModelProperty(value = "食譜步驟")
     private List<RecipeStepModel> recipeSteps = new LinkedList<>();

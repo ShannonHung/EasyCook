@@ -26,6 +26,9 @@ public class Recipe {
     @NotBlank
     private String name;
 
+    @Column(columnDefinition="TEXT")
+    private String description;
+
     //image bytes can have large lengths so we specify a value
     //which is more than the default length for picByte column
     @Builder.Default

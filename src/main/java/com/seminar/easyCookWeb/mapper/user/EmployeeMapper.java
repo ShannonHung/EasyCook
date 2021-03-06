@@ -15,6 +15,7 @@ public interface EmployeeMapper {
     EmployeeResponse toModel(Employee employee);
 
     Employee toPOJO(EmployeeRequest request);
+    Employee toPOJO(EmployeeResponse request);
 
     List<EmployeeResponse> toModels(List<Employee> employees);
 
