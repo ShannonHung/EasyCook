@@ -15,11 +15,14 @@ import java.util.Optional;
 public interface IngredientRepository extends CrudRepository<Ingredient, Long> {
     @Query("SELECT m FROM Ingredient m WHERE m.name LIKE %:title%")
     Optional<List<Ingredient>> findByName(@Param("title") String title);
+
+    @Query("SELECT COUNT(i) FROM Ingredient i WHERE ( i.name = :name ) AND i.id != :id")
+    Long ExistName(@Param("name") String name,  @Param("id") Long id);
+
+
     Optional<Ingredient> findById(Long id);
     Optional<List<Ingredient>> findAllByCategory(Category category);
     Optional<List<Ingredient>> findAllByCountry(String country);
     Optional<List<Ingredient>> findAllByCountryAndCity(String country, String city);
-//    @Query("select i.name from Ingredient i where i.id = :plantId")
-//    Boolean deliveryCompleted(Long plantId);
 
 }
