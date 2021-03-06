@@ -1,6 +1,7 @@
 package com.seminar.easyCookWeb.service.recipe;
 
 import com.seminar.easyCookWeb.exception.BusinessException;
+import com.seminar.easyCookWeb.exception.EntityCreatedConflictException;
 import com.seminar.easyCookWeb.mapper.recipe.RecipeMapper;
 import com.seminar.easyCookWeb.model.ingredient.IngredientModel;
 import com.seminar.easyCookWeb.model.recipe.RecipeModel;
@@ -38,20 +39,23 @@ public class RecipeService {
                 .filter(pojo-> recipeRepository.findByName(pojo.getName()).isEmpty())
                 .map(recipeRepository::save)
                 .map(mapper::toModel)
-                .map(it -> it.toBuilder()
-                        .recipeSteps(
-                                recipeModel.getRecipeSteps().stream()
-                                .map(recipeStepModel -> recipeStepService.createStep(it.getId(), recipeStepModel))
-                                .map(Optional::get)
-                                .collect(Collectors.toList())
-                        )
-                        .recipeIngredients(
-                                recipeModel.getRecipeIngredients().stream()
-                                .map(recipeIngredientModel -> recipeIngredientService.createIngredient(it.getId(),recipeIngredientModel))
-                                .map(Optional::get)
-                                .collect(Collectors.toList())
-                        )
-                        .build());
+                .map(it -> {
+                    return Optional.of(it.toBuilder()
+                            .recipeSteps(
+                                    recipeModel.getRecipeSteps().stream()
+                                            .map(recipeStepModel -> recipeStepService.createStep(it.getId(), recipeStepModel))
+                                            .map(Optional::get)
+                                            .collect(Collectors.toList())
+                            )
+                            .recipeIngredients(
+                                    recipeModel.getRecipeIngredients().stream()
+                                            .map(recipeIngredientModel -> recipeIngredientService.createIngredient(it.getId(),recipeIngredientModel))
+                                            .map(Optional::get)
+                                            .collect(Collectors.toList())
+                            )
+                            .build());
+                })
+                .orElseThrow(() -> new EntityCreatedConflictException("An Recipe with same name have already existed!"));
     }
 
     /**
@@ -65,7 +69,7 @@ public class RecipeService {
     }
 
     public Optional<Iterable<RecipeModel>> findByName(String name){
-        return recipeRepository.findByName(name)
+        return recipeRepository.findByPartName(name)
                 .map(mapper::toIterableModel);
     }
 

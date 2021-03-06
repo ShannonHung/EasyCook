@@ -101,8 +101,8 @@ public class MemberService {
                 .map(mapper::toModel);
     }
 
-    public Optional<MemberResponse> updatePwd(UpdatePwd updatePwd, Authentication authentication){
-        return Optional.of(memberRepository.findByAccount(updatePwd.getAccount()).get())
+    public Optional<MemberResponse> updatePwd(Long memberId, UpdatePwd updatePwd, Authentication authentication){
+        return Optional.of(memberRepository.findById(memberId).get())
                 .map(it -> {
                     log.info("change pwd => " + it);
                     if(passwordEncoder.matches(updatePwd.getPrepassword(), it.getPassword())){

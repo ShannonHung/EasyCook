@@ -1,6 +1,8 @@
 package com.seminar.easyCookWeb.mapper.ingredient;
 
 import com.seminar.easyCookWeb.model.ingredient.IngredientModel;
+import com.seminar.easyCookWeb.model.user.EmployeeRequest;
+import com.seminar.easyCookWeb.pojo.appUser.Employee;
 import com.seminar.easyCookWeb.pojo.ingredient.Ingredient;
 import org.mapstruct.*;
 
@@ -16,4 +18,10 @@ public interface IngredientMapper {
     IngredientModel toModel(Ingredient ingredient);
 
     Iterable<IngredientModel> toIterableModel(Iterable<Ingredient> ingredients);
+
+    @Mapping(target = "id",ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void update(IngredientModel ingredientModel, @MappingTarget Ingredient ingredient);
+
+
 }

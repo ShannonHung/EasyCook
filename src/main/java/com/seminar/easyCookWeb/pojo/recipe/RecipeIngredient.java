@@ -33,5 +33,5 @@ public class RecipeIngredient {
 
     @Column(columnDefinition = "decimal(28,4)")
     @Builder.Default
-    private Double Quantityrequired = 0D;
+    private Double quantityRequired = 0D;
 }

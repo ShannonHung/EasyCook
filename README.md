@@ -4,16 +4,8 @@
 在下載該檔案的時候建議先下載maven並且設定環境變數
 參考連結: [「入門篇」「java神器」使用maven搭建spring boot](https://kknews.cc/code/emazpyq.html)
 
-
-- 參考連結: [「入門篇」「java神器」使用maven搭建spring boot](https://kknews.cc/code/emazpyq.html)
-- localhost:8082/h2 的資料庫進入方式
-    1. url: jdbc:h2:mem:easyCook
-    2. username: sa
-    3. password: (不用打直接進入)
-- Servert Port: localhost:8082
-
-
-
+# Postman連結
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c0d616b0c3ca05d9ffec#?env%5BEasyCook-RealAddr%5D=W3sia2V5IjoiYWRkciIsInZhbHVlIjoiaHR0cDovLzE0MC4xMTguOS4xNDU6ODA4MiIsImVuYWJsZWQiOnRydWUsInR5cGUiOiJ0ZXh0In0seyJrZXkiOiJ0b2tlbiIsInZhbHVlIjoiIiwiZW5hYmxlZCI6dHJ1ZSwidHlwZSI6InRleHQifV0=)
 ### Getting start with VScode
 
 1. Get an extension, 'Lombok'
