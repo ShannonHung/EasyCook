@@ -14,17 +14,17 @@ import javax.validation.constraints.NotNull;
 @Data
 @ApiModel("合作商聯絡人SupplierPersonModel請求Entity樣式")
 public class SupplierPersonModel {
-    @ApiModelProperty(value = "合作商ID")
+    @ApiModelProperty(value = "合作商ID", required = true)
     private long iid;
 
     @ApiModelProperty(value = "姓名" , example = "葉大雄", required = true)
     @NotBlank
     private String name;
 
-    @ApiModelProperty(value = "職稱", example = "經理", required = true)
+    @ApiModelProperty(value = "職稱", example = "經理")
     private String position;
 
-    @ApiModelProperty(value = "電話", example = "021234567", required = true)
+    @ApiModelProperty(value = "電話", example = "021234567")
     private String phone;
 
     @ApiModelProperty(value = "分機", example = "001")
@@ -33,6 +33,6 @@ public class SupplierPersonModel {
     @ApiModelProperty(value = "傳真", example = "123")
     private String fax;
 
-    @ApiModelProperty(value = "電子郵件", example = "example@ex.com", required = true)
+    @ApiModelProperty(value = "電子郵件", example = "example@ex.com")
     private String email;
 }
