@@ -22,4 +22,5 @@ public class RecipeImageModel {
     private String type;
     @ApiModelProperty(value = "檔案大小", example = "123456")
     private Long size;
+
 }

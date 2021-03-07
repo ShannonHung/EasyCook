@@ -40,7 +40,7 @@ public class RecipeTest {
 
         RecipeIngredient ingredient = RecipeIngredient.builder()
                 .ingredient(Ingredient.builder().name("ingredient").build())
-                .Quantityrequired(10D)
+                .quantityRequired(10D)
                 .build();
 
         List<RecipeStep> steps = new LinkedList<>();

@@ -5,6 +5,7 @@ import com.seminar.easyCookWeb.exception.EntityCreatedConflictException;
 import com.seminar.easyCookWeb.exception.EntityNotFoundException;
 import com.seminar.easyCookWeb.mapper.user.EmployeeMapper;
 import com.seminar.easyCookWeb.model.user.UpdatePwd;
+import com.seminar.easyCookWeb.pojo.appUser.Role;
 import com.seminar.easyCookWeb.repository.users.EmployeeRepository;
 import com.seminar.easyCookWeb.model.user.EmployeeRequest;
 import com.seminar.easyCookWeb.model.user.EmployeeResponse;
@@ -88,7 +89,7 @@ public class EmployeeService {
         return Optional.of(employeeRepository.findById(iid))
                 .map(it -> {
                     Employee originEmployee = it.orElseThrow(() -> new EntityNotFoundException("Cannot find employee"));
-                    if(!authentication.getName().equals(employeeRequest.getAccount())){
+                    if(!authentication.getName().equals(it.get().getAccount())){
                         throw new BusinessException("You are not the employee you want to update, so you cannot update this employee");
                     }else if(employeeRepository.ExistAccountandEmail(employeeRequest.getAccount(), employeeRequest.getEmail(), originEmployee.getId()) > 0){
                         throw new EntityCreatedConflictException("this account or email have already in used!");
@@ -104,10 +105,9 @@ public class EmployeeService {
     /**
      * Admin更新員工腳色
      * @param iid 員工id
-     * @param employeeRequest 員工更新的腳色內容
      * @return 員工最新樣式
      */
-    public Optional<EmployeeResponse> updatebyadmin(Long iid, EmployeeRequest employeeRequest) {
+    public Optional<EmployeeResponse> updatebyadmin(Long iid,EmployeeRequest employeeRequest) {
         return Optional.of(employeeRepository.findById(iid))
                 .map(it -> {
                         Employee originEmployee = it.orElseThrow(() -> new EntityNotFoundException("Cannot find employee"));
@@ -119,10 +119,14 @@ public class EmployeeService {
     }
 
 
-    public Optional<EmployeeResponse> updatePwd(UpdatePwd updatePwd, Authentication authentication){
-        return Optional.of(employeeRepository.findByAccount(updatePwd.getAccount()).get())
+    public Optional<EmployeeResponse> updatePwd(Long employeeId,UpdatePwd updatePwd, Authentication authentication){
+        return Optional.of(employeeRepository.findById(employeeId).get())
                 .map(it -> {
                     log.info("change pwd => " + it);
+                    if(!authentication.getName().equals(it.getAccount()) &&
+                            !authentication.getAuthorities().stream().findFirst().get().toString().equals(Role.ROLE_ADMIN)) {
+                        throw new BusinessException("You are not the employee you want to update, so you cannot update this employee");
+                    }
                     if(passwordEncoder.matches(updatePwd.getPrepassword(), it.getPassword())){
                         it.setPassword(passwordEncoder.encode(updatePwd.getNewpassword()));
                         return it;

@@ -40,7 +40,7 @@ public class IngredientModel {
 
     @ApiModelProperty(value = "食材安全庫存", example = "10.00", required = true)
     @Builder.Default
-    private Double satefyStock = 0D;
+    private Double safetyStock = 0D;
 
     @ApiModelProperty(value = "食材目前庫存", example = "100.00", required = true)
     @Builder.Default

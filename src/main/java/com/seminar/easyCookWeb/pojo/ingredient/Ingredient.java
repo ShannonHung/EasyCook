@@ -42,7 +42,7 @@ public class Ingredient {
 
     @Column(columnDefinition = "decimal(28,4)")
     @Builder.Default
-    private Double satefyStock = 0D;
+    private Double safetyStock = 0D;
 
     @Column(columnDefinition = "decimal(28,4)")
     @Builder.Default

@@ -6,6 +6,8 @@ import com.seminar.easyCookWeb.exception.EntitiesErrorException;
 import com.seminar.easyCookWeb.exception.EntityNotFoundException;
 import com.seminar.easyCookWeb.model.ingredient.IngredientModel;
 import com.seminar.easyCookWeb.model.ingredient.IngredientName;
+import com.seminar.easyCookWeb.model.user.EmployeeResponse;
+import com.seminar.easyCookWeb.model.user.UpdatePwd;
 import com.seminar.easyCookWeb.service.ingredient.IngredientService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -38,7 +41,7 @@ public class IngredientController {
                 .orElseThrow(()-> new EntitiesErrorException("Cannot create Ingredient"));
     }
 
-    @GetMapping("/id/{ingredientId}")
+    @GetMapping("/{ingredientId}")
     @ApiOperation("透過ID搜尋食材: Search Ingredient By id {EVERYONE CAN ACCESS}")
     public ResponseEntity<IngredientModel> findById(@PathVariable Long ingredientId){
         return service.readByIngredientId(ingredientId)
@@ -66,15 +69,23 @@ public class IngredientController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     content = @Content(schema = @Schema(implementation = IngredientModel.class))),
-            @ApiResponse(responseCode = "400", description = "Cannot find the account")
+            @ApiResponse(responseCode = "400", description = "Cannot find the ingredient")
     })
-
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     @DeleteMapping(path = "/delete/{ingredientId}")
     public ResponseEntity<IngredientModel> deleteById(@PathVariable Long ingredientId) {
         return service.delete(ingredientId)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new BusinessException("Delete Ingredient fail"));
+    }
+
+    @PatchMapping("/update/{ingredientId}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    @ApiOperation("透過id來更新食材: Update Ingredient By Id (Role: ROLE_ADMIN, ROLE_EMPLOYEE)")
+    public ResponseEntity<IngredientModel> updateById(@PathVariable Long ingredientId, @Valid @RequestBody IngredientModel request){
+        return service.update(ingredientId, request)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntitiesErrorException("Cannot update ingredient"));
     }
 
 }

@@ -4,6 +4,7 @@ import com.seminar.easyCookWeb.pojo.appUser.Department;
 import com.seminar.easyCookWeb.pojo.appUser.Role;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -11,6 +12,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Data
+@Builder
 @ApiModel("Employee請求Entity樣式")
 public class EmployeeRequest {
     @ApiModelProperty(value = "員工帳號", example = "employee001", required = true)

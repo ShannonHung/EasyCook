@@ -92,8 +92,8 @@ public class MemberController {
     @PatchMapping("/update/pwd/{memberId}")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN', 'ROLE_MEMBER')")
     @ApiOperation("透過id來更新會員密碼: Update Employees' password By Id (Role: 'ROLE_EMPLOYEE', 'ROLE_ADMIN', 'ROLE_MEMBER')")
-    public ResponseEntity<MemberResponse> updatePassword(@Valid @RequestBody UpdatePwd updatePwd, Authentication authentication){
-        return memberService.updatePwd(updatePwd, authentication)
+    public ResponseEntity<MemberResponse> updatePassword(@PathVariable Long memberId,@Valid @RequestBody UpdatePwd updatePwd, Authentication authentication){
+        return memberService.updatePwd(memberId, updatePwd, authentication)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new EntitiesErrorException("Cannot update employee"));
     }

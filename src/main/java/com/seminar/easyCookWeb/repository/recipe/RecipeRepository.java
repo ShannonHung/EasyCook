@@ -13,7 +13,11 @@ import java.util.Optional;
 
 @Repository
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
-    @Query("SELECT m FROM Recipe m WHERE m.name LIKE %:title%")
+    @Query("SELECT m FROM Recipe m WHERE m.name LIKE :title")
     Optional<Iterable<Recipe>> findByName(@Param("title") String title);
+
+    @Query("SELECT m FROM Recipe m WHERE m.name LIKE %:title%")
+    Optional<Iterable<Recipe>> findByPartName(@Param("title") String title);
+
 
 }
