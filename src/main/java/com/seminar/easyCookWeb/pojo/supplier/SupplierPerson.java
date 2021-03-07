@@ -26,10 +26,10 @@ public class SupplierPerson {
     private String name;
 
     @Column(columnDefinition = "nvarchar(100)",name = "position")
-    @NotBlank
     private String position;
 
     @Column(columnDefinition = "nvarchar(15)",name = "phone")
+    @NotBlank
     private String phone;
 
     @Column(columnDefinition = "nvarchar(10)",name = "ext")

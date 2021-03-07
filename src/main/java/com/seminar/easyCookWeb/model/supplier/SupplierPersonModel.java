@@ -9,30 +9,30 @@ import org.hibernate.annotations.Nationalized;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Data
 @ApiModel("合作商聯絡人SupplierPersonModel請求Entity樣式")
 public class SupplierPersonModel {
-    @ApiModelProperty(value = "合作商ID", required = true, example = "supplier001")
+    @ApiModelProperty(value = "合作商ID")
     private long iid;
 
-    @ApiModelProperty(value = "合作商姓名", required = true, example = "葉大雄")
+    @ApiModelProperty(value = "姓名" , example = "葉大雄", required = true)
     @NotBlank
     private String name;
 
-    @ApiModelProperty(value = "合作商聯絡人職位", required = true, example = "經理")
+    @ApiModelProperty(value = "職稱", example = "經理", required = true)
     private String position;
 
-    @ApiModelProperty(value = "聯絡人電話", required = true, example = "0912345678")
+    @ApiModelProperty(value = "電話", example = "021234567", required = true)
     private String phone;
 
-    @ApiModelProperty(value = "合作商姓名", required = true, example = "大雄")
+    @ApiModelProperty(value = "分機", example = "001")
     private String ext;
 
-    @ApiModelProperty(value = "合作商姓名", required = true, example = "大雄")
+    @ApiModelProperty(value = "傳真", example = "123")
     private String fax;
 
-    @ApiModelProperty(value = "合作商姓名", required = true, example = "大雄")
-    @NotBlank
+    @ApiModelProperty(value = "電子郵件", example = "example@ex.com", required = true)
     private String email;
 }
