@@ -2,9 +2,11 @@ package com.seminar.easyCookWeb.service.recipe;
 
 import com.seminar.easyCookWeb.exception.BusinessException;
 import com.seminar.easyCookWeb.exception.EntityCreatedConflictException;
+import com.seminar.easyCookWeb.exception.EntityNotFoundException;
 import com.seminar.easyCookWeb.mapper.recipe.RecipeMapper;
 import com.seminar.easyCookWeb.model.ingredient.IngredientModel;
 import com.seminar.easyCookWeb.model.recipe.RecipeModel;
+import com.seminar.easyCookWeb.pojo.ingredient.Ingredient;
 import com.seminar.easyCookWeb.pojo.recipe.Recipe;
 import com.seminar.easyCookWeb.repository.recipe.RecipeRepository;
 import com.seminar.easyCookWeb.service.ingredient.IngredientService;
@@ -88,6 +90,21 @@ public class RecipeService {
                         throw new BusinessException("Cannot Deleted " +it.getId()+ " recipe");
                     }
                 })
+                .map(mapper::toModel);
+    }
+
+    public Optional<RecipeModel> update(Long iid, RecipeModel request) {
+        return Optional.of(recipeRepository.findById(iid))
+                .map(it -> {
+                    Recipe origin = it.orElseThrow(() -> new EntityNotFoundException("Cannot find Ingredient"));
+                    if(recipeRepository.ExistName(request.getName(), iid) > 0){
+                        throw new EntityCreatedConflictException("this ingredient have already in used!");
+                    }else{
+                        mapper.update(request, origin);
+                        return origin;
+                    }
+                })
+                .map(recipeRepository::save)
                 .map(mapper::toModel);
     }
 }

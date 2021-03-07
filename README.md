@@ -5,9 +5,9 @@
 參考連結: [「入門篇」「java神器」使用maven搭建spring boot](https://kknews.cc/code/emazpyq.html)
 
 # Postman連結
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c0d616b0c3ca05d9ffec#?env%5BEasyCook-RealAddr%5D=W3sia2V5IjoiYWRkciIsInZhbHVlIjoiaHR0cDovLzE0MC4xMTguOS4xNDU6ODA4MiIsImVuYWJsZWQiOnRydWUsInR5cGUiOiJ0ZXh0In0seyJrZXkiOiJ0b2tlbiIsInZhbHVlIjoiIiwiZW5hYmxlZCI6dHJ1ZSwidHlwZSI6InRleHQifV0=)
-### Getting start with VScode
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c0d616b0c3ca05d9ffec#?env%5BEasyCook-RealAddr%5D=W3sia2V5IjoiYWRkciIsInZhbHVlIjoiaHR0cDovLzE0MC4xMTguOS4xNDU6ODA4MiIsImVuYWJsZWQiOnRydWV9LHsia2V5IjoidG9rZW4iLCJ2YWx1ZSI6IiIsImVuYWJsZWQiOnRydWV9XQ==)
 
+### Getting start with VScode
 1. Get an extension, 'Lombok'
 2. If you do not have Maven, go https://maven.apache.org/download.cgi# and install it
 3. Install dependences

@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/recipe" , produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
@@ -64,5 +66,15 @@ public class RecipeController {
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new BusinessException("Delete Ingredient fail"));
     }
+
+    @PatchMapping("/update/{recipeId}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    @ApiOperation("透過id來更新食材: Update Ingredient By Id (Role: ROLE_ADMIN, ROLE_EMPLOYEE)")
+    public ResponseEntity<RecipeModel> updateById(@PathVariable Long recipeId, @Valid @RequestBody RecipeModel request){
+        return recipeService.update(recipeId, request)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntitiesErrorException("Cannot update ingredient"));
+    }
+
 
 }

@@ -19,5 +19,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     @Query("SELECT m FROM Recipe m WHERE m.name LIKE %:title%")
     Optional<Iterable<Recipe>> findByPartName(@Param("title") String title);
 
+    @Query("SELECT COUNT(i) FROM Recipe i WHERE ( i.name = :name ) AND i.id != :id")
+    Long ExistName(@Param("name") String name,  @Param("id") Long id);
 
 }
