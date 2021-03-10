@@ -5,11 +5,12 @@ import com.seminar.easyCookWeb.model.recipe.RecipeModel;
 import com.seminar.easyCookWeb.model.supplier.SupplierModel;
 import com.seminar.easyCookWeb.pojo.recipe.Recipe;
 import com.seminar.easyCookWeb.pojo.supplier.Supplier;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import com.seminar.easyCookWeb.pojo.supplier.SupplierPerson;
+import org.mapstruct.*;
 
 import java.util.List;
 
+//要用SupplierPersonMapper才能轉過去
 @Mapper(componentModel = "spring", uses = {SupplierPersonMapper.class})
 public interface SupplierMapper {
     SupplierModel toModel(Supplier supplier);
@@ -20,4 +21,8 @@ public interface SupplierMapper {
     List<SupplierModel> toModels(List<Supplier> suppliers);
 
     Iterable<SupplierModel> toIterableModel(Iterable<Supplier> suppliers);
+
+    @Mapping(target = "iid",ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void update(SupplierModel supplierModel, @MappingTarget Supplier supplier);
 }
