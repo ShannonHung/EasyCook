@@ -6,7 +6,6 @@
 
 # Postman連結
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c0d616b0c3ca05d9ffec#?env%5BEasyCook-RealAddr%5D=W3sia2V5IjoiYWRkciIsInZhbHVlIjoiaHR0cDovLzE0MC4xMTguOS4xNDU6ODA4MiIsImVuYWJsZWQiOnRydWV9LHsia2V5IjoidG9rZW4iLCJ2YWx1ZSI6IiIsImVuYWJsZWQiOnRydWV9XQ==)
-
 ### Getting start with VScode
 1. Get an extension, 'Lombok'
 2. If you do not have Maven, go https://maven.apache.org/download.cgi# and install it

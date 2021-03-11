@@ -28,9 +28,9 @@ public class RecipeController {
     @PostMapping("/create")
     @ApiOperation("建立食譜: Create Recipe {ROLE_EMPLOYEE, ROLE_ADMIN}")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
-    public ResponseEntity<RecipeModel> create(@RequestBody RecipeModel recipeModel){
-        log.info("[recipe create] => " + recipeModel);
-        return recipeService.createRecipe(recipeModel)
+    public ResponseEntity<RecipeModel> create(@Valid @RequestBody RecipeModel request){
+        log.info("[recipe create] => " + request);
+        return recipeService.createRecipe(request)
                 .map(ResponseEntity::ok)
                 .orElseThrow(()-> new EntitiesErrorException("Cannot create Recipe! Maybe have Duplicated Recipe Name"));
     }
@@ -47,6 +47,14 @@ public class RecipeController {
     @ApiOperation("透過食譜名稱尋找食譜: Search Recipe By Name {EVERYONE CAN ACCESS}")
     public ResponseEntity<Iterable<RecipeModel>> getByName(@RequestBody RecipeModel recipeModel){
         return recipeService.findByName(recipeModel.getName())
+                .map(ResponseEntity::ok)
+                .orElseThrow(()-> new EntityNotFoundException("Cann not find any recipes"));
+    }
+
+    @PostMapping("/version")
+    @ApiOperation("透過食譜版本尋找食譜: Search Recipe By Version {EVERYONE CAN ACCESS}")
+    public ResponseEntity<Iterable<RecipeModel>> getByVersion(@RequestBody RecipeModel recipeModel){
+        return recipeService.findByVersion(recipeModel.getVersion())
                 .map(ResponseEntity::ok)
                 .orElseThrow(()-> new EntityNotFoundException("Cann not find any recipes"));
     }
@@ -71,9 +79,12 @@ public class RecipeController {
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     @ApiOperation("透過id來更新食材: Update Ingredient By Id (Role: ROLE_ADMIN, ROLE_EMPLOYEE)")
     public ResponseEntity<RecipeModel> updateById(@PathVariable Long recipeId, @Valid @RequestBody RecipeModel request){
-        return recipeService.update(recipeId, request)
+        recipeService.delete(recipeId)
                 .map(ResponseEntity::ok)
-                .orElseThrow(() -> new EntitiesErrorException("Cannot update ingredient"));
+                .orElseThrow(() -> new BusinessException("Delete Ingredient fail"));
+        return recipeService.createRecipe(request)
+                .map(ResponseEntity::ok)
+                .orElseThrow(()-> new EntitiesErrorException("Cannot create Recipe! Maybe have Duplicated Recipe Name"));
     }
 
 

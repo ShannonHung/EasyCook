@@ -3,6 +3,7 @@ package com.seminar.easyCookWeb.service.recipe;
 import com.seminar.easyCookWeb.exception.EntityNotFoundException;
 import com.seminar.easyCookWeb.mapper.recipe.RecipeStepMapper;
 import com.seminar.easyCookWeb.model.recipe.RecipeStepModel;
+import com.seminar.easyCookWeb.pojo.recipe.Recipe;
 import com.seminar.easyCookWeb.pojo.recipe.RecipeStep;
 import com.seminar.easyCookWeb.repository.recipe.RecipeRepository;
 import com.seminar.easyCookWeb.repository.recipe.RecipeStepRepository;
@@ -30,4 +31,15 @@ public class RecipeStepService {
                 ).map(recipeStepRepository::save)
                 .map(mapper::toModel);
     }
+
+    public Optional<RecipeStep> updateStep(Long recipeId, RecipeStep recipeStep){
+        return Optional.of(recipeStep)
+                .map(it -> it.toBuilder()
+                        .recipe(
+                                recipeRepository.findById(recipeId)
+                                        .orElseThrow(()-> new EntityNotFoundException("Cannot find recipe"))
+                        ).build()
+                ).map(recipeStepRepository::save);
+    }
+
 }

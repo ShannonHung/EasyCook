@@ -38,7 +38,7 @@ public class RecipeService {
      */
     public Optional<RecipeModel> createRecipe(RecipeModel recipeModel){
         return Optional.of(mapper.toPOJO(recipeModel))
-                .filter(pojo-> recipeRepository.findByName(pojo.getName()).isEmpty())
+//                .filter(pojo-> recipeRepository.findByName(pojo.getName()).isEmpty())
                 .map(recipeRepository::save)
                 .map(mapper::toModel)
                 .map(it -> {
@@ -75,6 +75,11 @@ public class RecipeService {
                 .map(mapper::toIterableModel);
     }
 
+    public Optional<Iterable<RecipeModel>> findByVersion(String version){
+        return recipeRepository.findAllByVersion(version)
+                .map(mapper::toIterableModel);
+    }
+
     public Optional<Iterable<RecipeModel>> findAll(){
         return Optional.of(recipeRepository.findAll())
                 .map(mapper::toIterableModel);
@@ -93,18 +98,51 @@ public class RecipeService {
                 .map(mapper::toModel);
     }
 
-    public Optional<RecipeModel> update(Long iid, RecipeModel request) {
+    public Optional<RecipeModel> update2(Long iid, RecipeModel request) {
         return Optional.of(recipeRepository.findById(iid))
                 .map(it -> {
                     Recipe origin = it.orElseThrow(() -> new EntityNotFoundException("Cannot find Ingredient"));
-                    if(recipeRepository.ExistName(request.getName(), iid) > 0){
-                        throw new EntityCreatedConflictException("this ingredient have already in used!");
-                    }else{
+//                    if(recipeRepository.ExistName(request.getName(), iid) > 0){
+//                        throw new EntityCreatedConflictException("this ingredient have already in used!");
+//                    }else{
                         mapper.update(request, origin);
                         return origin;
-                    }
+//                    }
                 })
                 .map(recipeRepository::save)
                 .map(mapper::toModel);
     }
+//    public Optional<RecipeModel> update(Long iid, RecipeModel request) {
+//        return Optional.of(recipeRepository.findById(iid))
+//                .map(it -> {
+//                    Recipe origin = it.orElseThrow(() -> new EntityNotFoundException("Cannot find Ingredient"));
+////                    if(recipeRepository.ExistName(request.getName(), iid) > 0){
+////                        throw new EntityCreatedConflictException("this ingredient have already in used!");
+////                    }else{
+//                    mapper.update(request, origin);
+//                    return origin;
+////                    }
+//                })
+//                .map(recipeRepository::save)
+//                .map(recipedb -> {
+//                    return Optional.of(recipedb.toBuilder()
+//                            .recipeSteps(
+//                                    recipedb.getRecipeSteps().stream()
+//                                            .map(recipeStep -> recipeStepService.updateStep(recipedb.getId(), recipeStep))
+//                                            .map(Optional::get)
+//                                            .collect(Collectors.toList())
+//                            )
+//                            .recipeIngredients(
+//                                    request.getRecipeIngredients().stream()
+//                                            .map(recipeIngredientModel -> recipeIngredientService.updateIngredient(recipedb.getId(), recipeIngredientModel))
+//                                            .map(Optional::get)
+//                                            .collect(Collectors.toList())
+//                            )
+//                            .build());
+//                })
+//                .map(Optional::get)
+//                .map(mapper::toModel);
+//    }
+
+
 }

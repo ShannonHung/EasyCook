@@ -1,6 +1,7 @@
 package com.seminar.easyCookWeb.pojo.recipe;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.Nullable;
 import lombok.*;
 
@@ -29,7 +30,6 @@ public class RecipeImage {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id")
-    @JsonBackReference
     @Nullable
     private Recipe recipe;
 
