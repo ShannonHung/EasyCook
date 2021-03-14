@@ -29,17 +29,17 @@ public class SupplierPersonController {
 
     /**
      * 建立合作商聯絡人
-     * @param supplierPersonModel
+     * @param personModel
      * @return
      */
-//    @PostMapping("/create")
-//    @ApiOperation("建立合作商聯絡人: Create Supplier {ROLE_EMPLOYEE, ROLE_ADMIN}")
-//    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
-//    public ResponseEntity<SupplierPersonModel> create(@Valid @RequestBody SupplierPersonModel supplierPersonModel){
-//        log.error("[recipe create] => " + supplierPersonModel);
-//        return supplierPersonService.createPerson(supplierPersonModel)
-//                .map(ResponseEntity::ok)
-//                .orElseThrow(()-> new EntitiesErrorException("Cannot create SupplierPerson!"));
-//    }
+    @PostMapping("/create")
+    @ApiOperation("建立合作商聯絡人: Create Supplier {ROLE_EMPLOYEE, ROLE_ADMIN}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    public ResponseEntity<SupplierPersonModel> create(@Valid @RequestBody Long supplierId, SupplierPersonModel personModel){
+        log.error("[recipe create] => " + personModel);
+        return supplierPersonService.createPerson(supplierId,personModel)
+                .map(ResponseEntity::ok)
+                .orElseThrow(()-> new EntitiesErrorException("Cannot create SupplierPerson!"));
+    }
 
 }

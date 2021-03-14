@@ -13,13 +13,6 @@ import java.util.Optional;
 @Repository
 public interface SupplierRepository extends JpaRepository<Supplier, Long> {
 
-    //參考IngredientRepository建置
-    @Query("SELECT m FROM Supplier m WHERE m.name LIKE %:title%")
-    Optional<List<Supplier>> findByName(@Param("title") String title);
-
-    @Query("SELECT COUNT(i) FROM Supplier i WHERE ( i.name = :name ) AND i.id != :id")
-    Long ExistName(@Param("name") String name,  @Param("id") Long id);
-
-    Optional<Supplier> findById(Long id);
+    Optional<List<Supplier>> findByCompanyName(String name);
 
 }

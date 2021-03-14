@@ -15,19 +15,8 @@ import java.util.Optional;
 @Repository
 public interface SupplierPersonRepository extends JpaRepository<SupplierPerson, Long> {
 
-//    //參考Recipe建置但會錯
-//    @Query("SELECT m FROM SupplierContactPerson m WHERE m.name LIKE :title")
-//    Optional<Iterable<SupplierPerson>> findByName(@Param("title") String title);
-//
-//    @Query("SELECT m FROM SupplierContactPerson m WHERE m.name LIKE %:title%")
-//    Optional<Iterable<SupplierPerson>> findByPartName(@Param("title") String title);
-
+    //參考Recipe建置但會錯
     //參考IngredientRepository建置
-    @Query("SELECT m FROM SupplierContactPerson m WHERE m.name LIKE %:title%")
-    Optional<List<SupplierPerson>> findByName(@Param("title") String title);
+    Optional<List<SupplierPerson>> findByName(String title);
 
-    @Query("SELECT COUNT(i) FROM SupplierContactPerson i WHERE ( i.name = :name ) AND i.id != :id")
-    Long ExistName(@Param("name") String name,  @Param("id") Long id);
-
-    Optional<SupplierPerson> findById(Long id);
 }

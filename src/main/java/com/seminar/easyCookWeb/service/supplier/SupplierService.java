@@ -74,13 +74,10 @@ public class SupplierService {
         return Optional.of(supplierRepository.findById(iid))
                 .map(it -> {
                     Supplier origin = it.orElseThrow(() -> new EntityNotFoundException("Cannot find Supplier"));
-                    if(supplierRepository.ExistName(supplierModel.getCompanyName(), iid) > 0){
-                        throw new EntityCreatedConflictException("this Supplier have already in used!");
-                    }else{
-                        mapper.update(supplierModel, origin);
-                        return origin;
+                    mapper.update(supplierModel, origin);
+                    return origin;
                     }
-                })
+                )
                 .map(supplierRepository::save)
                 .map(mapper::toModel);
     }

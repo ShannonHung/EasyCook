@@ -57,18 +57,6 @@ public class SupplierPersonService {
                 .map(mapper::toModel);
     }
 
-//    //參考Recipe建置但會錯
-//    //看不懂Iterable
-//    public Optional<Iterable<RecipeModel>> findByName(String name){
-//        return personRepository.findByPartName(name)
-//                .map(mapper::toIterableModel);
-//    }
-//
-//    public Optional<Iterable<RecipeModel>> findAll(){
-//        return Optional.of(recipeRepository.findAll())
-//                .map(mapper::toIterableModel);
-//    }
-
     //參考IngredientService
     /**
      * 透過id刪除合作商聯絡人
@@ -93,13 +81,10 @@ public class SupplierPersonService {
         return Optional.of(personRepository.findById(iid))
                 .map(it -> {
                     SupplierPerson origin = it.orElseThrow(() -> new EntityNotFoundException("Cannot find SupplierPerson"));
-                    if(personRepository.ExistName(supplierPersonModel.getName(), iid) > 0){
-                        throw new EntityCreatedConflictException("this SupplierPerson have already in used!");
-                    }else{
                         mapper.update(supplierPersonModel, origin);
                         return origin;
                     }
-                })
+                )
                 .map(personRepository::save)
                 .map(mapper::toModel);
     }
