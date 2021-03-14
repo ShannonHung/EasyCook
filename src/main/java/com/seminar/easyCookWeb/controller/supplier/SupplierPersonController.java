@@ -32,14 +32,15 @@ public class SupplierPersonController {
      * @param personModel
      * @return
      */
-    @PostMapping("/create")
-    @ApiOperation("建立合作商聯絡人: Create Supplier {ROLE_EMPLOYEE, ROLE_ADMIN}")
-    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
-    public ResponseEntity<SupplierPersonModel> create(@Valid @RequestBody Long supplierId, SupplierPersonModel personModel){
-        log.error("[recipe create] => " + personModel);
-        return supplierPersonService.createPerson(supplierId,personModel)
-                .map(ResponseEntity::ok)
-                .orElseThrow(()-> new EntitiesErrorException("Cannot create SupplierPerson!"));
-    }
+//    //supplierperson/create到底要不要用呢 待討論
+//    @PostMapping("/create")
+//    @ApiOperation("建立合作商聯絡人: Create Supplier {ROLE_EMPLOYEE, ROLE_ADMIN}")
+//    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+//    public ResponseEntity<SupplierPersonModel> create(@Valid @RequestBody Long supplierId, SupplierPersonModel personModel){
+//        log.error("[recipe create] => " + personModel);
+//        return supplierPersonService.createPerson(supplierId,personModel)
+//                .map(ResponseEntity::ok)
+//                .orElseThrow(()-> new EntitiesErrorException("Cannot create SupplierPerson!"));
+//    }
 
 }

@@ -70,7 +70,7 @@ public class SupplierController {
 //                .orElseThrow(()-> new EntityNotFoundException("Ingredient list is empty!"));
 //    }
 
-    @ApiOperation("刪除食材清單: DELETE INGREDIENT BY ID {ROLE_EMPLOYEE, ROLE_ADMIN}")
+    @ApiOperation("刪除合作商名單: DELETE INGREDIENT BY ID {ROLE_EMPLOYEE, ROLE_ADMIN}")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     content = @Content(schema = @Schema(implementation = SupplierModel.class))),
@@ -86,7 +86,7 @@ public class SupplierController {
 
     @PatchMapping("/update/{supplierId}")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
-    @ApiOperation("透過id來更新食材: Update Supplier By Id (Role: ROLE_ADMIN, ROLE_EMPLOYEE)")
+    @ApiOperation("透過id來更新合作商: Update Supplier By Id (Role: ROLE_ADMIN, ROLE_EMPLOYEE)")
     public ResponseEntity<SupplierModel> updateById(@PathVariable Long supplierId, @Valid @RequestBody SupplierModel request){
         return supplierService.update(supplierId, request)
                 .map(ResponseEntity::ok)
