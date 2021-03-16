@@ -36,6 +36,11 @@ public class RecipeService {
      * @param recipeModel - 食譜物件
      * @return 新增完成後的食譜 DTO 物件
      */
+    /**
+     * 新增食譜 以及 食譜步驟
+     * @param recipeModel - 食譜物件
+     * @return 新增完成後的食譜 DTO 物件
+     */
     public Optional<RecipeModel> createRecipe(RecipeModel recipeModel){
         return Optional.of(mapper.toPOJO(recipeModel))
 //                .filter(pojo-> recipeRepository.findByName(pojo.getName()).isEmpty())
@@ -45,13 +50,13 @@ public class RecipeService {
                     return Optional.of(it.toBuilder()
                             .recipeSteps(
                                     recipeModel.getRecipeSteps().stream()
-                                            .map(recipeStepModel -> recipeStepService.createStep(it.getId(), recipeStepModel))
+                                            .map(recipeStepModel -> recipeStepService.create(it.getId(), recipeStepModel))
                                             .map(Optional::get)
                                             .collect(Collectors.toList())
                             )
                             .recipeIngredients(
                                     recipeModel.getRecipeIngredients().stream()
-                                            .map(recipeIngredientModel -> recipeIngredientService.createIngredient(it.getId(),recipeIngredientModel))
+                                            .map(recipeIngredientModel -> recipeIngredientService.create(it.getId(),recipeIngredientModel))
                                             .map(Optional::get)
                                             .collect(Collectors.toList())
                             )
@@ -112,37 +117,44 @@ public class RecipeService {
                 .map(recipeRepository::save)
                 .map(mapper::toModel);
     }
-//    public Optional<RecipeModel> update(Long iid, RecipeModel request) {
-//        return Optional.of(recipeRepository.findById(iid))
-//                .map(it -> {
-//                    Recipe origin = it.orElseThrow(() -> new EntityNotFoundException("Cannot find Ingredient"));
-////                    if(recipeRepository.ExistName(request.getName(), iid) > 0){
-////                        throw new EntityCreatedConflictException("this ingredient have already in used!");
-////                    }else{
-//                    mapper.update(request, origin);
-//                    return origin;
-////                    }
-//                })
-//                .map(recipeRepository::save)
-//                .map(recipedb -> {
-//                    return Optional.of(recipedb.toBuilder()
-//                            .recipeSteps(
-//                                    recipedb.getRecipeSteps().stream()
-//                                            .map(recipeStep -> recipeStepService.updateStep(recipedb.getId(), recipeStep))
-//                                            .map(Optional::get)
-//                                            .collect(Collectors.toList())
-//                            )
-//                            .recipeIngredients(
-//                                    request.getRecipeIngredients().stream()
-//                                            .map(recipeIngredientModel -> recipeIngredientService.updateIngredient(recipedb.getId(), recipeIngredientModel))
-//                                            .map(Optional::get)
-//                                            .collect(Collectors.toList())
-//                            )
-//                            .build());
-//                })
-//                .map(Optional::get)
-//                .map(mapper::toModel);
-//    }
+    public Optional<RecipeModel> update(Long iid, RecipeModel request) {
+        return Optional.of(recipeRepository.findById(iid))
+                .map(it -> {
+                    Recipe origin = it.orElseThrow(() -> new EntityNotFoundException("Cannot find Ingredient"));
+                    mapper.update(request, origin);
+                    return origin;
+                })
+                .map(recipeRepository::save)
+                .map(recipedb -> {
+//                            recipedb.setRecipeSteps(request.getRecipeSteps().stream()
+//                                    .map(recipeStep -> recipeStepService.updateStep(recipedb.getId(), recipeStep))
+//                                    .map(Optional::get)
+//                                    .collect(Collectors.toList()));
+//
+//                            recipedb.setRecipeIngredients(request.getRecipeIngredients().stream()
+//                                    .map(recipeIngredientModel -> recipeIngredientService.updateIngredient(recipedb.getId(), recipeIngredientModel))
+//                                    .map(Optional::get)
+//                                    .collect(Collectors.toList()));
+
+                            recipedb.toBuilder()
+                            .recipeSteps(
+                                    request.getRecipeSteps().stream()
+                                            .map(recipeStep -> recipeStepService.updateStep(recipedb.getId(), recipeStep))
+                                            .map(Optional::get)
+                                            .collect(Collectors.toList())
+                            )
+                            .recipeIngredients(
+                                    request.getRecipeIngredients().stream()
+                                            .map(recipeIngredientModel -> recipeIngredientService.updateIngredient(recipedb.getId(), recipeIngredientModel))
+                                            .map(Optional::get)
+                                            .collect(Collectors.toList())
+                            )
+                            .build();
+                    return recipedb;
+                })
+                .map(recipeRepository::save)
+                .map(mapper::toModel);
+    }
 
 
 }

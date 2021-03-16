@@ -79,13 +79,20 @@ public class RecipeController {
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     @ApiOperation("透過id來更新食材: Update Ingredient By Id (Role: ROLE_ADMIN, ROLE_EMPLOYEE)")
     public ResponseEntity<RecipeModel> updateById(@PathVariable Long recipeId, @Valid @RequestBody RecipeModel request){
-        recipeService.delete(recipeId)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new BusinessException("Delete Ingredient fail"));
-        return recipeService.createRecipe(request)
+
+        return recipeService.update(recipeId, request)
                 .map(ResponseEntity::ok)
                 .orElseThrow(()-> new EntitiesErrorException("Cannot create Recipe! Maybe have Duplicated Recipe Name"));
     }
+
+//    public ResponseEntity<RecipeModel> updateById(@PathVariable Long recipeId, @Valid @RequestBody RecipeModel request){
+//        recipeService.delete(recipeId)
+//                .map(ResponseEntity::ok)
+//                .orElseThrow(() -> new BusinessException("Delete Ingredient fail"));
+//        return recipeService.createRecipe(request)
+//                .map(ResponseEntity::ok)
+//                .orElseThrow(()-> new EntitiesErrorException("Cannot create Recipe! Maybe have Duplicated Recipe Name"));
+//    }
 
 
 }

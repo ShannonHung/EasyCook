@@ -26,7 +26,7 @@ public class RecipeIngredient {
     @JsonBackReference
     private Recipe recipe;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "ingredient_id")
     @JsonManagedReference
     private Ingredient ingredient;
