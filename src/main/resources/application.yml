@@ -8,8 +8,8 @@
 spring:
   servlet:
     multipart:
-      max-file-size: 20MB
-      max-request-size: 20MB
+      max-file-size: 100MB
+      max-request-size: 100MB
 
   datasource:
 #    url: jdbc:mysql://localhost:3306/easyCook?serverTimezone=UTC
@@ -30,7 +30,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    hibernate.ddl-auto: create
+    hibernate.ddl-auto: create-drop
 
 # Server port is arbitrary
 server:

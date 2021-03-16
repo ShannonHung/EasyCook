@@ -36,7 +36,7 @@ public class RecipeTest {
         RecipeStep step1 = RecipeStep.builder()
                 .recipe(recipe)
                 .note("切水果")
-                .startTime("0:51").build();
+                .startTime(100).build();
 
         RecipeIngredient ingredient = RecipeIngredient.builder()
                 .ingredient(Ingredient.builder().name("ingredient").build())
