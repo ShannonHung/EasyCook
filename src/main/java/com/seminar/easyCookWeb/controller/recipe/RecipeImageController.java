@@ -5,6 +5,7 @@ import com.seminar.easyCookWeb.exception.EntityNotFoundException;
 import com.seminar.easyCookWeb.mapper.recipe.RecipeImageMapper;
 import com.seminar.easyCookWeb.model.ingredient.IngredientModel;
 import com.seminar.easyCookWeb.model.recipe.RecipeImageModel;
+import com.seminar.easyCookWeb.pojo.recipe.Recipe;
 import com.seminar.easyCookWeb.pojo.recipe.RecipeImage;
 import com.seminar.easyCookWeb.repository.recipe.RecipeImageRepository;
 import com.seminar.easyCookWeb.service.recipe.RecipeImageService;
@@ -75,6 +76,7 @@ public class RecipeImageController {
     public ResponseEntity<byte[]> getFile(@PathVariable Long id){
         return imageService.getFile(id)
                 .map(it -> it.getPicByte())
+
                 .map(ResponseEntity::ok)
                 .orElseThrow(()->new BusinessException("Get file " + id + "Failure"));
     }
@@ -87,7 +89,7 @@ public class RecipeImageController {
                     ContentDisposition contentDisposition = ContentDisposition.builder("inline")
                             .filename(file.getName())
                             .build();
-
+                    log.info("test =>" + contentDisposition.getFilename());
                     HttpHeaders headers = new HttpHeaders();
                     headers.setContentDisposition(contentDisposition);
                     headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);

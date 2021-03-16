@@ -6,6 +6,7 @@ import org.hibernate.annotations.Nationalized;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +26,10 @@ public class Recipe {
     @Nationalized
     @NotBlank
     private String name;
+
+    @Column(columnDefinition = "nvarchar(20)")
+    @Builder.Default
+    private String version = "NORMAL";
 
     @Column(columnDefinition="TEXT")
     private String description;
@@ -38,7 +43,11 @@ public class Recipe {
     @Column(columnDefinition = "nvarchar(254)")
     private String link;
 
-    private int likesCount;
+    @Builder.Default
+    private int price = 0;
+
+    @Builder.Default
+    private int likesCount = 0;
 
     @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference

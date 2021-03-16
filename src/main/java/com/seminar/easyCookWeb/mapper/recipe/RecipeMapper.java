@@ -1,7 +1,9 @@
 package com.seminar.easyCookWeb.mapper.recipe;
 
+import com.seminar.easyCookWeb.model.ingredient.IngredientModel;
 import com.seminar.easyCookWeb.model.recipe.RecipeModel;
 import com.seminar.easyCookWeb.model.recipe.RecipeStepModel;
+import com.seminar.easyCookWeb.pojo.ingredient.Ingredient;
 import com.seminar.easyCookWeb.pojo.recipe.Recipe;
 import com.seminar.easyCookWeb.pojo.recipe.RecipeStep;
 import org.mapstruct.*;
@@ -21,5 +23,9 @@ public interface RecipeMapper {
     List<RecipeModel> toModels(List<Recipe> recipes);
 
     Iterable<RecipeModel> toIterableModel(Iterable<Recipe> recipes);
+
+    @Mapping(target = "id",ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void update(RecipeModel recipeModel, @MappingTarget Recipe recipe);
 
 }

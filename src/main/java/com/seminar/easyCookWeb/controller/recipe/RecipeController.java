@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/recipe" , produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
@@ -26,9 +28,9 @@ public class RecipeController {
     @PostMapping("/create")
     @ApiOperation("建立食譜: Create Recipe {ROLE_EMPLOYEE, ROLE_ADMIN}")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
-    public ResponseEntity<RecipeModel> create(@RequestBody RecipeModel recipeModel){
-        log.info("[recipe create] => " + recipeModel);
-        return recipeService.createRecipe(recipeModel)
+    public ResponseEntity<RecipeModel> create(@Valid @RequestBody RecipeModel request){
+        log.info("[recipe create] => " + request);
+        return recipeService.createRecipe(request)
                 .map(ResponseEntity::ok)
                 .orElseThrow(()-> new EntitiesErrorException("Cannot create Recipe! Maybe have Duplicated Recipe Name"));
     }
@@ -49,6 +51,14 @@ public class RecipeController {
                 .orElseThrow(()-> new EntityNotFoundException("Cann not find any recipes"));
     }
 
+    @PostMapping("/version")
+    @ApiOperation("透過食譜版本尋找食譜: Search Recipe By Version {EVERYONE CAN ACCESS}")
+    public ResponseEntity<Iterable<RecipeModel>> getByVersion(@RequestBody RecipeModel recipeModel){
+        return recipeService.findByVersion(recipeModel.getVersion())
+                .map(ResponseEntity::ok)
+                .orElseThrow(()-> new EntityNotFoundException("Cann not find any recipes"));
+    }
+
     @GetMapping("/all")
     @ApiOperation("取得所有食譜: Get all recipes {EVERYONE CAN ACCESS}")
     public ResponseEntity<Iterable<RecipeModel>> findAll(){
@@ -64,5 +74,18 @@ public class RecipeController {
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new BusinessException("Delete Ingredient fail"));
     }
+
+    @PatchMapping("/update/{recipeId}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    @ApiOperation("透過id來更新食材: Update Ingredient By Id (Role: ROLE_ADMIN, ROLE_EMPLOYEE)")
+    public ResponseEntity<RecipeModel> updateById(@PathVariable Long recipeId, @Valid @RequestBody RecipeModel request){
+        recipeService.delete(recipeId)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new BusinessException("Delete Ingredient fail"));
+        return recipeService.createRecipe(request)
+                .map(ResponseEntity::ok)
+                .orElseThrow(()-> new EntitiesErrorException("Cannot create Recipe! Maybe have Duplicated Recipe Name"));
+    }
+
 
 }
