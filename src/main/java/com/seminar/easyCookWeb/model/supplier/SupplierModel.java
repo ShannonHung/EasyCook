@@ -31,10 +31,10 @@ public class SupplierModel {
     @ApiModelProperty(value = "合作商名稱" ,example = "supplier001",required = true)
     private String companyName;
 
-    @ApiModelProperty(value = "合作起始日" ,example = "2020-01-01")
+    @ApiModelProperty(value = "合作起始日" ,example = "2021-01-01T00:00+08:00")
     private OffsetDateTime startDate;
 
-    @ApiModelProperty(value = "合作結束日" ,example = "2025-01-01")
+    @ApiModelProperty(value = "合作結束日" ,example = "2025-01-01T00:00+08:00")
     private OffsetDateTime endDate;
 
     @ApiModelProperty(value = "統一編號" ,example = "04126516")
