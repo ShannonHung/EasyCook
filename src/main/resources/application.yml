@@ -22,6 +22,7 @@ spring:
       - classpath:/db/dev/ingredient.sql
       - classpath:/db/dev/memberlist.sql
       - classpath:/db/dev/supplierlist.sql
+      - classpath:/db/dev/supplierpersonlist.sql
       - classpath:/db/product/recipe.sql
       - classpath:/db/product/recipe_ingredient.sql
       - classpath:/db/product/recipe_step.sql
