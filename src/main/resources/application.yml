@@ -49,3 +49,8 @@ security:
     admin:
       username: admin
       password: a19519b15b5ae2ddb93f7c67881ab3ea14a38cb9c5912f4f4362840b97894bf3
+
+# AES Encoder for Id
+aes:
+  key: kioxiaAesSecretKey!
+  size: 16
