@@ -1,5 +1,8 @@
 package com.seminar.easyCookWeb.service.recipe;
 
+import com.google.auth.Credentials;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.storage.*;
 import com.seminar.easyCookWeb.exception.BusinessException;
 import com.seminar.easyCookWeb.mapper.recipe.RecipeImageMapper;
 import com.seminar.easyCookWeb.mapper.recipe.RecipeMapper;
@@ -10,14 +13,26 @@ import com.seminar.easyCookWeb.repository.recipe.RecipeImageRepository;
 import com.seminar.easyCookWeb.repository.recipe.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoProperties;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -35,6 +50,12 @@ public class RecipeImageService {
     RecipeImageMapper imageMapper;
     @Autowired
     RecipeMapper recipeMapper;
+
+    private String DOWNLOAD_URL;
+    private String TEMP_URL;
+    private String PRIVATE_FIREBASE_KEY = "classpath:firebase/tsohue-backend-firebase-adminsdk-bcq36-309e8788f1.json";
+    private String BUCKET_NAME = "tsohue-backend.appspot.com";
+
 
 
     public Optional<RecipeImageModel> saveImage(MultipartFile file, Long id) throws IOException{
@@ -91,4 +112,66 @@ public class RecipeImageService {
     public Stream<RecipeImage> getAllFiles(){
         return imageRepository.findAll().stream();
     }
+
+    /**
+     * FireBase - UploadFile Function
+     * @param file
+     * @param fileName
+     * @return
+     * @throws IOException
+     */
+    private String uploadFile(File file, String fileName) throws IOException {
+        BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("media").build();
+        Credentials credentials = GoogleCredentials.fromStream(new FileInputStream(ResourceUtils.getFile(PRIVATE_FIREBASE_KEY)));
+        Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
+        storage.create(blobInfo, Files.readAllBytes(file.toPath()));
+        return URLEncoder.encode(fileName, StandardCharsets.UTF_8);
+    }
+
+    private File convertToFile(MultipartFile multipartFile, String fileName) throws IOException {
+        File tempFile = new File(fileName);
+        try (FileOutputStream fos = new FileOutputStream(tempFile)) {
+            fos.write(multipartFile.getBytes());
+            fos.close();
+        }
+        return tempFile;
+    }
+
+    private String getExtension(String fileName) {
+        return fileName.substring(fileName.lastIndexOf("."));
+    }
+
+    public Object upload(MultipartFile multipartFile) {
+
+        try {
+            String fileName = multipartFile.getOriginalFilename();                        // to get original file name
+            fileName = UUID.randomUUID().toString().concat(this.getExtension(fileName));  // to generated random string values for file name.
+
+            File file = this.convertToFile(multipartFile, fileName);                      // to convert multipartFile to File
+            TEMP_URL = this.uploadFile(file, fileName);                                   // to get uploaded file link
+            file.delete();                                                                // to delete the copy of uploaded file stored in the project folder
+            return ResponseEntity.ok()
+                    .body("Successfully Uploaded !" + TEMP_URL);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest()
+                    .body("Unsuccessfully Uploaded!" + e);
+        }
+
+    }
+
+    public Object download(String fileName) throws IOException {
+        String destFileName = UUID.randomUUID().toString().concat(this.getExtension(fileName));     // to set random strinh for destination file name
+        String destFilePath = "C:\\ShannonFile\\" + destFileName;                                    // to set destination file path
+
+        ////////////////////////////////   Download  ////////////////////////////////////////////////////////////////////////
+        Credentials credentials = GoogleCredentials.fromStream(new FileInputStream(ResourceUtils.getFile(PRIVATE_FIREBASE_KEY)));
+        Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
+        Blob blob = storage.get(BlobId.of(BUCKET_NAME, fileName));
+        blob.downloadTo(Paths.get(destFilePath));
+        return ResponseEntity.ok()
+                .body("Successfully Downloaded!");
+    }
+
 }
