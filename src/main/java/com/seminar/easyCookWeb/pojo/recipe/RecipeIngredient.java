@@ -21,12 +21,12 @@ public class RecipeIngredient {
     @Column(name="recipe_ingredient_id")
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id")
     @JsonBackReference
     private Recipe recipe;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "ingredient_id")
     @JsonManagedReference
     private Ingredient ingredient;

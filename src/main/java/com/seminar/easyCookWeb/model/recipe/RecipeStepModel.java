@@ -18,9 +18,10 @@ import javax.validation.constraints.Null;
 public class RecipeStepModel {
     private long id;
 
-    @ApiModelProperty(value = "食譜步驟的影片時間點", example = "0:47")
-    private String startTime;
+    @ApiModelProperty(value = "食譜步驟的影片時間秒數", example = "47")
+    private int startTime;
     @ApiModelProperty(value = "食譜步驟說明", example = "撒鹽巴&黑胡椒")
     private String note;
-
+    @ApiModelProperty(value = "烤箱需要的計時秒數(10min = 600s)", example = "600")
+    private int timer;
 }

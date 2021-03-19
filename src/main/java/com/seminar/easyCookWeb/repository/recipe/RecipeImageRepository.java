@@ -16,6 +16,8 @@ import java.util.stream.Stream;
 public interface RecipeImageRepository extends JpaRepository<RecipeImage, Long> {
     Optional<RecipeImage> findById(long id);
 
+    Optional<RecipeImage> findByName(String name);
+
     @Query("SELECT i FROM RecipeImage i WHERE i.recipe.id like :recipeId")
     Iterable<RecipeImage> findByRecipeId(@Param("recipeId") Long recipeId);
 }
