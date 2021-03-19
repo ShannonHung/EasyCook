@@ -81,7 +81,7 @@ public class RecipeImageService {
                     String fileDownloadUri = ServletUriComponentsBuilder
                             .fromCurrentContextPath()
                             .path("/recipe/images/blob/")
-                            .path(model.getId().toString())
+                            .path(model.getName())
                             .toUriString();
 
                     model.setBlobUrl(fileDownloadUri);
@@ -117,7 +117,7 @@ public class RecipeImageService {
                     String blobUrl = ServletUriComponentsBuilder
                             .fromCurrentContextPath()
                             .path("/recipe/images/blob/")
-                            .path(pojo.getId().toString())
+                            .path(pojo.getName())
                             .toUriString();
 
                     String firebaseUrl = ServletUriComponentsBuilder

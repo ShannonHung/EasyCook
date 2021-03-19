@@ -29,7 +29,7 @@ public class RecipeStepController {
     @PostMapping("/{recipeId}/step/create")
     @ApiOperation("新增食譜步驟: Create Recipe Step {ROLE_EMPLOYEE, ROLE_ADMIN}")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
-    public ResponseEntity<RecipeModel> create(@PathVariable Long recipeId, @Valid @RequestBody RecipeStepModel request){
+    public ResponseEntity<RecipeStepModel> create(@PathVariable Long recipeId, @Valid @RequestBody RecipeStepModel request){
         return recipeStepService.createStep(recipeId, request)
                 .map(ResponseEntity::ok)
                 .orElseThrow(()-> new EntitiesErrorException("Cannot create Recipe! Maybe have Duplicated Recipe Name"));

@@ -3,11 +3,14 @@ package com.seminar.easyCookWeb.service.recipe;
 import com.seminar.easyCookWeb.exception.BusinessException;
 import com.seminar.easyCookWeb.exception.EntityCreatedConflictException;
 import com.seminar.easyCookWeb.exception.EntityNotFoundException;
+import com.seminar.easyCookWeb.mapper.ingredient.IngredientMapper;
 import com.seminar.easyCookWeb.mapper.recipe.RecipeMapper;
 import com.seminar.easyCookWeb.model.ingredient.IngredientModel;
 import com.seminar.easyCookWeb.model.recipe.RecipeModel;
+import com.seminar.easyCookWeb.model.recipe.update.RecipeUpdateModel;
 import com.seminar.easyCookWeb.pojo.ingredient.Ingredient;
 import com.seminar.easyCookWeb.pojo.recipe.Recipe;
+import com.seminar.easyCookWeb.repository.ingredient.IngredientRepository;
 import com.seminar.easyCookWeb.repository.recipe.RecipeRepository;
 import com.seminar.easyCookWeb.service.ingredient.IngredientService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +30,13 @@ public class RecipeService {
     @Autowired
     private RecipeStepService recipeStepService;
     @Autowired
+    private IngredientRepository ingredientRepository;
+    @Autowired
     private RecipeIngredientService recipeIngredientService;
     @Autowired
     private RecipeMapper mapper;
+    @Autowired
+    private IngredientMapper ingredientMapper;
 
     /**
      * 新增食譜 以及 食譜步驟
@@ -103,24 +110,24 @@ public class RecipeService {
                 .map(mapper::toModel);
     }
 
-    public Optional<RecipeModel> update2(Long iid, RecipeModel request) {
+//    public Optional<RecipeModel> update2(Long iid, RecipeModel request) {
+//        return Optional.of(recipeRepository.findById(iid))
+//                .map(it -> {
+//                    Recipe origin = it.orElseThrow(() -> new EntityNotFoundException("Cannot find Ingredient"));
+////                    if(recipeRepository.ExistName(request.getName(), iid) > 0){
+////                        throw new EntityCreatedConflictException("this ingredient have already in used!");
+////                    }else{
+//                        mapper.update(request, origin);
+//                        return origin;
+////                    }
+//                })
+//                .map(recipeRepository::save)
+//                .map(mapper::toModel);
+//    }
+    public Optional<RecipeModel> update(Long iid, RecipeUpdateModel request) {
         return Optional.of(recipeRepository.findById(iid))
                 .map(it -> {
-                    Recipe origin = it.orElseThrow(() -> new EntityNotFoundException("Cannot find Ingredient"));
-//                    if(recipeRepository.ExistName(request.getName(), iid) > 0){
-//                        throw new EntityCreatedConflictException("this ingredient have already in used!");
-//                    }else{
-                        mapper.update(request, origin);
-                        return origin;
-//                    }
-                })
-                .map(recipeRepository::save)
-                .map(mapper::toModel);
-    }
-    public Optional<RecipeModel> update(Long iid, RecipeModel request) {
-        return Optional.of(recipeRepository.findById(iid))
-                .map(it -> {
-                    Recipe origin = it.orElseThrow(() -> new EntityNotFoundException("Cannot find Ingredient"));
+                    Recipe origin = it.orElseThrow(() -> new EntityNotFoundException("Cannot find recipe"));
                     mapper.update(request, origin);
                     return origin;
                 })
@@ -145,7 +152,9 @@ public class RecipeService {
                             )
                             .recipeIngredients(
                                     request.getRecipeIngredients().stream()
-                                            .map(recipeIngredientModel -> recipeIngredientService.updateIngredient(recipedb.getId(), recipeIngredientModel))
+                                            .map(ingredientModel -> {
+                                                return recipeIngredientService.updateIngredient(recipedb.getId(), ingredientModel);
+                                            })
                                             .map(Optional::get)
                                             .collect(Collectors.toList())
                             )

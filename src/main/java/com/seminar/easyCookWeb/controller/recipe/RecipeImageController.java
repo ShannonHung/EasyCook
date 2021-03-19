@@ -44,7 +44,7 @@ public class RecipeImageController {
     RecipeImageMapper mapper;
 
     @SneakyThrows
-    @PostMapping("/upload/db/{recipeId}")
+    @PostMapping("/upload/blob/{recipeId}")
     @ApiOperation("上傳食譜相片到mysql: Upload Photo to Database{ROLE_EMPLOYEE, ROLE_ADMIN}")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     public ResponseEntity<RecipeImageModel> uploadFile(@RequestParam("file") MultipartFile file, @PathVariable Long recipeId){
