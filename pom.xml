@@ -29,6 +29,8 @@
 			<version>7.1.1</version>
 		</dependency>
 
+
+
 		<!--	for @NotNull, @NotEmpty, @NotBlank	-->
 		<dependency>
 			<groupId>org.hibernate</groupId>

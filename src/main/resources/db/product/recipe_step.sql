@@ -8,8 +8,8 @@ INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (2,'平底鍋加入油，輕輕放入雞腿煎到金黃色',78,0,3);
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (3,'翻面後轉小火',89,0,3);
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (4,'清酒1大匙、味琳1大匙、水2大匙、砂糖1/2匙、醬油2大匙、白醋2大匙',98,0,3);
-INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (5,'等到砂糖融化，翻面一下表面均等沾好後並且蓋起來小火繼續加熱三分鐘',116,180,3);
-INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (6,'三分鐘後熄火，利用餘溫悶熱五分鐘(蓋子不要拿掉喔!)',130,300,3);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (5,'等到砂糖融化，翻面一下表面均等沾好後並且蓋起來小火繼續加熱三分鐘',116,180000,3);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (6,'三分鐘後熄火，利用餘溫悶熱五分鐘(蓋子不要拿掉喔!)',130,300000,3);
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (7,'番茄一顆，去掉蒂頭切成薄片',135,0,3);
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (8,'萵苣兩片，並且切成小片',145,0,3);
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (9,'悶熱五分鐘之後的雞腿，開大火煮到醬汁濃縮',152,0,3);
@@ -24,8 +24,8 @@ INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (18,'平底鍋加入油，輕輕放入雞腿煎到金黃色',78,0,4);
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (19,'翻面後轉小火',89,0,4);
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (20,'清酒1大匙、味琳1大匙、水2大匙、砂糖1/2匙、醬油2大匙、白醋2大匙',98,0,4);
-INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (21,'等到砂糖融化，翻面一下表面均等沾好後並且蓋起來小火繼續加熱三分鐘',116,180,4);
-INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (22,'三分鐘後熄火，利用餘溫悶熱五分鐘(蓋子不要拿掉喔!)',130,300,4);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (21,'等到砂糖融化，翻面一下表面均等沾好後並且蓋起來小火繼續加熱三分鐘',116,180000,4);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (22,'三分鐘後熄火，利用餘溫悶熱五分鐘(蓋子不要拿掉喔!)',130,300000,4);
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (23,'番茄一顆，去掉蒂頭切成薄片',135,0,4);
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (24,'萵苣兩片，並且切成小片',145,0,4);
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (25,'悶熱五分鐘之後的雞腿，開大火煮到醬汁濃縮',152,0,4);
@@ -40,8 +40,8 @@ INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (34,'平底鍋加入油，輕輕放入雞腿煎到金黃色',78,0,5);
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (35,'翻面後轉小火',89,0,5);
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (36,'清酒1大匙、味琳1大匙、水2大匙、砂糖1/2匙、醬油2大匙、白醋2大匙',98,0,5);
-INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (37,'等到砂糖融化，翻面一下表面均等沾好後並且蓋起來小火繼續加熱三分鐘',116,180,5);
-INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (38,'三分鐘後熄火，利用餘溫悶熱五分鐘(蓋子不要拿掉喔!)',130,300,5);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (37,'等到砂糖融化，翻面一下表面均等沾好後並且蓋起來小火繼續加熱三分鐘',116,180000,5);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (38,'三分鐘後熄火，利用餘溫悶熱五分鐘(蓋子不要拿掉喔!)',130,300000,5);
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (39,'番茄一顆，去掉蒂頭切成薄片',135,0,5);
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (40,'萵苣兩片，並且切成小片',145,0,5);
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (41,'悶熱五分鐘之後的雞腿，開大火煮到醬汁濃縮',152,0,5);

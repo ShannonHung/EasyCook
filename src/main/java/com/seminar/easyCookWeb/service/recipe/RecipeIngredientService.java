@@ -112,6 +112,7 @@ public class RecipeIngredientService {
 
                             //如果iid不是空的表示有該筆資料要進行更新，所以要針對資料庫挖出來的進行修改，並且儲存
                             recipeIngredientdb.get().setRecipe(recipe);
+                            //TODO 再塞一個recipeIngredientdb.get().setIngredient進去
                             recipeIngredientdb.get().setQuantityRequired(ingredientModel.getQuantityRequired());
 //                            recipeIngredientdb.get().toBuilder()
 //                                    .recipe(recipe)
