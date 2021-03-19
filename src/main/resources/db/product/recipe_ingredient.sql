@@ -32,3 +32,9 @@ INSERT INTO recipe_ingredient (`recipe_ingredient_id`,`quantity_required`,`ingre
 INSERT INTO recipe_ingredient (`recipe_ingredient_id`,`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (26,1.0000,13,2);
 INSERT INTO recipe_ingredient (`recipe_ingredient_id`,`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (27,1.0000,14,2);
 INSERT INTO recipe_ingredient (`recipe_ingredient_id`,`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (28,1.0000,15,2);
+
+INSERT INTO recipe_ingredient (`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (1.0000,11,1);
+INSERT INTO recipe_ingredient (`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (1.0000,12,1);
+INSERT INTO recipe_ingredient (`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (1.0000,13,1);
+INSERT INTO recipe_ingredient (`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (1.0000,14,1);
+INSERT INTO recipe_ingredient (`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (1.0000,15,1);

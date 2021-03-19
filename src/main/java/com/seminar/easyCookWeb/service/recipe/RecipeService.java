@@ -45,12 +45,13 @@ public class RecipeService {
      */
     /**
      * 新增食譜 以及 食譜步驟
+     *
      * @param recipeModel - 食譜物件
      * @return 新增完成後的食譜 DTO 物件
      */
-    public Optional<RecipeModel> createRecipe(RecipeModel recipeModel){
+    public Optional<RecipeModel> createRecipe(RecipeModel recipeModel) {
         return Optional.of(mapper.toPOJO(recipeModel))
-//                .filter(pojo-> recipeRepository.findByName(pojo.getName()).isEmpty())
+                .filter(pojo -> recipeRepository.ExistNameAndVersionToCreate(pojo.getName(), pojo.getVersion()).isEmpty())
                 .map(recipeRepository::save)
                 .map(mapper::toModel)
                 .map(it -> {
@@ -63,87 +64,74 @@ public class RecipeService {
                             )
                             .recipeIngredients(
                                     recipeModel.getRecipeIngredients().stream()
-                                            .map(recipeIngredientModel -> recipeIngredientService.create(it.getId(),recipeIngredientModel))
+                                            .map(recipeIngredientModel -> recipeIngredientService.create(it.getId(), recipeIngredientModel))
                                             .map(Optional::get)
                                             .collect(Collectors.toList())
                             )
                             .build());
                 })
-                .orElseThrow(() -> new EntityCreatedConflictException("An Recipe with same name have already existed!"));
+                .orElseThrow(() -> new EntityCreatedConflictException("There is a recipe have same name and version already existed!"));
     }
 
     /**
      * 透過食譜Id尋找食譜
+     *
      * @param id - 食譜id
      * @return 找到的食譜DTO物件
      */
-    public Optional<RecipeModel> findById(Long id){
+    public Optional<RecipeModel> findById(Long id) {
         return recipeRepository.findById(id)
                 .map(mapper::toModel);
     }
 
-    public Optional<Iterable<RecipeModel>> findByName(String name){
+    public Optional<Iterable<RecipeModel>> findByName(String name) {
         return recipeRepository.findByPartName(name)
                 .map(mapper::toIterableModel);
     }
 
-    public Optional<Iterable<RecipeModel>> findByVersion(String version){
+    public Optional<Iterable<RecipeModel>> findByVersion(String version) {
         return recipeRepository.findAllByVersion(version)
                 .map(mapper::toIterableModel);
     }
 
-    public Optional<Iterable<RecipeModel>> findAll(){
+    public Optional<Iterable<RecipeModel>> findAll() {
         return Optional.of(recipeRepository.findAll())
                 .map(mapper::toIterableModel);
     }
 
-    public Optional<RecipeModel> delete(Long id){
+    public Optional<RecipeModel> delete(Long id) {
         return recipeRepository.findById(id)
-                .map(it ->{
+                .map(it -> {
                     try {
                         recipeRepository.deleteById(it.getId());
                         return it;
-                    }catch (Exception ex){
-                        throw new BusinessException("Cannot Deleted " +it.getId()+ " recipe");
+                    } catch (Exception ex) {
+                        throw new BusinessException("Cannot Deleted " + it.getId() + " recipe");
                     }
                 })
                 .map(mapper::toModel);
     }
 
-//    public Optional<RecipeModel> update2(Long iid, RecipeModel request) {
-//        return Optional.of(recipeRepository.findById(iid))
-//                .map(it -> {
-//                    Recipe origin = it.orElseThrow(() -> new EntityNotFoundException("Cannot find Ingredient"));
-////                    if(recipeRepository.ExistName(request.getName(), iid) > 0){
-////                        throw new EntityCreatedConflictException("this ingredient have already in used!");
-////                    }else{
-//                        mapper.update(request, origin);
-//                        return origin;
-////                    }
-//                })
-//                .map(recipeRepository::save)
-//                .map(mapper::toModel);
-//    }
     public Optional<RecipeModel> update(Long iid, RecipeUpdateModel request) {
-        return Optional.of(recipeRepository.findById(iid))
+        Recipe origin = recipeRepository.findById(iid).orElseThrow(() -> new EntityNotFoundException("Cannot find recipe"));;
+        if (recipeRepository
+                .ExistNameAndVersionToUpdate(
+                        request.getName(),
+                        request.getVersion(),
+                        iid).isPresent()
+        ) {
+            throw new EntityCreatedConflictException("There is a recipe have same name and version already existed!");
+        }
+
+        return Optional.of(origin)
                 .map(it -> {
-                    Recipe origin = it.orElseThrow(() -> new EntityNotFoundException("Cannot find recipe"));
                     mapper.update(request, origin);
                     return origin;
                 })
                 .map(recipeRepository::save)
                 .map(recipedb -> {
-//                            recipedb.setRecipeSteps(request.getRecipeSteps().stream()
-//                                    .map(recipeStep -> recipeStepService.updateStep(recipedb.getId(), recipeStep))
-//                                    .map(Optional::get)
-//                                    .collect(Collectors.toList()));
-//
-//                            recipedb.setRecipeIngredients(request.getRecipeIngredients().stream()
-//                                    .map(recipeIngredientModel -> recipeIngredientService.updateIngredient(recipedb.getId(), recipeIngredientModel))
-//                                    .map(Optional::get)
-//                                    .collect(Collectors.toList()));
 
-                            recipedb.toBuilder()
+                    recipedb.toBuilder()
                             .recipeSteps(
                                     request.getRecipeSteps().stream()
                                             .map(recipeStep -> recipeStepService.updateStep(recipedb.getId(), recipeStep))

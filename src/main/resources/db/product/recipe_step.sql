@@ -52,3 +52,11 @@ INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (46,'讓包好的三明治放置2~3分鐘定型',252,0,5);
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (47,'連保鮮膜一起切，為了保持乾淨的斷面每次切完記得把刀子擦乾淨',261,0,5);
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (48,'完成!',286,0,5);
+
+INSERT INTO recipe_step (`note`,`start_time`,`timer`,`recipe_id`) VALUES ('兩片吐司均等沾好後放上裝切好的生菜',217,0,1);
+INSERT INTO recipe_step (`note`,`start_time`,`timer`,`recipe_id`) VALUES ('把雞肉放上去，上面淋上鍋子內剩餘的南蠻醬，再放一點生菜',225,0,1);
+INSERT INTO recipe_step (`note`,`start_time`,`timer`,`recipe_id`) VALUES ('從側面將三明治緊包起來並且確認兩片麵包有好好包起來',235,0,1);
+INSERT INTO recipe_step (`note`,`start_time`,`timer`,`recipe_id`) VALUES ('讓包好的三明治放置2~3分鐘定型',252,0,1);
+INSERT INTO recipe_step (`note`,`start_time`,`timer`,`recipe_id`) VALUES ('連保鮮膜一起切，為了保持乾淨的斷面每次切完記得把刀子擦乾淨',261,0,1);
+INSERT INTO recipe_step (`note`,`start_time`,`timer`,`recipe_id`) VALUES ('完成!',286,0,1);
+

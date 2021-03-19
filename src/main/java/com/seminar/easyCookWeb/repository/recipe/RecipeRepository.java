@@ -15,12 +15,11 @@ import java.util.Optional;
 public interface RecipeRepository extends CrudRepository<Recipe, Long> {
 
     /**
-     * 創建的時候 會先檢查是否有重複的名稱 (deprecate)
-     * @param title 食譜名稱
+     * 尋找相同名稱的食譜 為了找到不同版本的食譜
+     * @param name 食譜名稱
      * @return 很多食譜
      */
-    @Query("SELECT m FROM Recipe m WHERE m.name LIKE :title")
-    Optional<Iterable<Recipe>> findByName(@Param("title") String title);
+    Optional<List<Recipe>> findByName(String name);
 
     /**
      * 模糊搜尋 可以透過食譜的名稱 利用中間字找到食譜
@@ -39,5 +38,11 @@ public interface RecipeRepository extends CrudRepository<Recipe, Long> {
      */
     @Query("SELECT COUNT(i) FROM Recipe i WHERE ( i.name = :name ) AND i.id != :id")
     Long ExistName(@Param("name") String name,  @Param("id") Long id);
+
+    @Query("SELECT i FROM Recipe i WHERE ( i.name = :name ) AND (i.version = :version) AND ( i.id != :id )")
+    Optional<Iterable<Recipe>> ExistNameAndVersionToUpdate(@Param("name") String name,@Param("version") String version,  @Param("id") Long id);
+
+    @Query("SELECT i FROM Recipe i WHERE ( i.name = :name ) AND (i.version = :version)")
+    Optional<Iterable<Recipe>> ExistNameAndVersionToCreate(@Param("name") String name,@Param("version") String version);
 
 }
