@@ -3,6 +3,7 @@ package com.seminar.easyCookWeb.mapper.recipe;
 import com.seminar.easyCookWeb.model.ingredient.IngredientModel;
 import com.seminar.easyCookWeb.model.recipe.RecipeModel;
 import com.seminar.easyCookWeb.model.recipe.RecipeStepModel;
+import com.seminar.easyCookWeb.model.recipe.update.RecipeUpdateModel;
 import com.seminar.easyCookWeb.pojo.ingredient.Ingredient;
 import com.seminar.easyCookWeb.pojo.recipe.Recipe;
 import com.seminar.easyCookWeb.pojo.recipe.RecipeStep;
@@ -30,8 +31,8 @@ public interface RecipeMapper {
 
     @Mapping(target = "id",ignore = true)
 //    @Mapping(target = "recipeSteps", ignore = true)
-//    @Mapping(target = "recipeIngredients", ignore = true)
+//    @Mapping(target = "ingredient", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void update(RecipeModel recipeModel, @MappingTarget Recipe recipe);
+    void update(RecipeUpdateModel recipeModel, @MappingTarget Recipe recipe);
 
 }

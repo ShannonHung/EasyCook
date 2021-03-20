@@ -1,6 +1,8 @@
-package com.seminar.easyCookWeb.model.recipe;
+package com.seminar.easyCookWeb.model.recipe.update;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.seminar.easyCookWeb.model.recipe.RecipeIngredientModel;
+import com.seminar.easyCookWeb.model.recipe.RecipeStepModel;
 import com.seminar.easyCookWeb.pojo.recipe.RecipeImage;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -19,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel("Recipe請求Entity樣式")
-public class RecipeModel {
+public class RecipeUpdateModel {
     private long id;
 
     @NotNull
@@ -54,6 +56,6 @@ public class RecipeModel {
 
     @Builder.Default
     @ApiModelProperty(value = "食譜所需食材")
-    private List<RecipeIngredientModel> recipeIngredients = new LinkedList<>();
+    private List<RecipeIngredientUpdateModel> recipeIngredients = new LinkedList<>();
 
 }

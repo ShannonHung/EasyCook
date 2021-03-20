@@ -49,7 +49,7 @@ public class RecipeStepService {
      * @param stepModel
      * @return 新增完食譜步驟的食譜
      */
-    public Optional<RecipeModel> createStep(Long recipeId, RecipeStepModel stepModel){
+    public Optional<RecipeStepModel> createStep(Long recipeId, RecipeStepModel stepModel){
         return Optional.of(mapper.toPOJO(stepModel))
                 .map(it -> it.toBuilder()
                         .recipe(
@@ -57,9 +57,7 @@ public class RecipeStepService {
                                         .orElseThrow(()-> new EntityNotFoundException("Cannot find recipe"))
                         ).build()
                 ).map(recipeStepRepository::save)
-                .map((step) -> recipeRepository.findById(recipeId))
-                .map(Optional::get)
-                .map(recipeMapper::toModel);
+                .map(mapper::toModel);
     }
 
 

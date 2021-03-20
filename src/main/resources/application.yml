@@ -51,3 +51,23 @@ security:
     admin:
       username: admin
       password: a19519b15b5ae2ddb93f7c67881ab3ea14a38cb9c5912f4f4362840b97894bf3
+
+# AES Encoder for Id
+aes:
+  key: EasyCookAesSecretKey1!
+  size: 16
+
+
+#AWS properties
+cloud:
+  aws:
+    stack:
+      auto: false
+      region:
+        static: your AWS account region
+      credentials:
+        accessKey: AWS IAM user access key
+        secretKey: AWS IAM user secret key
+app:
+  awsServices:
+    bucketName: my-demo-s3-test

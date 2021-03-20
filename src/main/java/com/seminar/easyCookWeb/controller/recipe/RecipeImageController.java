@@ -44,21 +44,21 @@ public class RecipeImageController {
     RecipeImageMapper mapper;
 
     @SneakyThrows
-    @PostMapping("/upload/{recipeId}")
-    @ApiOperation("上傳食譜相片: Upload Photo {ROLE_EMPLOYEE, ROLE_ADMIN}")
+    @PostMapping("/upload/blob/{recipeId}")
+    @ApiOperation("上傳食譜相片到mysql: Upload Photo to Database{ROLE_EMPLOYEE, ROLE_ADMIN}")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     public ResponseEntity<RecipeImageModel> uploadFile(@RequestParam("file") MultipartFile file, @PathVariable Long recipeId){
         return imageService.saveImage(file, recipeId)
-                .map(model -> {
-                    String fileDownloadUri = ServletUriComponentsBuilder
-                            .fromCurrentContextPath()
-                            .path("/recipe/images/")
-                            .path(model.getId().toString())
-                            .toUriString();
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new BusinessException("Upload File Error"));
+    }
 
-                    model.setUrl(fileDownloadUri);
-                    return  model;
-                })
+    @SneakyThrows
+    @PostMapping("/upload/firebase/{recipeId}")
+    @ApiOperation("上傳食譜相片到firebase和mysql: Upload Photo to database and mysql{ROLE_EMPLOYEE, ROLE_ADMIN}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    public ResponseEntity<RecipeImageModel> uploadFileToFirebase(@RequestParam("file") MultipartFile file, @PathVariable Long recipeId){
+        return imageService.saveImageToFirebase(file, recipeId)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new BusinessException("Upload File Error"));
     }
@@ -71,18 +71,27 @@ public class RecipeImageController {
                 .orElseThrow(() -> new EntityNotFoundException("Cannot find all images"));
     }
 
-    @GetMapping("/{id}")
-    @ApiOperation("透過相片Id下載食譜相片: Download Photo By Photo Id {EVERYONE CAN ACCESS}")
-    public ResponseEntity<byte[]> getFile(@PathVariable Long id){
-        return imageService.getFile(id)
+    @GetMapping("/blob/{imageId}")
+    @ApiOperation("透過相片Id取得照片的blob: Download Photo By Photo Id {EVERYONE CAN ACCESS}")
+    public ResponseEntity<byte[]> getFile(@PathVariable  Long imageId){
+        return imageService.getFile(imageId)
                 .map(it -> it.getPicByte())
 
                 .map(ResponseEntity::ok)
-                .orElseThrow(()->new BusinessException("Get file " + id + "Failure"));
+                .orElseThrow(()->new BusinessException("Get file " + imageId + "Failure"));
     }
 
+    @GetMapping("/firebase/{imageName}")
+    @ApiOperation("透過相片Id取得firebase照片連結: Download Photo By Photo Id {EVERYONE CAN ACCESS}")
+    public ResponseEntity<RecipeImageModel> getFileFromFirebase(@PathVariable String imageName){
+        return imageService.getFirebaseUrlByName(imageName)
+                .map(ResponseEntity::ok)
+                .orElseThrow(()->new BusinessException("Get file " + imageName + "Failure"));
+    }
+
+
     @GetMapping("/downloadtolocal/{id}")
-    @ApiOperation("透過相片Id下載食譜相片: Download Photo By Photo Id {EVERYONE CAN ACCESS}")
+    @ApiOperation("透過相片Id下載食譜相片可以選擇要下載到哪裡: Download Photo By Photo Id {EVERYONE CAN ACCESS}")
     public ResponseEntity<byte[]> saveFileToLocal(@PathVariable Long id){
         return imageService.getFile(id)
                 .map(file -> {
@@ -110,5 +119,17 @@ public class RecipeImageController {
                 .map(ResponseEntity::ok)
                 .orElseThrow(()->new BusinessException("Cannot Deleted ImagesId => " + Id));
     }
+
+//    @PostMapping("/profile/pic")
+//    public Object upload(@RequestParam("file") MultipartFile multipartFile) {
+//        log.info("HIT -/upload | File Name : {}", multipartFile.getOriginalFilename());
+//        return imageService.upload(multipartFile);
+//    }
+
+//    @PostMapping("/profile/pic/{fileName}")
+//    public Object download(@PathVariable String fileName) throws IOException {
+//        log.info("HIT -/download | File Name : {}", fileName);
+//        return imageService.download(fileName);
+//    }
 
 }

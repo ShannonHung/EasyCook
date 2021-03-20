@@ -19,13 +19,14 @@ public class RecipeImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "nvarchar(256)")
+    @Column(name="image_name", columnDefinition = "nvarchar(256)")
     private String name;
 
-    @Column(columnDefinition = "nvarchar(256)")
+    @Column(name="image_type", columnDefinition = "nvarchar(256)")
     private String type;
 
     @Lob
+    @Column(name="pic_byte")
     private byte[] picByte;
 
     @ManyToOne(fetch = FetchType.LAZY)

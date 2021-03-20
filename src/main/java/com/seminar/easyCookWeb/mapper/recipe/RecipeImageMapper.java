@@ -14,7 +14,7 @@ import java.util.List;
 public interface RecipeImageMapper {
     RecipeImageMapper MAPPER = Mappers.getMapper( RecipeImageMapper.class );
 
-    @Mapping(target = "url", ignore = true)
+
     @Mapping(target = "size", ignore = true)
     RecipeImageModel toModel(RecipeImage recipeImage);
 

@@ -20,6 +20,19 @@
 	</properties>
 
 	<dependencies>
+
+
+
+		<!--FireBase for uploading the image-->
+		<!-- https://mvnrepository.com/artifact/com.google.firebase/firebase-admin -->
+		<dependency>
+			<groupId>com.google.firebase</groupId>
+			<artifactId>firebase-admin</artifactId>
+			<version>7.1.1</version>
+		</dependency>
+
+
+
 		<!--	for @NotNull, @NotEmpty, @NotBlank	-->
 		<dependency>
 			<groupId>org.hibernate</groupId>

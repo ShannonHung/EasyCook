@@ -31,7 +31,7 @@ public class RecipeIngredientController {
     @PostMapping("/{recipeId}/ingredient/create")
     @ApiOperation("新增食譜的食材: Create Recipe Ingredient {ROLE_EMPLOYEE, ROLE_ADMIN}")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
-    public ResponseEntity<RecipeModel> create(@PathVariable Long recipeId, @Valid @RequestBody RecipeIngredientModel request){
+    public ResponseEntity<RecipeIngredientModel> create(@PathVariable Long recipeId, @Valid @RequestBody RecipeIngredientModel request){
         return recipeIngredientService.createIngredient(recipeId, request)
                 .map(ResponseEntity::ok)
                 .orElseThrow(()-> new EntitiesErrorException("Cannot create Recipe! Maybe have Duplicated Recipe Name"));
@@ -40,8 +40,8 @@ public class RecipeIngredientController {
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     @ApiOperation("刪除食譜的食材: Delete Recipe Ingredient {ROLE_EMPLOYEE, ROLE_ADMIN}")
     @DeleteMapping(path = "/{recipeId}/ingredient/delete/{recipeIngredientId}")
-    public ResponseEntity<RecipeModel> deleteById(@PathVariable Long recipeId, @PathVariable Long recipeStepId) {
-        return recipeIngredientService.delete(recipeId, recipeStepId)
+    public ResponseEntity<RecipeModel> deleteById(@PathVariable Long recipeId, @PathVariable Long recipeIngredientId) {
+        return recipeIngredientService.delete(recipeId, recipeIngredientId)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new BusinessException("Delete Ingredient fail"));
     }
