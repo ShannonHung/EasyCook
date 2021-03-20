@@ -55,29 +55,31 @@ public class SupplierController {
 
 //    //Service的GETNAME做好才能用
 //    @PostMapping("/name")
-//    @ApiOperation("透過食材名稱模糊搜尋食材: Search Ingredient By NAME {EVERYONE CAN ACCESS}")
-//    public ResponseEntity<Iterable<IngredientModel>> findByName(@RequestBody IngredientName name){
+//    @ApiOperation("透過食材名稱模糊搜尋食材: Search Supplier By NAME {EVERYONE CAN ACCESS}")
+//    public ResponseEntity<Iterable<IngredientModel>> findByName(@RequestBody SupplierName name){
 //        return service.readByIngredientName(name.getIngredientName())
 //                .map(ResponseEntity::ok)
 //                .orElseThrow(()-> new EntityNotFoundException("Cannot find ingredient which name is " + name.getIngredientName()));
 //    }
-//
-//    @GetMapping("/all")
-//    @ApiOperation("取得食材清單: GET ALL INGREDIENTS {EVERYONE CAN ACCESS}")
-//    public ResponseEntity<Iterable<IngredientModel>> getAll(){
-//        return service.getAll()
-//                .map(ResponseEntity::ok)
-//                .orElseThrow(()-> new EntityNotFoundException("Ingredient list is empty!"));
-//    }
 
-    @ApiOperation("刪除合作商名單: DELETE INGREDIENT BY ID {ROLE_EMPLOYEE, ROLE_ADMIN}")
+    @GetMapping("/all")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    @ApiOperation("取得所有合作商清單: GET ALL Supplier {ROLE_EMPLOYEE, ROLE_ADMIN}")
+    public ResponseEntity<Iterable<SupplierModel>> findAll(){
+        return supplierService.findAll()
+                .map(ResponseEntity::ok)
+                .orElseThrow(()-> new EntityNotFoundException("Supplier list is empty!"));
+    }
+
+
+    @DeleteMapping(path = "/delete/{supplierId}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    @ApiOperation("刪除合作商名單: DELETE Supplier BY ID {ROLE_EMPLOYEE, ROLE_ADMIN}")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     content = @Content(schema = @Schema(implementation = SupplierModel.class))),
             @ApiResponse(responseCode = "400", description = "Cannot find the supplier")
     })
-    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
-    @DeleteMapping(path = "/delete/{supplierId}")
     public ResponseEntity<SupplierModel> deleteById(@PathVariable Long supplierId) {
         return supplierService.delete(supplierId)
                 .map(ResponseEntity::ok)

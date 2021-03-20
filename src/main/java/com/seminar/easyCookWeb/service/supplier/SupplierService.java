@@ -82,4 +82,12 @@ public class SupplierService {
                 .map(mapper::toModel);
     }
 
+    /**
+     * 取得所有的食譜
+     * @return 食譜model
+     */
+    public Optional<Iterable<SupplierModel>> findAll() {
+        return Optional.of(supplierRepository.findAll())
+                .map(mapper::toIterableModel);
+    }
 }
