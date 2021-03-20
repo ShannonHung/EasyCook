@@ -5,6 +5,7 @@ import com.seminar.easyCookWeb.exception.EntitiesErrorException;
 import com.seminar.easyCookWeb.exception.EntityNotFoundException;
 import com.seminar.easyCookWeb.model.ingredient.IngredientModel;
 import com.seminar.easyCookWeb.model.recipe.RecipeModel;
+import com.seminar.easyCookWeb.model.recipe.app.RecipeAppModel;
 import com.seminar.easyCookWeb.model.recipe.update.RecipeUpdateModel;
 import com.seminar.easyCookWeb.service.recipe.RecipeService;
 import io.swagger.annotations.Api;
@@ -17,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/recipe" , produces = MediaType.APPLICATION_JSON_VALUE)
@@ -86,14 +88,15 @@ public class RecipeController {
                 .orElseThrow(()-> new EntitiesErrorException("Cannot create Recipe! Maybe have Duplicated Recipe Name"));
     }
 
-//    public ResponseEntity<RecipeModel> updateById(@PathVariable Long recipeId, @Valid @RequestBody RecipeModel request){
-//        recipeService.delete(recipeId)
-//                .map(ResponseEntity::ok)
-//                .orElseThrow(() -> new BusinessException("Delete Ingredient fail"));
-//        return recipeService.createRecipe(request)
-//                .map(ResponseEntity::ok)
-//                .orElseThrow(()-> new EntitiesErrorException("Cannot create Recipe! Maybe have Duplicated Recipe Name"));
-//    }
-
-
+    /**
+     * 提供給App: 用於overView的api
+     * @return
+     */
+    @GetMapping("/overview")
+    @ApiOperation("提供給App: 用於overView的食譜api: Get overview of recipes for app {EVERYONE CAN ACCESS}")
+    public ResponseEntity<List<RecipeAppModel>> overViewForApp(){
+        return recipeService.recipeOverVeiw()
+                .map(ResponseEntity::ok)
+                .orElseThrow(()-> new EntityNotFoundException("Cann not find any recipes"));
+    }
 }

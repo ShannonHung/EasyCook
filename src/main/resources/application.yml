@@ -55,3 +55,17 @@ aes:
   key: EasyCookAesSecretKey1!
   size: 16
 
+
+#AWS properties
+cloud:
+  aws:
+    stack:
+      auto: false
+      region:
+        static: your AWS account region
+      credentials:
+        accessKey: AWS IAM user access key
+        secretKey: AWS IAM user secret key
+app:
+  awsServices:
+    bucketName: my-demo-s3-test
