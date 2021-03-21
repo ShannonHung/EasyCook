@@ -19,7 +19,6 @@ public class Ingredient {
 
     @Column(columnDefinition = "nvarchar(256)")
     @Nationalized
-    @NotBlank
     private String name;
 
     @Enumerated(value = EnumType.STRING)

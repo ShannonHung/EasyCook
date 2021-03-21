@@ -24,7 +24,6 @@ public class Recipe {
 
     @Column(columnDefinition = "nvarchar(256)")
     @Nationalized
-    @NotBlank
     private String name;
 
     @Column(columnDefinition = "nvarchar(20)")
