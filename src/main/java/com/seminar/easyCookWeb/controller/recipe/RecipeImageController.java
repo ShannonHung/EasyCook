@@ -71,20 +71,20 @@ public class RecipeImageController {
                 .orElseThrow(() -> new EntityNotFoundException("Cannot find all images"));
     }
 
-    @GetMapping("/blob/{imageName}")
+    @GetMapping("/blob/{imageId}")
     @ApiOperation("透過相片Id取得照片的blob: Download Photo By Photo Id {EVERYONE CAN ACCESS}")
-    public ResponseEntity<byte[]> getFile(@PathVariable  String imageName){
-        return imageService.getFile(imageName)
+    public ResponseEntity<byte[]> getFile(@PathVariable  Long imageId){
+        return imageService.getFile(imageId)
                 .map(it -> it.getPicByte())
 
                 .map(ResponseEntity::ok)
-                .orElseThrow(()->new BusinessException("Get file " + imageName + "Failure"));
+                .orElseThrow(()->new BusinessException("Get file " + imageId + "Failure"));
     }
 
     @GetMapping("/firebase/{imageName}")
     @ApiOperation("透過相片Id取得firebase照片連結: Download Photo By Photo Id {EVERYONE CAN ACCESS}")
     public ResponseEntity<RecipeImageModel> getFileFromFirebase(@PathVariable String imageName){
-        return imageService.getFirebaseUrlById(imageName)
+        return imageService.getFirebaseUrlByName(imageName)
                 .map(ResponseEntity::ok)
                 .orElseThrow(()->new BusinessException("Get file " + imageName + "Failure"));
     }

@@ -7,6 +7,7 @@ import com.seminar.easyCookWeb.mapper.ingredient.IngredientMapper;
 import com.seminar.easyCookWeb.mapper.recipe.RecipeMapper;
 import com.seminar.easyCookWeb.model.ingredient.IngredientModel;
 import com.seminar.easyCookWeb.model.recipe.RecipeModel;
+import com.seminar.easyCookWeb.model.recipe.app.RecipeAppModel;
 import com.seminar.easyCookWeb.model.recipe.update.RecipeUpdateModel;
 import com.seminar.easyCookWeb.pojo.ingredient.Ingredient;
 import com.seminar.easyCookWeb.pojo.recipe.Recipe;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -37,14 +39,12 @@ public class RecipeService {
     private RecipeMapper mapper;
     @Autowired
     private IngredientMapper ingredientMapper;
+    @Autowired
+    private RecipeImageService recipeImageService;
+
 
     /**
-     * 新增食譜 以及 食譜步驟
-     * @param recipeModel - 食譜物件
-     * @return 新增完成後的食譜 DTO 物件
-     */
-    /**
-     * 新增食譜 以及 食譜步驟
+     * 新增食譜
      *
      * @param recipeModel - 食譜物件
      * @return 新增完成後的食譜 DTO 物件
@@ -84,21 +84,40 @@ public class RecipeService {
                 .map(mapper::toModel);
     }
 
+    /**
+     * 透過食譜名稱尋找食譜
+     * @param name
+     * @return
+     */
     public Optional<Iterable<RecipeModel>> findByName(String name) {
         return recipeRepository.findByPartName(name)
                 .map(mapper::toIterableModel);
     }
 
+    /**
+     * 透過版本來尋找所有的食譜
+     * @param version
+     * @return 食譜model
+     */
     public Optional<Iterable<RecipeModel>> findByVersion(String version) {
         return recipeRepository.findAllByVersion(version)
                 .map(mapper::toIterableModel);
     }
 
+    /**
+     * 取得所有的食譜
+     * @return 食譜model
+     */
     public Optional<Iterable<RecipeModel>> findAll() {
         return Optional.of(recipeRepository.findAll())
                 .map(mapper::toIterableModel);
     }
 
+    /**
+     * 透過食譜id刪除食譜
+     * @param id
+     * @return 已刪除的食譜model
+     */
     public Optional<RecipeModel> delete(Long id) {
         return recipeRepository.findById(id)
                 .map(it -> {
@@ -112,6 +131,34 @@ public class RecipeService {
                 .map(mapper::toModel);
     }
 
+    public Optional<List<RecipeAppModel>> recipeOverVeiw(){
+        List<RecipeAppModel> recipeAppModels = new LinkedList<>();
+
+        recipeRepository.findAll()
+                .forEach(recipe -> {
+                    String firebaseUrl = recipeImageService
+                            .getFirebaseUrlById(
+                                    recipe.getId()).get().getFirebaseUrl();
+
+                    recipeAppModels.add(
+                            RecipeAppModel.builder()
+                                    .id(recipe.getId())
+                                    .likesCount(recipe.getLikesCount())
+                                    .name(recipe.getName())
+                                    .price(recipe.getPrice())
+                                    .photo(firebaseUrl)
+                            .build()
+                    );
+                });
+        return Optional.of(recipeAppModels);
+    }
+
+    /**
+     * 更新食譜
+     * @param iid
+     * @param request
+     * @return 更新結果食譜model
+     */
     public Optional<RecipeModel> update(Long iid, RecipeUpdateModel request) {
         Recipe origin = recipeRepository.findById(iid).orElseThrow(() -> new EntityNotFoundException("Cannot find recipe"));;
         if (recipeRepository

@@ -23,6 +23,7 @@ public interface SupplierMapper {
     Iterable<SupplierModel> toIterableModel(Iterable<Supplier> suppliers);
 
     @Mapping(target = "iid",ignore = true)
+    @Mapping(target = "supplierPeople", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void update(SupplierModel supplierModel, @MappingTarget Supplier supplier);
 }

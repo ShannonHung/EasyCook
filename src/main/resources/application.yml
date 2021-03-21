@@ -12,8 +12,8 @@ spring:
       max-request-size: 100MB
 
   datasource:
-#    url: jdbc:mysql://localhost:3306/easyCook?serverTimezone=UTC
-    url: jdbc:mysql://140.118.9.145:3306/easycook?serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/easyCook?serverTimezone=UTC
+#    url: jdbc:mysql://140.118.9.145:3306/easycook?serverTimezone=UTC
     username: shannon
     password: hung0602
     initialization-mode: always
@@ -21,6 +21,8 @@ spring:
       - classpath:/db/dev/employeelist.sql
       - classpath:/db/dev/ingredient.sql
       - classpath:/db/dev/memberlist.sql
+      - classpath:/db/dev/supplierlist.sql
+      - classpath:/db/dev/supplierpersonlist.sql
       - classpath:/db/product/recipe.sql
       - classpath:/db/product/recipe_ingredient.sql
       - classpath:/db/product/recipe_step.sql
@@ -55,3 +57,17 @@ aes:
   key: EasyCookAesSecretKey1!
   size: 16
 
+
+#AWS properties
+cloud:
+  aws:
+    stack:
+      auto: false
+      region:
+        static: your AWS account region
+      credentials:
+        accessKey: AWS IAM user access key
+        secretKey: AWS IAM user secret key
+app:
+  awsServices:
+    bucketName: my-demo-s3-test

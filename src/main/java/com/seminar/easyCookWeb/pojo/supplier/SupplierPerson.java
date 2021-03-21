@@ -13,7 +13,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = "supplier")
-@Table(name = "supplier_contact_person")
 public class SupplierPerson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
