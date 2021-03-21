@@ -38,7 +38,7 @@ public class SupplierPersonController {
     @PostMapping("/create/{supplierId}")
     @ApiOperation("建立合作商聯絡人: Create SupplierPerson {ROLE_EMPLOYEE, ROLE_ADMIN}")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
-    public ResponseEntity<SupplierPersonModel> create(@Valid @RequestBody Long supplierId, SupplierPersonModel personModel){
+    public ResponseEntity<SupplierPersonModel> create(@PathVariable Long supplierId, @Valid @RequestBody SupplierPersonModel personModel){
         log.error("[SupplierPerson create] => " + personModel);
         return supplierPersonService.createPerson(supplierId,personModel)
                 .map(ResponseEntity::ok)
