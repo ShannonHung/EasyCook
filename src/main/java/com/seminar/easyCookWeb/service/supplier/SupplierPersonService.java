@@ -34,16 +34,11 @@ public class SupplierPersonService {
     @Autowired
     SupplierPersonMapper mapper;
 
-    public Optional<SupplierPersonModel> createPerson(Long supplierId, SupplierPersonModel personModel){
+    public Optional<SupplierPersonModel> createPerson(Long supplierpersonId, SupplierPersonModel personModel){
+        System.out.println("test001");
         return Optional.of(mapper.toPOJO(personModel))
-                .map(pplPojo -> pplPojo.toBuilder()
-                        .supplier(
-                                supplierRepository.findById(supplierId)
-                                        .orElseThrow(()-> new EntityNotFoundException("Cannot find recipe"))
-                        ).build()
-                ).map(personRepository::save)
+                .map(personRepository::save)
                 .map(mapper::toModel);
-
     }
 
     //Service作用 Model轉成pojo : SupplierPersonModel->SupplierPerson
@@ -89,4 +84,8 @@ public class SupplierPersonService {
                 .map(mapper::toModel);
     }
 
+    public Optional<Iterable<SupplierPersonModel>> findAll() {
+        return Optional.of(personRepository.findAll())
+                .map(mapper::toModels);
+    }
 }

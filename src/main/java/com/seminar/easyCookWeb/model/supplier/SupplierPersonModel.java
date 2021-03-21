@@ -35,4 +35,8 @@ public class SupplierPersonModel {
 
     @ApiModelProperty(value = "電子郵件", example = "example@ex.com")
     private String email;
+
+//    問薏璇能不能加這個
+//    @ApiModelProperty(value = "合作商ID", example = "1")
+//    private String supplier;
 }

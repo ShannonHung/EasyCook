@@ -21,6 +21,7 @@ public interface SupplierPersonMapper {
 
     List<SupplierPersonModel> toModels(List<SupplierPerson> suppliers);
 
+//    @Mapping(target = "supplierPeople", ignore = true)
     @Mapping(target = "iid",ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void update(SupplierPersonModel supplierPersonModel, @MappingTarget SupplierPerson supplierPerson);

@@ -83,8 +83,8 @@ public class SupplierService {
     }
 
     /**
-     * 取得所有的食譜
-     * @return 食譜model
+     * 取得所有的合作商
+     * @return 合作商models
      */
     public Optional<Iterable<SupplierModel>> findAll() {
         return Optional.of(supplierRepository.findAll())

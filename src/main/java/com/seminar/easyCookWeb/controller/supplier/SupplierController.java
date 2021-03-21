@@ -3,8 +3,6 @@ package com.seminar.easyCookWeb.controller.supplier;
 import com.seminar.easyCookWeb.exception.BusinessException;
 import com.seminar.easyCookWeb.exception.EntitiesErrorException;
 import com.seminar.easyCookWeb.exception.EntityNotFoundException;
-import com.seminar.easyCookWeb.model.ingredient.IngredientModel;
-import com.seminar.easyCookWeb.model.ingredient.IngredientName;
 import com.seminar.easyCookWeb.model.supplier.SupplierModel;
 import com.seminar.easyCookWeb.service.supplier.SupplierService;
 import io.swagger.annotations.Api;
@@ -33,7 +31,7 @@ public class SupplierController {
     /**
      * 建立合作商
      * @param supplierModel supplierModel
-     * @return
+     * @return supplierModel
      */
     @PostMapping("/create")
     @ApiOperation("建立合作商: Create Supplier {ROLE_EMPLOYEE, ROLE_ADMIN}")
@@ -47,6 +45,7 @@ public class SupplierController {
 
     @GetMapping("/{supplierId}")
     @ApiOperation("透過ID搜尋合作商: Search Ingredient By id {EVERYONE CAN ACCESS}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     public ResponseEntity<SupplierModel> findById(@PathVariable Long supplierId){
         return supplierService.findById(supplierId)
                 .map(ResponseEntity::ok)
@@ -61,10 +60,10 @@ public class SupplierController {
 //                .map(ResponseEntity::ok)
 //                .orElseThrow(()-> new EntityNotFoundException("Cannot find ingredient which name is " + name.getIngredientName()));
 //    }
-
+//
     @GetMapping("/all")
-    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     @ApiOperation("取得所有合作商清單: GET ALL Supplier {ROLE_EMPLOYEE, ROLE_ADMIN}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     public ResponseEntity<Iterable<SupplierModel>> findAll(){
         return supplierService.findAll()
                 .map(ResponseEntity::ok)
@@ -72,9 +71,10 @@ public class SupplierController {
     }
 
 
+
     @DeleteMapping(path = "/delete/{supplierId}")
-    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     @ApiOperation("刪除合作商名單: DELETE Supplier BY ID {ROLE_EMPLOYEE, ROLE_ADMIN}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     content = @Content(schema = @Schema(implementation = SupplierModel.class))),
