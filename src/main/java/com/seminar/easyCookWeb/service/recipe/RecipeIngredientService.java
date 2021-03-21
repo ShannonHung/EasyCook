@@ -15,12 +15,14 @@ import com.seminar.easyCookWeb.repository.ingredient.IngredientRepository;
 import com.seminar.easyCookWeb.repository.recipe.RecipeIngredientRepository;
 import com.seminar.easyCookWeb.repository.recipe.RecipeRepository;
 import com.seminar.easyCookWeb.service.ingredient.IngredientService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class RecipeIngredientService {
     @Autowired
     private RecipeIngredientRepository recipeIngredientRepository;
@@ -111,23 +113,28 @@ public class RecipeIngredientService {
     public Optional<RecipeIngredient> updateIngredient(Long recipeId, RecipeIngredientUpdateModel ingredientModel) {
         return Optional.of(mapper.toPOJO(ingredientModel))
                 .map(recipeIngredient -> {
-                            //如果iid是空的代表有新增內容
-                            Optional<RecipeIngredient> recipeIngredientdb = recipeIngredientRepository.findById(ingredientModel.getId());
+                            log.info("[recipeIngredientService] -> [updateIngredient] -> recipeIngredient  -> " + recipeIngredient);
+                            RecipeIngredient recipeIngredientdb = recipeIngredientRepository.findById(ingredientModel.getId()).get();
+                            mapper.update(recipeIngredient, recipeIngredientdb);
+                            log.info("[recipeIngredientService] -> [updateIngredient] -> recipeIngredientdb  -> " + recipeIngredientdb);
 
 //                            Ingredient ingredient = ingredientRepository.findById(ingredientModel.getIngredient().getId())
 //                                    .orElseThrow(() -> new EntityNotFoundException("Cannot find ingredient" + ingredientModel.getIngredient().getId()));
-                            Ingredient ingredient = ingredientService.readByIngredientId(ingredientModel.getIngredient().getId())
-                                    .map(ingredientMapper::toPOJO)
-                                    .get();
-
-                            Recipe recipe = recipeRepository.findById(recipeId)
-                                    .orElseThrow(() -> new EntityNotFoundException("Cannot find recipe"));
-
-                            //如果iid不是空的表示有該筆資料要進行更新，所以要針對資料庫挖出來的進行修改，並且儲存
-                            recipeIngredientdb.get().setRecipe(recipe);
-                            recipeIngredientdb.get().setQuantityRequired(ingredientModel.getQuantityRequired());
-                            recipeIngredientdb.get().setIngredient(ingredient);
-
+//                            Ingredient ingredient = ingredientService.readByIngredientId(ingredientModel.getIngredient().getId())
+//                                    .map(ingredientMapper::toPOJO)
+//                                    .get();
+//                            log.info("[recipeIngredientService] -> [updateIngredient] -> ingredient  -> " + ingredient);
+//
+//                            Recipe recipe = recipeRepository.findById(recipeId)
+//                                    .orElseThrow(() -> new EntityNotFoundException("Cannot find recipe"));
+//                            log.info("[recipeIngredientService] -> [updateIngredient] -> recipe  -> " + recipe);
+//
+//                            如果iid不是空的表示有該筆資料要進行更新，所以要針對資料庫挖出來的進行修改，並且儲存
+//                            recipeIngredientdb.setRecipe(recipe);
+//                            recipeIngredientdb.setQuantityRequired(ingredientModel.getQuantityRequired());
+//                            recipeIngredientdb.setIngredient(ingredient);
+//                            log.info("[recipeIngredientService] -> [updateIngredient] -> recipeIngredientdb  -> " + recipeIngredientdb);
+//
 //                            recipeIngredientdb.get().toBuilder()
 //                                    .recipe(recipe)
 //                                    .quantityRequired(ingredientModel.getQuantityRequired())
@@ -138,7 +145,6 @@ public class RecipeIngredientService {
 
                         }
                 )
-                .map(Optional::get)
                 .map(recipeIngredientRepository::save);
     }
 
