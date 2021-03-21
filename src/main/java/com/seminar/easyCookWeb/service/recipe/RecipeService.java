@@ -11,6 +11,8 @@ import com.seminar.easyCookWeb.model.recipe.app.RecipeAppModel;
 import com.seminar.easyCookWeb.model.recipe.update.RecipeUpdateModel;
 import com.seminar.easyCookWeb.pojo.ingredient.Ingredient;
 import com.seminar.easyCookWeb.pojo.recipe.Recipe;
+import com.seminar.easyCookWeb.pojo.recipe.RecipeIngredient;
+import com.seminar.easyCookWeb.pojo.recipe.RecipeStep;
 import com.seminar.easyCookWeb.repository.ingredient.IngredientRepository;
 import com.seminar.easyCookWeb.repository.recipe.RecipeRepository;
 import com.seminar.easyCookWeb.service.ingredient.IngredientService;
@@ -160,43 +162,51 @@ public class RecipeService {
      * @return 更新結果食譜model
      */
     public Optional<RecipeModel> update(Long iid, RecipeUpdateModel request) {
-        Recipe origin = recipeRepository.findById(iid).orElseThrow(() -> new EntityNotFoundException("Cannot find recipe"));;
+        Recipe origin = recipeRepository.findById(iid).orElseThrow(() -> new EntityNotFoundException("Cannot find recipe"));
+        log.info("[recipeService] -> [update] -> origin : " + origin);
         if (recipeRepository
                 .ExistNameAndVersionToUpdate(
                         request.getName(),
                         request.getVersion(),
                         iid).isPresent()
         ) {
+            log.info("[recipeService] -> [update] -> EntityCreatedConflictException ");
             throw new EntityCreatedConflictException("There is a recipe have same name and version already existed!");
         }
 
         return Optional.of(origin)
                 .map(it -> {
                     mapper.update(request, origin);
+                    log.info("[recipeService] -> [update] -> 178: mapper.update origin :" + origin);
+
                     return origin;
                 })
                 .map(recipeRepository::save)
                 .map(recipedb -> {
 
-                    recipedb.toBuilder()
-                            .recipeSteps(
-                                    request.getRecipeSteps().stream()
-                                            .map(recipeStep -> recipeStepService.updateStep(recipedb.getId(), recipeStep))
-                                            .map(Optional::get)
-                                            .collect(Collectors.toList())
-                            )
-                            .recipeIngredients(
-                                    request.getRecipeIngredients().stream()
-                                            .map(ingredientModel -> {
-                                                return recipeIngredientService.updateIngredient(recipedb.getId(), ingredientModel);
-                                            })
-                                            .map(Optional::get)
-                                            .collect(Collectors.toList())
-                            )
-                            .build();
+                    log.info("[recipeService] -> [update] -> 185: after recipeRepository::save recipeDB" + recipedb);
+                    List<RecipeStep> recipeSteps = request.getRecipeSteps().stream()
+                            .map(recipeStep -> recipeStepService.updateStep(recipedb.getId(), recipeStep))
+                            .map(Optional::get)
+                            .collect(Collectors.toList());
+
+                    log.info("[recipeService] -> [update] -> 192: new recipeSteps" + recipeSteps);
+                    recipedb.setRecipeSteps(recipeSteps);
+                    log.info("[recipeService] -> [update] -> 195: after set recipeStep -> recipedb" + recipedb);
+
+                    List<RecipeIngredient> recipeIngredients = request.getRecipeIngredients().stream()
+                            .map(ingredientModel -> {
+                                return recipeIngredientService.updateIngredient(recipedb.getId(), ingredientModel);
+                            })
+                            .map(Optional::get)
+                            .collect(Collectors.toList());
+                    log.info("[recipeService] -> [update] -> 192: new recipeIngredients" + recipeIngredients);
+
+                    recipedb.setRecipeIngredients(recipeIngredients);
+                    log.info("[recipeService] -> [update] -> 200: after set steps and ingredients : " + recipedb);
+
                     return recipedb;
                 })
-                .map(recipeRepository::save)
                 .map(mapper::toModel);
     }
 

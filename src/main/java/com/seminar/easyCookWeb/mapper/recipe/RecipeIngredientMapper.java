@@ -29,5 +29,5 @@ public interface RecipeIngredientMapper {
     @Mapping(target = "id",ignore = true)
     @Mapping(target = "ingredient",ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void update(RecipeIngredientModel recipeIngredientModel, @MappingTarget RecipeIngredient recipeIngredient);
+    void update(RecipeIngredient recipeIngredientModel, @MappingTarget RecipeIngredient recipeIngredient);
 }
