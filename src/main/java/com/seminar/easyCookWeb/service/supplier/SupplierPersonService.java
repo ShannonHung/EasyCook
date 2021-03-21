@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SupplierPersonService {
@@ -34,9 +35,15 @@ public class SupplierPersonService {
     @Autowired
     SupplierPersonMapper mapper;
 
-    public Optional<SupplierPersonModel> createPerson(Long supplierpersonId, SupplierPersonModel personModel){
-        System.out.println("test001");
+    public Optional<SupplierPersonModel> createPerson(Long supplierId, SupplierPersonModel personModel){
         return Optional.of(mapper.toPOJO(personModel))
+                .map(it -> it.toBuilder()
+                        .supplier(
+                                supplierRepository.findById(supplierId)
+                                        .orElseThrow(()-> new EntityNotFoundException("Cannot find supplier"))
+                        )
+                        .build()
+                )
                 .map(personRepository::save)
                 .map(mapper::toModel);
     }
