@@ -39,9 +39,11 @@ public class Supplier {
     private String taxIdNumber;
 
     @Column(columnDefinition = "nvarchar(256)", name = "supplier_address")
+    @Nationalized
     private String address;
 
     @Column(columnDefinition = "nvarchar(50)", name = "bank_name")
+    @Nationalized
     private String bankName;
 
     @Column(columnDefinition = "nvarchar(50)", name = "bank_id")
