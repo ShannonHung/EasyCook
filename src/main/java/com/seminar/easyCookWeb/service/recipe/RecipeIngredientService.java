@@ -117,30 +117,6 @@ public class RecipeIngredientService {
                             RecipeIngredient recipeIngredientdb = recipeIngredientRepository.findById(ingredientModel.getId()).get();
                             mapper.update(recipeIngredient, recipeIngredientdb);
                             log.info("[recipeIngredientService] -> [updateIngredient] -> recipeIngredientdb  -> " + recipeIngredientdb);
-
-//                            Ingredient ingredient = ingredientRepository.findById(ingredientModel.getIngredient().getId())
-//                                    .orElseThrow(() -> new EntityNotFoundException("Cannot find ingredient" + ingredientModel.getIngredient().getId()));
-//                            Ingredient ingredient = ingredientService.readByIngredientId(ingredientModel.getIngredient().getId())
-//                                    .map(ingredientMapper::toPOJO)
-//                                    .get();
-//                            log.info("[recipeIngredientService] -> [updateIngredient] -> ingredient  -> " + ingredient);
-//
-//                            Recipe recipe = recipeRepository.findById(recipeId)
-//                                    .orElseThrow(() -> new EntityNotFoundException("Cannot find recipe"));
-//                            log.info("[recipeIngredientService] -> [updateIngredient] -> recipe  -> " + recipe);
-//
-//                            如果iid不是空的表示有該筆資料要進行更新，所以要針對資料庫挖出來的進行修改，並且儲存
-//                            recipeIngredientdb.setRecipe(recipe);
-//                            recipeIngredientdb.setQuantityRequired(ingredientModel.getQuantityRequired());
-//                            recipeIngredientdb.setIngredient(ingredient);
-//                            log.info("[recipeIngredientService] -> [updateIngredient] -> recipeIngredientdb  -> " + recipeIngredientdb);
-//
-//                            recipeIngredientdb.get().toBuilder()
-//                                    .recipe(recipe)
-//                                    .quantityRequired(ingredientModel.getQuantityRequired())
-//                                    .ingredient(ingredient)
-//                                    .build();
-
                             return recipeIngredientdb;
 
                         }

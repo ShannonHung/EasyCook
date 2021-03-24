@@ -1,25 +1,22 @@
-package com.seminar.easyCookWeb.pojo.shopping;
+package com.seminar.easyCookWeb.pojo.cart;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.seminar.easyCookWeb.pojo.ingredient.Ingredient;
-import com.seminar.easyCookWeb.pojo.recipe.Recipe;
-import com.seminar.easyCookWeb.pojo.recipe.RecipeIngredient;
-import com.sun.istack.Nullable;
 import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@ToString
+@ToString(exclude = "shoppingCartRecipe")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class ShoppingCartRecipeCustomize {
+public class CartRecipeCustomize {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="shopping_cart_recipe_customize_id")
+    @Column(name="cart_recipe_customize_id")
     private long id;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -32,7 +29,7 @@ public class ShoppingCartRecipeCustomize {
     private Double quantityRequired = 0D;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "shopping_cart_id")
+    @JoinColumn(name = "cart_id")
     @JsonBackReference
-    private ShoppingCartRecipe shoppingCartRecipe;
+    private CartRecipe cartRecipe;
 }

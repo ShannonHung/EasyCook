@@ -21,10 +21,6 @@ public interface RecipeMapper {
     @Mapping(target = "recipeIngredients", ignore = true)
     Recipe toPOJO(RecipeModel recipeModel);
 
-    @Mapping(target = "recipeSteps", ignore = true)
-    @Mapping(target = "recipeIngredients", ignore = true)
-    Recipe toPOJOUpdate(RecipeModel recipeModel);
-
     List<RecipeModel> toModels(List<Recipe> recipes);
 
     Iterable<RecipeModel> toIterableModel(Iterable<Recipe> recipes);

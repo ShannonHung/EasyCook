@@ -1,10 +1,8 @@
-package com.seminar.easyCookWeb.pojo.shopping;
+package com.seminar.easyCookWeb.pojo.cart;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.seminar.easyCookWeb.pojo.appUser.Member;
 import com.seminar.easyCookWeb.pojo.recipe.Recipe;
-import com.seminar.easyCookWeb.pojo.recipe.RecipeIngredient;
 import com.sun.istack.Nullable;
 import lombok.*;
 
@@ -18,23 +16,22 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class ShoppingCartRecipe {
+public class CartRecipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="shopping_cart_id")
+    @Column(name="cart_id")
     private long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "member_id")
-    @Nullable
+    @JoinColumn(name = "member_id", referencedColumnName = "member_id", nullable = false)
     private Member member;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id", referencedColumnName = "recipe_id")
-    private Recipe recipes;
+    private Recipe recipe;
 
-    @OneToMany(mappedBy = "shoppingCartRecipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cartRecipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     @Builder.Default
-    private List<ShoppingCartRecipeCustomize> customizeRecipeIngredient = new LinkedList<>();
+    private List<CartRecipeCustomize> customize = new LinkedList<>();
 }
