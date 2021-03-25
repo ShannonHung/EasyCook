@@ -53,15 +53,15 @@ public class RecipeImageController {
                 .orElseThrow(() -> new BusinessException("Upload File Error"));
     }
 
-    @SneakyThrows
-    @PostMapping("/upload/firebase/{recipeId}")
-    @ApiOperation("上傳食譜相片到firebase和mysql: Upload Photo to database and mysql{ROLE_EMPLOYEE, ROLE_ADMIN}")
-    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
-    public ResponseEntity<RecipeImageModel> uploadFileToFirebase(@RequestParam("file") MultipartFile file, @PathVariable Long recipeId){
-        return imageService.saveImageToFirebase(file, recipeId)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new BusinessException("Upload File Error"));
-    }
+//    @SneakyThrows
+//    @PostMapping("/upload/firebase/{recipeId}")
+//    @ApiOperation("上傳食譜相片到firebase和mysql: Upload Photo to database and mysql{ROLE_EMPLOYEE, ROLE_ADMIN}")
+//    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+//    public ResponseEntity<RecipeImageModel> uploadFileToFirebase(@RequestParam("file") MultipartFile file, @PathVariable Long recipeId){
+//        return imageService.saveImageToFirebase(file, recipeId)
+//                .map(ResponseEntity::ok)
+//                .orElseThrow(() -> new BusinessException("Upload File Error"));
+//    }
 
     @GetMapping("/all/{recipeId}")
     @ApiOperation("透過食譜Id取得食譜相片下載點: Download Photo By Recipe Id {EVERYONE CAN ACCESS}")
@@ -81,13 +81,13 @@ public class RecipeImageController {
                 .orElseThrow(()->new BusinessException("Get file " + imageId + "Failure"));
     }
 
-    @GetMapping("/firebase/{imageName}")
-    @ApiOperation("透過相片Id取得firebase照片連結: Download Photo By Photo Id {EVERYONE CAN ACCESS}")
-    public ResponseEntity<RecipeImageModel> getFileFromFirebase(@PathVariable String imageName){
-        return imageService.getFirebaseUrlByName(imageName)
-                .map(ResponseEntity::ok)
-                .orElseThrow(()->new BusinessException("Get file " + imageName + "Failure"));
-    }
+//    @GetMapping("/url/{imageId}")
+//    @ApiOperation("透過相片Id取得firebase照片連結: Download Photo By Photo Id {EVERYONE CAN ACCESS}")
+//    public ResponseEntity<RecipeImageModel> getFileFromFirebase(@PathVariable String imageName){
+//        return imageService.getFirebaseUrlByName(imageName)
+//                .map(ResponseEntity::ok)
+//                .orElseThrow(()->new BusinessException("Get file " + imageName + "Failure"));
+//    }
 
 
     @GetMapping("/downloadtolocal/{id}")
@@ -108,12 +108,12 @@ public class RecipeImageController {
                             .body(file.getPicByte());
                 })
                 .orElseThrow(()->new BusinessException("Get file " + id + "Failure"));
-
     }
 
 
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     @DeleteMapping(path = "/delete/{Id}")
+    @ApiOperation("透過相片Id刪除照片 Delete Photo By Photo Id ('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     public ResponseEntity<RecipeImageModel> deleteById(@PathVariable Long Id) {
         return imageService.delete(Id)
                 .map(ResponseEntity::ok)

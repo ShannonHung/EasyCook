@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -58,14 +59,12 @@ public class RecipeImageService {
     @Autowired
     RecipeMapper recipeMapper;
 
-    private String DOWNLOAD_URL;
-    private String TEMP_URL;
-    private String PRIVATE_FIREBASE_KEY = "classpath:firebase/tsohue-backend-firebase-adminsdk-bcq36-309e8788f1.json";
-    private String BUCKET_NAME = "tsohue-backend.appspot.com";
+    private String S3_URL_LINK = "https://easycook-backend.s3.amazonaws.com/recipe/";
+//    private String BUCKET_NAME = "tsohue-backend.appspot.com";
 
 
     /**
-     * 只存 mysql 裡面 不會上傳至firebase
+     * 只存 mysql 裡面
      *
      * @param file
      * @param id
@@ -83,6 +82,7 @@ public class RecipeImageService {
                 .map(pojo -> {
                     RecipeImageModel model = imageMapper.toModel(pojo);
                     model.setSize(file.getSize());
+                    model.setS3Url(S3_URL_LINK+pojo.getName());
                     model.setBlobUrl(BlobUrl(model.getId()));
                     return model;
                 });
@@ -95,13 +95,13 @@ public class RecipeImageService {
                 .path(parp.toString())
                 .toUriString();
     }
-    public String FireBaseUrl(String parp){
-        return ServletUriComponentsBuilder
-                .fromCurrentContextPath()
-                .path("/recipe/images/firebase/")
-                .path(parp)
-                .toUriString();
-    }
+//    public String FireBaseUrl(String parp){
+//        return ServletUriComponentsBuilder
+//                .fromCurrentContextPath()
+//                .path("/recipe/images/firebase/")
+//                .path(parp)
+//                .toUriString();
+//    }
 
     /**
      * 圖片同時存 資料庫 以及上傳至 firebase
@@ -113,27 +113,23 @@ public class RecipeImageService {
      */
     public Optional<RecipeImageModel> saveImageToFirebase(MultipartFile file, Long id) throws IOException {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-//        fileName = UUID.randomUUID().toString().concat(this.getExtension(fileName));  // to generated random string values for file name.
-
         //save image to mysql
         RecipeImage image = new RecipeImage(fileName, file.getContentType(), file.getBytes());
         RecipeModel recipemodel = recipeService.findById(id).orElseThrow(() -> new EntityNotFoundException("Cannot find recipe"));
         image.setRecipe(recipeMapper.toPOJO(recipemodel));
-
-        //save image to firebase
-        File multipartFile = this.convertToFile(file, fileName);                      // to convert multipartFile to File
-        this.uploadFile(multipartFile, fileName);                                   // to get uploaded file link
-        multipartFile.delete();
-        String finalFileName = fileName;
 
         return Optional.ofNullable(imageRepository.save(image))
                 .map(pojo -> {
                     RecipeImageModel model = imageMapper.toModel(pojo);
                     model.setSize(file.getSize());
                     model.setBlobUrl(BlobUrl(pojo.getId()));
-                    model.setFirebaseUrl(FireBaseUrl(pojo.getName()));
+                    model.setS3Url(getS3PhotoUrl(pojo.getName()));
                     return model;
                 });
+    }
+
+    public String getS3PhotoUrl(String filename){
+        return URI.create(S3_URL_LINK+filename).toString();
     }
 
     /**
@@ -155,57 +151,57 @@ public class RecipeImageService {
     public Optional<RecipeImage> getFile(Long id) {
         return imageRepository.findById(id);
     }
-
-    /**
-     * 透過照片id 取得firebase照片display連結
-     *
-     * @param imageName 經過uuid處理的filename
-     * @return 含有14天期限firebase連結的model
-     */
-    public Optional<RecipeImageModel> getFirebaseUrlByName(String imageName) {
-        String firebaseUrl = getDOWNLOAD_URL(imageName);
-        return Optional.of(RecipeImageModel
-                .builder()
-                .firebaseUrl(firebaseUrl)
-                .name(imageName)
-                .build());
-    }
-
-    /**
-     * 透過image id來找到photo 因為我發現如果使用imageRepository.findByName會回傳太多個結果但是都是相同的名稱
-     *
-     * @param recipeId 食譜id
-     * @return firebaseUrl結果
-     */
-    public Optional<RecipeImageModel> getFirebaseUrlById(Long recipeId) {
-        RecipeImageModel recipeImageModel = RecipeImageModel
-                .builder()
-                .firebaseUrl("NoUrl")
-                .build();
-
-        imageRepository.findById(recipeId)
-                .ifPresent(pojo -> {
-                    Optional.of(imageMapper.toModel(pojo))
-                            .map((model -> {
-                                String firebaseUrl = getDOWNLOAD_URL(model.getName());
-                                recipeImageModel.setFirebaseUrl(firebaseUrl);
-                                recipeImageModel.setName(model.getName());
-                                recipeImageModel.setBlobUrl(BlobUrl(model.getId()));
-                                recipeImageModel.setSize(model.getSize());
-                                recipeImageModel.setId(model.getId());
-//                                recipeImageModel
-//                                        .toBuilder()
-//                                        .firebaseUrl(firebaseUrl)
-//                                        .name(model.getName())
-//                                        .size(model.getSize())
-//                                        .blobUrl(blobUrl)
-//                                        .id(model.getId())
-//                                        .build();
-                                return recipeImageModel;
-                            }));
-                });
-        return Optional.of(recipeImageModel);
-    }
+//
+//    /**
+//     * 透過照片id 取得firebase照片display連結
+//     *
+//     * @param imageName 經過uuid處理的filename
+//     * @return 含有14天期限firebase連結的model
+//     */
+//    public Optional<RecipeImageModel> getFirebaseUrlByName(String imageName) {
+//        String firebaseUrl = getDOWNLOAD_URL(imageName);
+//        return Optional.of(RecipeImageModel
+//                .builder()
+//                .firebaseUrl(firebaseUrl)
+//                .name(imageName)
+//                .build());
+//    }
+//
+//    /**
+//     * 透過image id來找到photo 因為我發現如果使用imageRepository.findByName會回傳太多個結果但是都是相同的名稱
+//     *
+//     * @param recipeId 食譜id
+//     * @return firebaseUrl結果
+//     */
+//    public Optional<RecipeImageModel> getFirebaseUrlById(Long recipeId) {
+//        RecipeImageModel recipeImageModel = RecipeImageModel
+//                .builder()
+//                .firebaseUrl("NoUrl")
+//                .build();
+//
+//        imageRepository.findById(recipeId)
+//                .ifPresent(pojo -> {
+//                    Optional.of(imageMapper.toModel(pojo))
+//                            .map((model -> {
+//                                String firebaseUrl = getDOWNLOAD_URL(model.getName());
+//                                recipeImageModel.setFirebaseUrl(firebaseUrl);
+//                                recipeImageModel.setName(model.getName());
+//                                recipeImageModel.setBlobUrl(BlobUrl(model.getId()));
+//                                recipeImageModel.setSize(model.getSize());
+//                                recipeImageModel.setId(model.getId());
+////                                recipeImageModel
+////                                        .toBuilder()
+////                                        .firebaseUrl(firebaseUrl)
+////                                        .name(model.getName())
+////                                        .size(model.getSize())
+////                                        .blobUrl(blobUrl)
+////                                        .id(model.getId())
+////                                        .build();
+//                                return recipeImageModel;
+//                            }));
+//                });
+//        return Optional.of(recipeImageModel);
+//    }
 
     /**
      * 透過照片id 刪除照片
@@ -241,87 +237,65 @@ public class RecipeImageService {
                             .path(file.getId().toString())
                             .toUriString();
 
-                    String firebaseUrl = ServletUriComponentsBuilder
-                            .fromCurrentContextPath()
-                            .path("/recipe/firebase/images/")
-                            .path(file.getName())
-                            .toUriString();
-
                     return RecipeImageModel.builder()
                             .id(file.getId())
                             .name(file.getName())
                             .blobUrl(blobUrl)
-                            .firebaseUrl(firebaseUrl)
+                            .s3Url(getS3PhotoUrl(file.getName()))
                             .size(Long.valueOf(file.getPicByte().length))
                             .type(file.getType())
                             .build();
+
                 }).collect(Collectors.toList());
     }
 
-    /**
-     * FireBase - 上傳檔案至firebase功能
-     *
-     * @param file
-     * @param fileName
-     * @return
-     * @throws IOException
-     */
-    private void uploadFile(File file, String fileName) throws IOException {
-        BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
-        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("media").build();
-        Credentials credentials = GoogleCredentials.fromStream(new FileInputStream(ResourceUtils.getFile(PRIVATE_FIREBASE_KEY)));
-        Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
-        storage.create(blobInfo, Files.readAllBytes(file.toPath()));
-    }
+//    /**
+//     * FireBase - 上傳檔案至firebase功能
+//     *
+//     * @param file
+//     * @param fileName
+//     * @return
+//     * @throws IOException
+//     */
+//    private void uploadFile(File file, String fileName) throws IOException {
+//        BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
+//        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("media").build();
+//        Credentials credentials = GoogleCredentials.fromStream(new FileInputStream(ResourceUtils.getFile(PRIVATE_FIREBASE_KEY)));
+//        Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
+//        storage.create(blobInfo, Files.readAllBytes(file.toPath()));
+//    }
+//
+//    private String getDOWNLOAD_URL(String fileName) {
+//
+//        try {
+//            BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
+//            BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("media").build();
+//            Credentials credentials = null;
+//            credentials = GoogleCredentials.fromStream(new FileInputStream(ResourceUtils.getFile(PRIVATE_FIREBASE_KEY)));
+//            Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
+//            return String.valueOf(storage.signUrl(blobInfo, 14, TimeUnit.DAYS));
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            log.warn(e.getLocalizedMessage());
+//            return "Cannot find the photo in firebase";
+//        }
+//
+//    }
+//
+//    private File convertToFile(MultipartFile multipartFile, String fileName) throws IOException {
+//        File tempFile = new File(fileName);
+//        try (FileOutputStream fos = new FileOutputStream(tempFile)) {
+//            fos.write(multipartFile.getBytes());
+//            fos.close();
+//        }
+//        return tempFile;
+//    }
+//
+//    private String getExtension(String fileName) {
+//        return fileName.substring(fileName.lastIndexOf("."));
+//    }
 
-    private String getDOWNLOAD_URL(String fileName) {
-
-        try {
-            BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
-            BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("media").build();
-            Credentials credentials = null;
-            credentials = GoogleCredentials.fromStream(new FileInputStream(ResourceUtils.getFile(PRIVATE_FIREBASE_KEY)));
-            Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
-            return String.valueOf(storage.signUrl(blobInfo, 14, TimeUnit.DAYS));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.warn(e.getLocalizedMessage());
-            return "Cannot find the photo in firebase";
-        }
-
-    }
-
-    private File convertToFile(MultipartFile multipartFile, String fileName) throws IOException {
-        File tempFile = new File(fileName);
-        try (FileOutputStream fos = new FileOutputStream(tempFile)) {
-            fos.write(multipartFile.getBytes());
-            fos.close();
-        }
-        return tempFile;
-    }
-
-    private String getExtension(String fileName) {
-        return fileName.substring(fileName.lastIndexOf("."));
-    }
-
-
-    public Object upload(MultipartFile multipartFile) {
-        try {
-            String fileName = multipartFile.getOriginalFilename();                        // to get original file name
-//            fileName = UUID.randomUUID().toString().concat(this.getExtension(fileName));  // to generated random string values for file name.
-
-            File file = this.convertToFile(multipartFile, fileName);                      // to convert multipartFile to File
-            this.uploadFile(file, fileName);                                   // to get uploaded file link
-            file.delete();                                                                // to delete the copy of uploaded file stored in the project folder
-            log.info("Successfully Uploaded !");
-            return "Successfully Uploaded !";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest()
-                    .body("Unsuccessfully Uploaded!" + e);
-        }
-    }
 
 
 }

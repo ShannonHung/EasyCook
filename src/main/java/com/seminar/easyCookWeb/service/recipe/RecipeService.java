@@ -138,17 +138,16 @@ public class RecipeService {
 
         recipeRepository.findAll()
                 .forEach(recipe -> {
-                    String firebaseUrl = recipeImageService
-                            .getFirebaseUrlById(
-                                    recipe.getId()).get().getFirebaseUrl();
-
                     recipeAppModels.add(
                             RecipeAppModel.builder()
                                     .id(recipe.getId())
                                     .likesCount(recipe.getLikesCount())
                                     .name(recipe.getName())
                                     .price(recipe.getPrice())
-                                    .photo(firebaseUrl)
+                                    .photo(recipeImageService
+                                            .getS3PhotoUrl(recipe.getPhotos()
+                                                    .stream().findFirst().get().getName())
+                                    )
                             .build()
                     );
                 });
