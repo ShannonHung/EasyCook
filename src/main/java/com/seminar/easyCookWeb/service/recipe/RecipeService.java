@@ -6,6 +6,7 @@ import com.seminar.easyCookWeb.exception.EntityNotFoundException;
 import com.seminar.easyCookWeb.mapper.ingredient.IngredientMapper;
 import com.seminar.easyCookWeb.mapper.recipe.RecipeMapper;
 import com.seminar.easyCookWeb.model.ingredient.IngredientModel;
+import com.seminar.easyCookWeb.model.recipe.RecipeImageModel;
 import com.seminar.easyCookWeb.model.recipe.RecipeModel;
 import com.seminar.easyCookWeb.model.recipe.app.RecipeAppModel;
 import com.seminar.easyCookWeb.model.recipe.update.RecipeUpdateModel;
@@ -138,15 +139,19 @@ public class RecipeService {
 
         recipeRepository.findAll()
                 .forEach(recipe -> {
+                    String image = "No Image";
+                    if(recipe.getPhotos().stream().findFirst().isPresent())
+                        image =  recipe.getPhotos().stream().findFirst().get().getName();
+
                     recipeAppModels.add(
                             RecipeAppModel.builder()
                                     .id(recipe.getId())
+                                    .version(recipe.getVersion())
                                     .likesCount(recipe.getLikesCount())
                                     .name(recipe.getName())
                                     .price(recipe.getPrice())
                                     .photo(recipeImageService
-                                            .getS3PhotoUrl(recipe.getPhotos()
-                                                    .stream().findFirst().get().getName())
+                                            .getS3PhotoUrl(image)
                                     )
                             .build()
                     );
