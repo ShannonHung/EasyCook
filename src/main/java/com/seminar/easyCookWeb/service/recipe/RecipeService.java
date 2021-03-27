@@ -6,6 +6,8 @@ import com.seminar.easyCookWeb.exception.EntityNotFoundException;
 import com.seminar.easyCookWeb.mapper.ingredient.IngredientMapper;
 import com.seminar.easyCookWeb.mapper.recipe.RecipeMapper;
 import com.seminar.easyCookWeb.model.ingredient.IngredientModel;
+import com.seminar.easyCookWeb.model.recipe.RecipeImageModel;
+import com.seminar.easyCookWeb.model.recipe.RecipeIngredientModel;
 import com.seminar.easyCookWeb.model.recipe.RecipeModel;
 import com.seminar.easyCookWeb.model.recipe.app.RecipeAppModel;
 import com.seminar.easyCookWeb.model.recipe.update.RecipeUpdateModel;
@@ -72,7 +74,21 @@ public class RecipeService {
                             )
                             .build());
                 })
+                .map((re) -> setRecipeOutOfStackIngredients(re.get()))
                 .orElseThrow(() -> new EntityCreatedConflictException("There is a recipe have same name and version already existed!"));
+    }
+
+    /**
+     * 將outOfStack的食材資訊塞進去
+     * @param recipeModel
+     * @return
+     */
+    public Optional<RecipeModel> setRecipeOutOfStackIngredients(RecipeModel recipeModel){
+        for(RecipeIngredientModel igModel : recipeModel.getRecipeIngredients()){
+            Boolean igStatus = igModel.getIngredient().getStatus();
+            if(!igStatus) recipeModel.getOutOfStockIngredients().add(igModel.getIngredient().getId().toString());
+        }
+        return Optional.of(recipeModel);
     }
 
     /**
@@ -83,7 +99,10 @@ public class RecipeService {
      */
     public Optional<RecipeModel> findById(Long id) {
         return recipeRepository.findById(id)
-                .map(mapper::toModel);
+                .map(mapper::toModel)
+                .map((re) -> setRecipeOutOfStackIngredients(re))
+                .orElseThrow(() -> new EntityCreatedConflictException("There is a recipe have same name and version already existed!"));
+
     }
 
     /**
@@ -138,17 +157,20 @@ public class RecipeService {
 
         recipeRepository.findAll()
                 .forEach(recipe -> {
-                    String firebaseUrl = recipeImageService
-                            .getFirebaseUrlById(
-                                    recipe.getId()).get().getFirebaseUrl();
+                    String image = "No Image";
+                    if(recipe.getPhotos().stream().findFirst().isPresent()){
+                        image = recipeImageService
+                                .getS3PhotoUrl(recipe.getPhotos().stream().findFirst().get().getName());
+                    }
 
                     recipeAppModels.add(
                             RecipeAppModel.builder()
                                     .id(recipe.getId())
+                                    .version(recipe.getVersion())
                                     .likesCount(recipe.getLikesCount())
                                     .name(recipe.getName())
                                     .price(recipe.getPrice())
-                                    .photo(firebaseUrl)
+                                    .photo(image)
                             .build()
                     );
                 });
@@ -207,7 +229,10 @@ public class RecipeService {
 
                     return recipedb;
                 })
-                .map(mapper::toModel);
+                .map(mapper::toModel)
+                .map((re) -> setRecipeOutOfStackIngredients(re))
+                .orElseThrow(() -> new EntityCreatedConflictException("Cannot find this Recipe!"));
+
     }
 
 

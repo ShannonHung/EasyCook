@@ -26,6 +26,9 @@ public class RecipeImagesResponse {
     @ApiModelProperty(value = "相片content type", example = "image/png")
     private String type;
 
+    @ApiModelProperty(value = "相片S3 Url", example = "http://s3.com...")
+    private String s3Url;
+
     @ApiModelProperty(value = "相片內容", example = "Ajkdgl9u029384019k1jlkj3 (bytes)")
     private byte[] picByte;
 

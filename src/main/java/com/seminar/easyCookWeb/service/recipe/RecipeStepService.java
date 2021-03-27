@@ -68,7 +68,11 @@ public class RecipeStepService {
      * @return 回傳刪除玩食譜步驟的食譜
      */
     public Optional<RecipeModel> delete(Long recipeId, Long recipeStepId){
-        recipeStepRepository.deleteById(recipeStepId);
+        try{
+            recipeStepRepository.deleteById(recipeStepId);
+        }catch (Exception e) {
+            throw new EntityNotFoundException("Cannot find this Recipe Step");
+        }
         return Optional.of(recipeRepository.findById(recipeId)
                 .orElseThrow(()-> new EntityNotFoundException("Cannot find recipe")))
                 .map(recipeMapper::toModel);

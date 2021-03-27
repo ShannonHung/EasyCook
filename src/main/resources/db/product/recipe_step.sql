@@ -2,7 +2,7 @@
 -- Query: SELECT * FROM easycook.recipe_step
 LIMIT 0, 1000
 
--- Date: 2021-03-16 18:44
+-- Date: 2021-03-27 23:37
 */
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (1,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,3);
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (2,'平底鍋加入油，輕輕放入雞腿煎到金黃色',78,0,3);
@@ -52,11 +52,34 @@ INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (46,'讓包好的三明治放置2~3分鐘定型',252,0,5);
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (47,'連保鮮膜一起切，為了保持乾淨的斷面每次切完記得把刀子擦乾淨',261,0,5);
 INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (48,'完成!',286,0,5);
-
-INSERT INTO recipe_step (`note`,`start_time`,`timer`,`recipe_id`) VALUES ('兩片吐司均等沾好後放上裝切好的生菜',217,0,1);
-INSERT INTO recipe_step (`note`,`start_time`,`timer`,`recipe_id`) VALUES ('把雞肉放上去，上面淋上鍋子內剩餘的南蠻醬，再放一點生菜',225,0,1);
-INSERT INTO recipe_step (`note`,`start_time`,`timer`,`recipe_id`) VALUES ('從側面將三明治緊包起來並且確認兩片麵包有好好包起來',235,0,1);
-INSERT INTO recipe_step (`note`,`start_time`,`timer`,`recipe_id`) VALUES ('讓包好的三明治放置2~3分鐘定型',252,0,1);
-INSERT INTO recipe_step (`note`,`start_time`,`timer`,`recipe_id`) VALUES ('連保鮮膜一起切，為了保持乾淨的斷面每次切完記得把刀子擦乾淨',261,0,1);
-INSERT INTO recipe_step (`note`,`start_time`,`timer`,`recipe_id`) VALUES ('完成!',286,0,1);
-
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (49,'兩片吐司均等沾好後放上裝切好的生菜',217,0,1);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (50,'把雞肉放上去，上面淋上鍋子內剩餘的南蠻醬，再放一點生菜',225,0,1);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (51,'從側面將三明治緊包起來並且確認兩片麵包有好好包起來',235,0,1);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (52,'讓包好的三明治放置2~3分鐘定型',252,0,1);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (53,'連保鮮膜一起切，為了保持乾淨的斷面每次切完記得把刀子擦乾淨',261,0,1);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (54,'完成!',286,0,1);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (55,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,6);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (56,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,7);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (57,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,8);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (58,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,9);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (59,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,10);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (60,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,11);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (61,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,12);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (62,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,13);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (63,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,14);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (64,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,15);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (65,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,16);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (66,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,17);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (67,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,18);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (68,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,19);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (69,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,20);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (70,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,21);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (71,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,22);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (72,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,23);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (73,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,24);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (74,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,25);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (75,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,26);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (76,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,27);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (77,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,28);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (78,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,29);
+INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (79,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65,0,30);
