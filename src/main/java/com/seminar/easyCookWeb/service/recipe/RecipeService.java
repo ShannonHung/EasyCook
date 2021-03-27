@@ -86,7 +86,7 @@ public class RecipeService {
     public Optional<RecipeModel> setRecipeOutOfStackIngredients(RecipeModel recipeModel){
         for(RecipeIngredientModel igModel : recipeModel.getRecipeIngredients()){
             Boolean igStatus = igModel.getIngredient().getStatus();
-            if(!igStatus) recipeModel.getOutOfStackIngredients().add(igModel.getIngredient().getId().toString());
+            if(!igStatus) recipeModel.getOutOfStockIngredients().add(igModel.getIngredient().getId().toString());
         }
         return Optional.of(recipeModel);
     }

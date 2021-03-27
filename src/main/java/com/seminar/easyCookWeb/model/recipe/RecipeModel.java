@@ -57,6 +57,6 @@ public class RecipeModel {
     private List<RecipeIngredientModel> recipeIngredients = new LinkedList<>();
 
     @Builder.Default
-    private List<String> outOfStackIngredients = new LinkedList<>();
+    private List<String> outOfStockIngredients = new LinkedList<>();
 
 }
