@@ -20,10 +20,10 @@ public class PurchaseRecordModel {
     @NotBlank
     private OffsetDateTime date;
 
-    @ApiModelProperty(value = "折扣" , example = "500", required = true)
+    @ApiModelProperty(value = "折扣" , example = "500")
     private Double discount;
 
-    @ApiModelProperty(value = "總價" , example = "3000", required = true)
+    @ApiModelProperty(value = "總價" , example = "3000")
     private Double total;
 
 }

@@ -32,12 +32,14 @@ public class PurchaseRecord {
     private Supplier supplier;
 
     @Column(columnDefinition = "TIMESTAMP",name = "date")
+    @NotBlank
     private OffsetDateTime date;
 
     @Column(columnDefinition = "decimal(28,4)",name = "discount")
     private Double discount;
 
     @Column(columnDefinition = "decimal(28,4)",name = "total")
+    @NotBlank
     private Double total;
 
 }
