@@ -231,6 +231,7 @@ public class RecipeImageService {
     public List<RecipeImageModel> getFileByRecipeId(Long recipeId) {
         return StreamSupport.stream(imageRepository.findByRecipeId(recipeId).spliterator(), false)
                 .map(file -> {
+                    Optional.of(file).orElseThrow(()-> new EntityNotFoundException("Cannot find this recipe which id is " + recipeId));
                     String blobUrl = ServletUriComponentsBuilder
                             .fromCurrentContextPath()
                             .path("/recipe/blob/images/")
@@ -248,54 +249,5 @@ public class RecipeImageService {
 
                 }).collect(Collectors.toList());
     }
-
-//    /**
-//     * FireBase - 上傳檔案至firebase功能
-//     *
-//     * @param file
-//     * @param fileName
-//     * @return
-//     * @throws IOException
-//     */
-//    private void uploadFile(File file, String fileName) throws IOException {
-//        BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
-//        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("media").build();
-//        Credentials credentials = GoogleCredentials.fromStream(new FileInputStream(ResourceUtils.getFile(PRIVATE_FIREBASE_KEY)));
-//        Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
-//        storage.create(blobInfo, Files.readAllBytes(file.toPath()));
-//    }
-//
-//    private String getDOWNLOAD_URL(String fileName) {
-//
-//        try {
-//            BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
-//            BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("media").build();
-//            Credentials credentials = null;
-//            credentials = GoogleCredentials.fromStream(new FileInputStream(ResourceUtils.getFile(PRIVATE_FIREBASE_KEY)));
-//            Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
-//            return String.valueOf(storage.signUrl(blobInfo, 14, TimeUnit.DAYS));
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            log.warn(e.getLocalizedMessage());
-//            return "Cannot find the photo in firebase";
-//        }
-//
-//    }
-//
-//    private File convertToFile(MultipartFile multipartFile, String fileName) throws IOException {
-//        File tempFile = new File(fileName);
-//        try (FileOutputStream fos = new FileOutputStream(tempFile)) {
-//            fos.write(multipartFile.getBytes());
-//            fos.close();
-//        }
-//        return tempFile;
-//    }
-//
-//    private String getExtension(String fileName) {
-//        return fileName.substring(fileName.lastIndexOf("."));
-//    }
-
-
 
 }

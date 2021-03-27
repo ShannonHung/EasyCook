@@ -56,4 +56,7 @@ public class RecipeModel {
     @ApiModelProperty(value = "食譜所需食材")
     private List<RecipeIngredientModel> recipeIngredients = new LinkedList<>();
 
+    @Builder.Default
+    private List<String> outOfStackIngredients = new LinkedList<>();
+
 }

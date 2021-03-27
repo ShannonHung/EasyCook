@@ -32,6 +32,10 @@ public class IngredientService {
     public Optional<IngredientModel> create(IngredientModel ingredientModel){
         return Optional.ofNullable(Optional.ofNullable(mapper.toPOJO(ingredientModel))
                 .filter(it -> repository.findByName(it.getName()).isEmpty())
+                .map((ing) -> {
+                    ing.setStatus();
+                    return ing;
+                })
                 .map(repository::save)
                 .map(mapper::toModel)
                 .orElseThrow(() -> new EntityCreatedConflictException("An ingredient with same name have already existed!")));
@@ -94,6 +98,7 @@ public class IngredientService {
                         throw new EntityCreatedConflictException("this ingredient have already in used!");
                     }else{
                         mapper.update(ingredientModel, origin);
+                        origin.setStatus();
                         return origin;
                     }
                 })
