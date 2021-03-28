@@ -34,6 +34,9 @@ public class RecipeImage {
     @Nullable
     private Recipe recipe;
 
+    @Column(name = "s3Url", columnDefinition = "nvarchar(256)")
+    private String s3Url;
+
     public RecipeImage(String name, String type, byte[] data){
         this.name = name;
         this.type = type;

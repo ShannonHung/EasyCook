@@ -46,4 +46,14 @@ public class IngredientModel {
     @Builder.Default
     private Double stock = 0D;
 
+    @ApiModelProperty(value = "食材目前狀態(true: 有供貨, false: 庫存不夠)", example = "true")
+    private Boolean status = false;
+
+    public void setStatus() {
+        this.status = (this.stock > this.safetyStock);
+    }
+
+    public Boolean getStatus(){
+        return this.stock > this.safetyStock;
+    }
 }

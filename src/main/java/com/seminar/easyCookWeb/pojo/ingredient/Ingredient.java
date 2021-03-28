@@ -19,7 +19,6 @@ public class Ingredient {
 
     @Column(columnDefinition = "nvarchar(256)")
     @Nationalized
-    @NotBlank
     private String name;
 
     @Enumerated(value = EnumType.STRING)
@@ -48,5 +47,9 @@ public class Ingredient {
     @Builder.Default
     private Double stock= 0D;
 
+    private Boolean status = false;
 
+    public void setStatus() {
+        this.status = (this.stock > this.safetyStock);
+    }
 }
