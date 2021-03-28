@@ -28,18 +28,16 @@ public class PurchaseRecord {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supplier_id")
     @JsonBackReference
-    @NotBlank
     private Supplier supplier;
 
     @Column(columnDefinition = "TIMESTAMP",name = "date")
-    @NotBlank
     private OffsetDateTime date;
 
     @Column(columnDefinition = "decimal(28,4)",name = "discount")
-    private Double discount;
+    private Double discount = 0D ;
 
-    @Column(columnDefinition = "decimal(28,4)",name = "total")
-    @NotBlank
-    private Double total;
+    @Column(columnDefinition = "decimal(28,4)",name = "total", nullable = false)
+    @Builder.Default
+    private Double total = 0D ;
 
 }

@@ -21,6 +21,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/purchase/record" , produces = MediaType.APPLICATION_JSON_VALUE)
@@ -55,7 +56,7 @@ public class PurchaseRecordController {
     }
 
     @GetMapping("/{recordId}")
-    @ApiOperation("透過PurchaseRecordID搜尋進貨紀錄: Search SupplierPerson By id. {EVERYONE CAN ACCESS}")
+    @ApiOperation("透過PurchaseRecordID搜尋進貨紀錄: Search SupplierPerson By id. {ROLE_EMPLOYEE, ROLE_ADMIN}")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     public ResponseEntity<PurchaseRecordModel> findById(@PathVariable Long recordId){
         return purchaseRecordService.findById(recordId)
@@ -64,9 +65,9 @@ public class PurchaseRecordController {
     }
 
     @GetMapping("/all/{supplierId}")
-    @ApiOperation("透過SupplierID搜尋進貨紀錄: Search SupplierPerson By id. {EVERYONE CAN ACCESS}")
+    @ApiOperation("透過SupplierID搜尋進貨紀錄: Search PurchaseRecord By id. {ROLE_EMPLOYEE, ROLE_ADMIN}")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
-    public ResponseEntity<Iterable<PurchaseRecordModel>> findBySupplierId(@PathVariable Long supplierId){
+    public ResponseEntity<List<PurchaseRecordModel>> findBySupplierId(@PathVariable Long supplierId){
         return purchaseRecordService.findBySupplierId(supplierId)
                 .map(ResponseEntity::ok)
                 .orElseThrow(()-> new EntityNotFoundException("Cannot find PurchaseRecord which Supplier Id is " + supplierId));

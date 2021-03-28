@@ -12,6 +12,7 @@ import com.seminar.easyCookWeb.repository.supplier.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,6 +34,10 @@ public class PurchaseRecordService {
                         .build()
                 )
                 .map(purchaseRecordRepository::save)
+                .map((pojo) -> {
+                    System.out.println( pojo.toString());
+                    return pojo;
+                })
                 .map(mapper::toModel);
     }
 
@@ -52,9 +57,9 @@ public class PurchaseRecordService {
                 .map(mapper::toModel);
     }
 
-    public Optional<Iterable<PurchaseRecordModel>> findBySupplierId(Long supplierId) {
+    public Optional<List<PurchaseRecordModel>> findBySupplierId(Long supplierId) {
         //test
-        return Optional.of(purchaseRecordRepository.findAll())
+        return Optional.of(purchaseRecordRepository.findAllBySupplierId(supplierId).orElseThrow(() -> new EntityNotFoundException("Cannot find the supplier!")))
                 .map(mapper::toModels);
     }
 

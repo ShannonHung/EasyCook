@@ -17,7 +17,6 @@ public class PurchaseRecordModel {
     //其他關連的FK都不用做
 
     @ApiModelProperty(value = "進貨日期" , example = "2021-03-20T22:00+08:00", required = true)
-    @NotBlank
     private OffsetDateTime date;
 
     @ApiModelProperty(value = "折扣" , example = "500")
