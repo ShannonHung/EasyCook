@@ -18,12 +18,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel("訂單 OrderForm 請求Entity樣式")
-public class OderFormModel {
+public class OrderFormModel {
 
     private long id;
 
     @ApiModelProperty(value = "訂單對象")
-    private MemberResponse member;
+    private Member member;
+
+    @ApiModelProperty(value = "購物車id")
+    private List<Long> cartId;
 
     @ApiModelProperty(value = "訂單細項")
     private List<OrderItemModel> orderItems = new LinkedList<>();
@@ -47,7 +50,8 @@ public class OderFormModel {
     private OffsetDateTime shippingTime;
 
     @ApiModelProperty(value = "訂單狀態", example = "尚未確認")
-    private String status;
+    @Builder.Default
+    private String status = "尚未確認";
 
     @ApiModelProperty(value = "地址", example = "台北市大安區基隆路四段")
     private String address;
