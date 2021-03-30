@@ -25,6 +25,7 @@ public class SupplierPerson {
     private String name;
 
     @Column(columnDefinition = "nvarchar(100)",name = "position")
+    @Nationalized
     private String position;
 
     @Column(columnDefinition = "nvarchar(15)",name = "phone")
