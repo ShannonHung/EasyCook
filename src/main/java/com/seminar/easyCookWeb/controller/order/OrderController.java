@@ -2,7 +2,7 @@ package com.seminar.easyCookWeb.controller.order;
 
 import com.seminar.easyCookWeb.exception.EntitiesErrorException;
 import com.seminar.easyCookWeb.model.order.OrderFormModel;
-import com.seminar.easyCookWeb.pojo.order.OrderForm;
+import com.seminar.easyCookWeb.model.order.update.OrderUpdateEmployee;
 import com.seminar.easyCookWeb.service.order.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -53,10 +53,28 @@ public class OrderController {
     }
 
     @DeleteMapping("/delete/{orderId}")
-    @ApiOperation("取得使用者所有訂單: Get All Orders {ROLE_MEMBER}")
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @ApiOperation("刪除訂單by id: Delete Order By Id {ROLE_MEMBER, 'ROLE_ADMIN', 'ROLE_EMPLOYEE'}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
     public ResponseEntity<OrderFormModel> deleteById(@PathVariable Long orderId){
         return orderService.deleteById(orderId)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntitiesErrorException("GET ORDER FAILURE! Id="+orderId));
+    }
+
+    @PatchMapping("/update/member/{orderId}")
+    @ApiOperation("消費者取消訂單: Cancel Order {'ROLE_MEMBER'}")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    public ResponseEntity<OrderFormModel> updateById(@PathVariable Long orderId, Authentication auth){
+        return orderService.updateById(orderId, auth)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntitiesErrorException("GET ORDER FAILURE! Id="+orderId));
+    }
+
+    @PatchMapping("/update/employee/{orderId}")
+    @ApiOperation("員工更新訂單: Get All Orders {'ROLE_EMPLOYEE', 'ROLE_ADMIN'}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    public ResponseEntity<OrderFormModel> updateById(@Valid @RequestBody OrderUpdateEmployee request, @PathVariable Long orderId){
+        return orderService.updateById(request, orderId)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new EntitiesErrorException("GET ORDER FAILURE! Id="+orderId));
     }

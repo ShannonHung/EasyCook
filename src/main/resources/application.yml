@@ -36,6 +36,7 @@ spring:
         format_sql: true
     hibernate.ddl-auto: update
 
+
 # Server port is arbitrary
 server:
   port: 8082

@@ -1,14 +1,13 @@
 package com.seminar.easyCookWeb.service.order;
 
+import com.seminar.easyCookWeb.exception.BusinessException;
 import com.seminar.easyCookWeb.exception.EntityNotFoundException;
 import com.seminar.easyCookWeb.mapper.order.OrderFormMapper;
 import com.seminar.easyCookWeb.mapper.order.OrderItemMapper;
-import com.seminar.easyCookWeb.model.cart.response.CartRecipeModel;
 import com.seminar.easyCookWeb.model.order.OrderFormModel;
+import com.seminar.easyCookWeb.model.order.update.OrderUpdateEmployee;
 import com.seminar.easyCookWeb.pojo.appUser.Member;
-import com.seminar.easyCookWeb.pojo.cart.CartRecipe;
 import com.seminar.easyCookWeb.pojo.order.OrderForm;
-import com.seminar.easyCookWeb.pojo.order.OrderItem;
 import com.seminar.easyCookWeb.repository.cart.CartRecipeRepository;
 import com.seminar.easyCookWeb.repository.order.OrderRepository;
 import com.seminar.easyCookWeb.repository.users.MemberRepository;
@@ -18,10 +17,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -96,4 +93,42 @@ public class OrderService {
                 .map(Optional::get)
                 .map(orderMapper::toModel);
     }
+
+    /**
+     * for Member update api, only can update status
+     * @param orderId
+     * @param auth
+     * @return
+     */
+    public Optional<OrderFormModel> updateById(Long orderId, Authentication auth){
+        OrderForm origin = orderRepository.findById(orderId).orElseThrow(() -> new EntityNotFoundException("CANNOT FIND ORDER! ID "+orderId));
+        if(!origin.getMember().getAccount().equals(auth.getName())) throw new EntityNotFoundException("YOU ARE NOT THIS ORDER'S OWNER! ID "+orderId);
+        if(origin.getStatus().equals("尚未確認")) {
+            origin.setStatus("已取消");
+        }else{
+            throw new BusinessException("SORRY! CANNOT CHANGE THE STATUS, YOUR ORDER IS BEING PREPARED.");
+        }
+        return Optional.of(origin)
+                .map(orderRepository::save)
+                .map(orderMapper::toModel);
+
+    }
+
+    /**
+     * for Employee update api, only update everything except item or itemcustom
+     * @param orderUpdateEmployee
+     * @param orderId
+     * @return
+     */
+    public Optional<OrderFormModel> updateById(OrderUpdateEmployee orderUpdateEmployee, Long orderId){
+        OrderForm origin = orderRepository.findById(orderId).orElseThrow(() -> new EntityNotFoundException("CANNOT FIND ORDER! ID "+orderId));
+        return Optional.of(origin)
+                .map((db) -> {
+                    orderMapper.update(orderUpdateEmployee, db);
+                    return db;
+                }).map(orderRepository::save)
+                .map(orderMapper::toModel);
+
+    }
+
 }

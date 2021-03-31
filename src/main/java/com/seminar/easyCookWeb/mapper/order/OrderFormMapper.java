@@ -2,6 +2,7 @@ package com.seminar.easyCookWeb.mapper.order;
 
 import com.seminar.easyCookWeb.mapper.user.MemberMapper;
 import com.seminar.easyCookWeb.model.order.OrderFormModel;
+import com.seminar.easyCookWeb.model.order.update.OrderUpdateEmployee;
 import com.seminar.easyCookWeb.pojo.order.OrderForm;
 import org.mapstruct.*;
 
@@ -18,8 +19,7 @@ public interface OrderFormMapper {
     Iterable<OrderFormModel> toIterableModel(Iterable<OrderForm> orders);
 
     @Mapping(target = "id",ignore = true)
-    @Mapping(target = "orderItems", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void update(OrderFormModel orderModel, @MappingTarget OrderForm orders);
+    void update(OrderUpdateEmployee orderUpdate, @MappingTarget OrderForm orders);
 
 }
