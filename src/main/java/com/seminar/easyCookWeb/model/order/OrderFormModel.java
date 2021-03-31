@@ -1,5 +1,7 @@
 package com.seminar.easyCookWeb.model.order;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.seminar.easyCookWeb.model.user.MemberResponse;
 import com.seminar.easyCookWeb.pojo.appUser.Member;
 import io.swagger.annotations.ApiModel;
@@ -23,7 +25,7 @@ public class OrderFormModel {
     private long id;
 
     @ApiModelProperty(value = "訂單對象")
-    private Member member;
+    private MemberResponse member;
 
     @ApiModelProperty(value = "購物車id")
     private List<Long> cartId;

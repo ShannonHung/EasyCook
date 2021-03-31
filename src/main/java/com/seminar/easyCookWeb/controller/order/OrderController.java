@@ -2,7 +2,6 @@ package com.seminar.easyCookWeb.controller.order;
 
 import com.seminar.easyCookWeb.exception.EntitiesErrorException;
 import com.seminar.easyCookWeb.model.order.OrderFormModel;
-import com.seminar.easyCookWeb.model.recipe.RecipeModel;
 import com.seminar.easyCookWeb.pojo.order.OrderForm;
 import com.seminar.easyCookWeb.service.order.OrderService;
 import io.swagger.annotations.Api;
@@ -13,14 +12,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/order" , produces = MediaType.APPLICATION_JSON_VALUE)
@@ -37,6 +32,33 @@ public class OrderController {
         return orderService.create(request, authentication)
                 .map(ResponseEntity::ok)
                 .orElseThrow(()-> new EntitiesErrorException("CREATE ORDER FAILURE!"));
-
     }
+
+    @GetMapping("/all")
+    @ApiOperation("取得使用者所有訂單: Get All Orders {ROLE_MEMBER}")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    public ResponseEntity<List<OrderFormModel>> getAll(Authentication auth){
+        return orderService.getAll(auth)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntitiesErrorException("GET ORDERS FAILURE!"));
+    }
+
+    @GetMapping("/{orderId}")
+    @ApiOperation("取得訂單透過訂單編號: Get Order By Id {ROLE_MEMBER}")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    public ResponseEntity<OrderFormModel> getById(@PathVariable Long orderId){
+        return orderService.findById(orderId)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntitiesErrorException("GET ORDER FAILURE! Id="+orderId));
+    }
+
+    @DeleteMapping("/delete/{orderId}")
+    @ApiOperation("取得使用者所有訂單: Get All Orders {ROLE_MEMBER}")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    public ResponseEntity<OrderFormModel> deleteById(@PathVariable Long orderId){
+        return orderService.deleteById(orderId)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntitiesErrorException("GET ORDER FAILURE! Id="+orderId));
+    }
+
 }
