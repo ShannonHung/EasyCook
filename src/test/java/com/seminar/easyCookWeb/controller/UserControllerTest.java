@@ -135,27 +135,27 @@ public class UserControllerTest {
 
     }
 
-    @Test
-    public void updateMember() throws Exception{
-        MemberResponse preMember = CreateNewUser(UUID.randomUUID().toString());
-        JSONObject request = new JSONObject();
-        request.put("email", "baka@gmail.com");
-        request.put("username", "baka");
-        request.put("account", "baka");
-
-        String token = getJsonToken(preMember.getAccount(), "123");
-
-        MockHttpServletResponse response = mvc.perform(
-                patch("/member/update/data/" + preMember.getId())
-                        .header("Authorization", token)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                .content(request.toString())
-        ).andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value("baka"))
-                .andReturn().getResponse();
-    }
+//    @Test
+//    public void updateMember() throws Exception{
+//        MemberResponse preMember = CreateNewUser(UUID.randomUUID().toString());
+//        JSONObject request = new JSONObject();
+//        request.put("email", "baka@gmail.com");
+//        request.put("username", "baka");
+//        request.put("account", "baka");
+//
+//        String token = getJsonToken(preMember.getAccount(), "123");
+//
+//        MockHttpServletResponse response = mvc.perform(
+//                patch("/member/update/data/" + preMember.getId())
+//                        .header("Authorization", token)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .accept(MediaType.APPLICATION_JSON)
+//                .content(request.toString())
+//        ).andDo(print())
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.username").value("baka"))
+//                .andReturn().getResponse();
+//    }
 
     public MemberResponse CreateNewUser(String username) throws Exception{
         MemberRequest newMember = MemberRequest.builder()
