@@ -101,7 +101,7 @@ public class RecipeService {
         return recipeRepository.findById(id)
                 .map(mapper::toModel)
                 .map((re) -> setRecipeOutOfStackIngredients(re))
-                .orElseThrow(() -> new EntityCreatedConflictException("There is a recipe have same name and version already existed!"));
+                .orElseThrow(() -> new EntityCreatedConflictException("Cannot Find the recipe! recipeid " + id));
 
     }
 

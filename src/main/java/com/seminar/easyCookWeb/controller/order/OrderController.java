@@ -43,6 +43,17 @@ public class OrderController {
                 .orElseThrow(() -> new EntitiesErrorException("GET ORDERS FAILURE!"));
     }
 
+    @GetMapping("/employee/all")
+    @ApiOperation("取得所有訂單: Get All Orders {ROLE_MEMBER}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
+    public ResponseEntity<List<OrderFormModel>> getAllForEmployee(){
+        return orderService.getAll()
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntitiesErrorException("GET ORDERS FAILURE!"));
+    }
+
+
+
     @GetMapping("/{orderId}")
     @ApiOperation("取得訂單透過訂單編號: Get Order By Id {ROLE_MEMBER}")
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
