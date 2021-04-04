@@ -13,8 +13,6 @@ import java.util.Optional;
 @Repository
 public interface PurchaseRecordRepository extends JpaRepository<PurchaseRecord, Long> {
 
-//    Optional<List<PurchaseRecord>> findBySupplierId(String supplierId);
-
     @Query("SELECT i FROM PurchaseRecord i WHERE i.supplier.id = :id")
     Optional<List<PurchaseRecord>> findAllBySupplierId(@Param("id") Long id);
 

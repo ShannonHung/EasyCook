@@ -47,11 +47,6 @@ public class PurchaseRecordService {
     }
 
     //Service作用 Model轉成pojo : SupplierPersonModel->SupplierPerson
-    /**
-     * 透過SupplierPerson Id/Name 尋找合作商聯絡人
-     * @param id - 作商聯絡人 id
-     * @return 找到的聯絡人結果
-     */
     public Optional<PurchaseRecordModel> findById(Long id){
         return purchaseRecordRepository.findById(id)
                 .map(mapper::toModel);
@@ -59,7 +54,8 @@ public class PurchaseRecordService {
 
     public Optional<List<PurchaseRecordModel>> findBySupplierId(Long supplierId) {
         //test
-        return Optional.of(purchaseRecordRepository.findAllBySupplierId(supplierId).orElseThrow(() -> new EntityNotFoundException("Cannot find the supplier!")))
+        return Optional.of(purchaseRecordRepository.findAllBySupplierId(supplierId)
+                .orElseThrow(() -> new EntityNotFoundException("Cannot find the supplier!")))
                 .map(mapper::toModels);
     }
 
