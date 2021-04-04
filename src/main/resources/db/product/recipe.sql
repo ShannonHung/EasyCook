@@ -9,8 +9,8 @@ INSERT INTO recipe (`recipe_id`,`description`,`likes_count`,`link`,`name`,`price
 INSERT INTO recipe (`recipe_id`,`description`,`likes_count`,`link`,`name`,`price`,`version`) VALUES (3,'好吃的南蠻雞喔~',123,'https://easycook-backend.s3.amazonaws.com/videoplayback.mp4','雞腿南蠻風三明治',15,'VAGE');
 INSERT INTO recipe (`recipe_id`,`description`,`likes_count`,`link`,`name`,`price`,`version`) VALUES (4,'好吃的南蠻雞喔~',123,'https://easycook-backend.s3.amazonaws.com/videoplayback.mp4','沙茶羊肉炒手面',15,'NORMAL');
 INSERT INTO recipe (`recipe_id`,`description`,`likes_count`,`link`,`name`,`price`,`version`) VALUES (5,'好吃的南蠻雞喔~',123,'https://easycook-backend.s3.amazonaws.com/videoplayback.mp4','沙茶羊肉炒手面',15,'LOWFAT');
-INSERT INTO recipe (`recipe_id`,`description`,`likes_count`,`link`,`name`,`price`,`version`) VALUES (6,'好吃的南蠻雞喔~',123,'https://easycook-backend.s3.amazonaws.com/videoplayback.mp4','雞腿南蠻風三明治',15,'MEET');
-INSERT INTO recipe (`recipe_id`,`description`,`likes_count`,`link`,`name`,`price`,`version`) VALUES (7,'好吃的南蠻雞喔~',123,'https://easycook-backend.s3.amazonaws.com/videoplayback.mp4','好吃三明治',180,'MEET');
+INSERT INTO recipe (`recipe_id`,`description`,`likes_count`,`link`,`name`,`price`,`version`) VALUES (6,'好吃的南蠻雞喔~',123,'https://easycook-backend.s3.amazonaws.com/videoplayback.mp4','雞腿南蠻風三明治',15,'MEAT');
+INSERT INTO recipe (`recipe_id`,`description`,`likes_count`,`link`,`name`,`price`,`version`) VALUES (7,'好吃的南蠻雞喔~',123,'https://easycook-backend.s3.amazonaws.com/videoplayback.mp4','好吃三明治',180,'MEAT');
 INSERT INTO recipe (`recipe_id`,`description`,`likes_count`,`link`,`name`,`price`,`version`) VALUES (8,'好吃的南蠻雞喔~',123,'https://easycook-backend.s3.amazonaws.com/videoplayback.mp4','好吃三明治',180,'VAGE');
 INSERT INTO recipe (`recipe_id`,`description`,`likes_count`,`link`,`name`,`price`,`version`) VALUES (9,'好吃的南蠻雞喔~',123,'https://easycook-backend.s3.amazonaws.com/videoplayback.mp4','好吃三明治',180,'NORMAL');
 INSERT INTO recipe (`recipe_id`,`description`,`likes_count`,`link`,`name`,`price`,`version`) VALUES (10,'好吃的南蠻雞喔~',123,'https://easycook-backend.s3.amazonaws.com/videoplayback.mp4','好吃三明治',180,'LOWFAT');
