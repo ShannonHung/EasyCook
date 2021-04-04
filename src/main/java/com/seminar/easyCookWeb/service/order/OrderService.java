@@ -81,6 +81,13 @@ public class OrderService {
                 .orElseThrow(()-> new EntityNotFoundException("CANNOT FIND ANY ORDERS")));
     }
 
+    public Optional<List<OrderFormModel>> getAll(){
+        return Optional.of(orderRepository.findAll())
+                .map(orderMapper::toModels)
+                .map(Optional::of)
+                .orElseThrow(()-> new EntityNotFoundException("CANNOT FIND ANY ORDERS"));
+    }
+
     public Optional<OrderFormModel> deleteById(Long orderId){
         OrderForm deleteItem = orderRepository.findById(orderId).orElseThrow(()-> new EntityNotFoundException("CANNOT FIND ORDER! id "+orderId));
         orderRepository.deleteById(orderId);

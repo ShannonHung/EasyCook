@@ -3,12 +3,18 @@ package com.seminar.easyCookWeb.model.user;
 import com.seminar.easyCookWeb.pojo.appUser.Role;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
 
+@Builder(toBuilder = true)
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @ApiModel("Member請求Entity樣式")
 public class MemberRequest {
     @ApiModelProperty(value = "會員帳號", required = true, example = "member001")
