@@ -23,11 +23,13 @@ spring:
       - classpath:/db/dev/memberlist.sql
       - classpath:/db/dev/supplierlist.sql
       - classpath:/db/dev/supplierpersonlist.sql
+      - classpath:/db/dev/handmadecost.sql
       - classpath:/db/product/recipe.sql
       - classpath:/db/product/recipe_ingredient.sql
       - classpath:/db/product/recipe_step.sql
       - classpath:/db/customer/cart_recipe.sql
       - classpath:/db/customer/cart_recipe_customer.sql
+
   jpa:
     # uncomment the below lines to view sql output in console
     show-sql: true
