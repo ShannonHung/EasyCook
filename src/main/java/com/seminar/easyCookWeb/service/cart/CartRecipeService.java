@@ -55,6 +55,7 @@ public class CartRecipeService {
                     Member member = memberRepository.findByAccount(authentication.getName()).orElseThrow(()-> new EntityNotFoundException("Cannot find the user, maybe you are not member."));
                     return cartRecipeRepository.save(CartRecipe.builder()
                             .member(member)
+                            .IsCustomize(re.getIsCustomize())
                             .recipe(recipeRepository.findById(request.getRecipeId())
                                     .orElseThrow(()-> new EntityNotFoundException("Cannot find this recipe")))
                             .build());

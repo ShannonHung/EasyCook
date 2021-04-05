@@ -26,8 +26,8 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("/create")
-    @ApiOperation("建立訂單: Create Order {ROLE_MEMBER}")
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @ApiOperation("建立訂單: Create Order {ROLE_MEMBER, 'ROLE_VIP'}")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_VIP')")
     public ResponseEntity<OrderFormModel> create(@Valid @RequestBody OrderFormModel request, Authentication authentication){
         return orderService.create(request, authentication)
                 .map(ResponseEntity::ok)
@@ -35,8 +35,8 @@ public class OrderController {
     }
 
     @GetMapping("/all")
-    @ApiOperation("取得使用者所有訂單: Get All Orders {ROLE_MEMBER}")
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @ApiOperation("取得使用者所有訂單: Get All Orders {ROLE_MEMBER, 'ROLE_VIP'}")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_VIP')")
     public ResponseEntity<List<OrderFormModel>> getAll(Authentication auth){
         return orderService.getAll(auth)
                 .map(ResponseEntity::ok)
@@ -55,8 +55,8 @@ public class OrderController {
 
 
     @GetMapping("/{orderId}")
-    @ApiOperation("取得訂單透過訂單編號: Get Order By Id {ROLE_MEMBER}")
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @ApiOperation("取得訂單透過訂單編號: Get Order By Id {ROLE_MEMBER, 'ROLE_VIP'}")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_VIP')")
     public ResponseEntity<OrderFormModel> getById(@PathVariable Long orderId){
         return orderService.findById(orderId)
                 .map(ResponseEntity::ok)
@@ -64,8 +64,8 @@ public class OrderController {
     }
 
     @DeleteMapping("/delete/{orderId}")
-    @ApiOperation("刪除訂單by id: Delete Order By Id {ROLE_MEMBER, 'ROLE_ADMIN', 'ROLE_EMPLOYEE'}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
+    @ApiOperation("刪除訂單by id: Delete Order By Id {ROLE_MEMBER, 'ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_VIP'}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_VIP')")
     public ResponseEntity<OrderFormModel> deleteById(@PathVariable Long orderId){
         return orderService.deleteById(orderId)
                 .map(ResponseEntity::ok)
@@ -73,8 +73,8 @@ public class OrderController {
     }
 
     @PatchMapping("/update/member/{orderId}")
-    @ApiOperation("消費者取消訂單: Cancel Order {'ROLE_MEMBER'}")
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @ApiOperation("消費者取消訂單: Cancel Order {'ROLE_MEMBER', 'ROLE_VIP'}")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_VIP')")
     public ResponseEntity<OrderFormModel> updateById(@PathVariable Long orderId, Authentication auth){
         return orderService.updateById(orderId, auth)
                 .map(ResponseEntity::ok)

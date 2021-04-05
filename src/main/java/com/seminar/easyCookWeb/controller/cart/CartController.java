@@ -27,8 +27,8 @@ public class CartController {
     CartRecipeService cartRecipeService;
 
     @PostMapping("/add")
-    @ApiOperation("加入購物車: Add Recipe into Shopping Cart ('ROLE_EMPLOYEE', 'ROLE_MEMBER', 'ROLE_ADMIN')")
-    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_MEMBER', 'ROLE_ADMIN')")
+    @ApiOperation("加入購物車: Add Recipe into Shopping Cart ('ROLE_MEMBER', 'ROLE_VIP')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_VIP')")
     public ResponseEntity<CartRecipeModel> addRecipeToCart(@Valid @RequestBody CartRecipeRequest request, Authentication authentication){
 
         return cartRecipeService.add(request, authentication)
@@ -38,7 +38,7 @@ public class CartController {
 
     @GetMapping("/all")
     @ApiOperation("瀏覽所有購物車項目: Review All Shopping Cart List ('ROLE_MEMBER')")
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_VIP')")
     public ResponseEntity<Iterable<CartRecipeModel>> getAllCart(Authentication authentication){
 
         return cartRecipeService.findAllByMember(authentication)
@@ -48,7 +48,7 @@ public class CartController {
 
     @DeleteMapping("/delete/{cartId}")
     @ApiOperation("刪除購物車項目by id: Delete Shopping Cart Item By Id ('ROLE_MEMBER')")
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_VIP')")
     public ResponseEntity<CartRecipeModel> deleteCartById(@PathVariable("cartId") Long cartId, Authentication authentication){
         return cartRecipeService.deleteById(cartId, authentication)
                 .map(ResponseEntity::ok)
@@ -57,7 +57,7 @@ public class CartController {
 
     @PatchMapping("/update/{cartId}")
     @ApiOperation("更新購物車項目by id: Update Shopping Cart Item By Id ('ROLE_MEMBER')")
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_VIP')")
     public ResponseEntity<CartRecipeModel> updateCartById(@PathVariable("cartId") Long cartId, @Valid @RequestBody CartRecipeModel request, Authentication authentication){
         return cartRecipeService.update(cartId, request, authentication)
                 .map(ResponseEntity::ok)

@@ -37,10 +37,6 @@ public class HandmadeService {
                     .map(handmadeMapper::toPojo)
                     .map(handmadeRepository::save)
                     .map((pojo) -> {
-                        //TODO check is db or not, if yes than update
-//                        cost.getProducts().stream().map((item) -> {
-//                            item.getProductId()
-//                        })
                         pojo.setProducts(productItemService.saveList(cost.getProducts(), pojo.getId()));
                         HandmadeResponse response = handmadeMapper.toModel(pojo);
                         response.setProducts(
@@ -55,16 +51,8 @@ public class HandmadeService {
 
     }
 
+    public Optional<HandmadeCost> getInit(){
+        return Optional.of(handmadeRepository.findInitCost().orElseThrow(()-> new EntityNotFoundException("CANNOT GET THE HANDMADE COST!")));
+    }
 
-//    public Optional<HandmadeModel> update(Long handmadeId, HandmadeModel request){
-//        HandmadeCost current = handmadeRepository.findById(handmadeId).orElseThrow(()-> new EntityNotFoundException("CANNOT FIND THE HANDMADE COST!"));
-//        handmadeMapper.update(request, current);
-//        return Optional.of(current)
-//                .map(handmadeRepository::save)
-//                .map((pojo) -> {
-//                    pojo.setProducts(productItemService.updateList(current.getProducts(), pojo.getId()));
-//                    return pojo;
-//                })
-//                .map(handmadeMapper::toModel);
-//    }
 }

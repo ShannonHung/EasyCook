@@ -31,19 +31,17 @@ public class CostController {
     @PatchMapping("/add")
     @ApiOperation("新增定價策略: Add new HandMade Price Setting('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
-    public ResponseEntity<HandmadeResponse> updateCartById(@Valid @RequestBody HandmadeModel request){
+    public ResponseEntity<HandmadeResponse> addCost(@Valid @RequestBody HandmadeModel request){
         return handmadeService.save(request)
                 .map(ResponseEntity::ok)
                 .orElseThrow(()-> new EntitiesErrorException("FAIL TO UPDATE THE HANDMADE COST!"));
     }
-//
-//    @PatchMapping("/update/{handmadeId}")
-//    @ApiOperation("更新增定價策略: Update new HandMade Price Setting('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
-//    public ResponseEntity<HandmadeModel> updateCartById(@PathVariable("handmadeId") Long handmadeId, @Valid @RequestBody HandmadeModel request){
-//        return handmadeService.update(handmadeId, request)
-//                .map(ResponseEntity::ok)
-//                .orElseThrow(()-> new EntitiesErrorException("FAIL TO UPDATE THE HANDMADE COST!"));
-//    }
 
+    @GetMapping("/get")
+    @ApiOperation("取得定價策略: Add new HandMade Price Setting(ALL)")
+    public ResponseEntity<HandmadeCost> getCost(){
+        return handmadeService.getInit()
+                .map(ResponseEntity::ok)
+                .orElseThrow(()-> new EntitiesErrorException("FAIL TO GET THE HANDMADE COST!"));
+    }
 }

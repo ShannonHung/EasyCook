@@ -23,6 +23,9 @@ public class CartRecipeRequest {
     @ApiModelProperty(value = "食譜id", example = "6")
     private Long recipeId;
 
+    @Builder.Default
+    private Boolean IsCustomize = false;
+
     @ApiModelProperty(value = "食譜客製化食材")
     @Builder.Default
     private List<CartRecipeCustomizeRequest> customize = new LinkedList<>();

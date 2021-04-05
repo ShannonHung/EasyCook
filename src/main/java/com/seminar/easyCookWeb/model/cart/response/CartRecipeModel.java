@@ -20,6 +20,9 @@ import java.util.List;
 @ApiModel("購物車 回應Entity樣式")
 public class CartRecipeModel {
     private Long id;
+    @ApiModelProperty(value = "是否為客製化購物車項目")
+    @Builder.Default
+    private Boolean IsCustomize = false;
 
     @ApiModelProperty(value = "會員資料")
     private MemberResponse member;
