@@ -12,6 +12,7 @@ public interface HandmadeMapper {
     @Mapping(target = "products",ignore = true)
     HandmadeResponse toModel(HandmadeCost handmadeCost);
 
+    @Mapping(target = "products",ignore = true)
     HandmadeCost toPojo(HandmadeModel handmadeModel);
 
     @Mapping(target = "id",ignore = true)
