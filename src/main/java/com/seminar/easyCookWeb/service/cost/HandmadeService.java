@@ -37,6 +37,10 @@ public class HandmadeService {
                     .map(handmadeMapper::toPojo)
                     .map(handmadeRepository::save)
                     .map((pojo) -> {
+                        //TODO check is db or not, if yes than update
+//                        cost.getProducts().stream().map((item) -> {
+//                            item.getProductId()
+//                        })
                         pojo.setProducts(productItemService.saveList(cost.getProducts(), pojo.getId()));
                         HandmadeResponse response = handmadeMapper.toModel(pojo);
                         response.setProducts(
