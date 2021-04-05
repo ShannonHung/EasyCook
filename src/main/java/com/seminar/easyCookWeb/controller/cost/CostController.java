@@ -3,6 +3,7 @@ package com.seminar.easyCookWeb.controller.cost;
 import com.seminar.easyCookWeb.exception.EntitiesErrorException;
 import com.seminar.easyCookWeb.model.cart.response.CartRecipeModel;
 import com.seminar.easyCookWeb.model.cost.HandmadeModel;
+import com.seminar.easyCookWeb.model.cost.HandmadeResponse;
 import com.seminar.easyCookWeb.pojo.cost.HandmadeCost;
 import com.seminar.easyCookWeb.service.cost.HandmadeService;
 import io.swagger.annotations.Api;
@@ -30,19 +31,19 @@ public class CostController {
     @PatchMapping("/add")
     @ApiOperation("新增定價策略: Add new HandMade Price Setting('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
-    public ResponseEntity<HandmadeModel> updateCartById(@Valid @RequestBody HandmadeModel request){
+    public ResponseEntity<HandmadeResponse> updateCartById(@Valid @RequestBody HandmadeModel request){
         return handmadeService.save(request)
                 .map(ResponseEntity::ok)
                 .orElseThrow(()-> new EntitiesErrorException("FAIL TO UPDATE THE HANDMADE COST!"));
     }
-
-    @PatchMapping("/update/{handmadeId}")
-    @ApiOperation("更新增定價策略: Update new HandMade Price Setting('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
-    public ResponseEntity<HandmadeModel> updateCartById(@PathVariable("handmadeId") Long handmadeId, @Valid @RequestBody HandmadeModel request){
-        return handmadeService.update(handmadeId, request)
-                .map(ResponseEntity::ok)
-                .orElseThrow(()-> new EntitiesErrorException("FAIL TO UPDATE THE HANDMADE COST!"));
-    }
+//
+//    @PatchMapping("/update/{handmadeId}")
+//    @ApiOperation("更新增定價策略: Update new HandMade Price Setting('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
+//    public ResponseEntity<HandmadeModel> updateCartById(@PathVariable("handmadeId") Long handmadeId, @Valid @RequestBody HandmadeModel request){
+//        return handmadeService.update(handmadeId, request)
+//                .map(ResponseEntity::ok)
+//                .orElseThrow(()-> new EntitiesErrorException("FAIL TO UPDATE THE HANDMADE COST!"));
+//    }
 
 }

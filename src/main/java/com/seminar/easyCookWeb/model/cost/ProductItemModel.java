@@ -14,6 +14,4 @@ import javax.persistence.Entity;
 public class ProductItemModel {
     @ApiModelProperty(value = "食譜id", example = "1")
     private long productId;
-    @ApiModelProperty(value = "食譜名稱", example = "雞腿南蠻風三明治")
-    private String name;
 }

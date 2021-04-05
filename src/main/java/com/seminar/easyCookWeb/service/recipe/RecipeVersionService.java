@@ -21,6 +21,9 @@ public class RecipeVersionService {
     @Autowired
     private RecipeRepository recipeRepository;
     @Autowired
+    private RecipeService recipeService;
+
+    @Autowired
     private RecipeMapper recipeMapper;
 
     public Optional<RecipeVersionModel> getRecipeRelativeVersionById(Long recipeId){
@@ -37,7 +40,7 @@ public class RecipeVersionService {
                     }
 
                     return RecipeVersionModel.builder()
-                            .currentRecipe(recipeMapper.toModel(origin))
+                            .currentRecipe(recipeService.findById(recipeId).get())
                             .existedVersions(recipesModel).build();
                 }));
     }

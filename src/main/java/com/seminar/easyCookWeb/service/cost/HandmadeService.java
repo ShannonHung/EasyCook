@@ -1,14 +1,21 @@
 package com.seminar.easyCookWeb.service.cost;
 
+import com.seminar.easyCookWeb.exception.BusinessException;
 import com.seminar.easyCookWeb.exception.EntityNotFoundException;
 import com.seminar.easyCookWeb.mapper.cost.HandmadeMapper;
 import com.seminar.easyCookWeb.model.cost.HandmadeModel;
+import com.seminar.easyCookWeb.model.cost.HandmadeResponse;
 import com.seminar.easyCookWeb.pojo.cost.HandmadeCost;
 import com.seminar.easyCookWeb.repository.cost.HandmadeRepository;
+import com.seminar.easyCookWeb.repository.recipe.RecipeRepository;
+import com.seminar.easyCookWeb.service.recipe.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ConstraintViolationException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class HandmadeService {
@@ -16,31 +23,42 @@ public class HandmadeService {
     private HandmadeRepository handmadeRepository;
     @Autowired
     private ProductItemService productItemService;
+    @Autowired
+    private RecipeService recipeService;
 
     @Autowired
     private HandmadeMapper handmadeMapper;
 
 
-    public Optional<HandmadeModel> save(HandmadeModel cost){
-        return Optional.of(cost)
-                .map(handmadeMapper::toPojo)
-                .map(handmadeRepository::save)
-                .map((pojo) -> {
-                    pojo.setProducts(productItemService.saveList(cost.getProducts(), pojo.getId()));
-                    return pojo;
-                })
-                .map(handmadeMapper::toModel);
+    public Optional<HandmadeResponse> save(HandmadeModel cost){
+        try{
+            return Optional.of(cost)
+                    .map(handmadeMapper::toPojo)
+                    .map(handmadeRepository::save)
+                    .map((pojo) -> {
+                        pojo.setProducts(productItemService.saveList(cost.getProducts(), pojo.getId()));
+                        HandmadeResponse response = handmadeMapper.toModel(pojo);
+                        response.setProducts(
+                                pojo.getProducts().stream()
+                                        .map((porduct) -> recipeService.findById(porduct.getProductId()).get())
+                                        .collect(Collectors.toList()));
+                        return response;
+                    });
+        }catch (DataIntegrityViolationException e){
+            throw new BusinessException("RECIPE HAVE ALREADY ASSIGNED THE COST!");
+        }
+
     }
 
-    public Optional<HandmadeModel> update(Long handmadeId, HandmadeModel request){
-        HandmadeCost current = handmadeRepository.findById(handmadeId).orElseThrow(()-> new EntityNotFoundException("CANNOT FIND THE HANDMADE COST!"));
-        handmadeMapper.update(request, current);
-        return Optional.of(current)
-                .map(handmadeRepository::save)
-                .map((pojo) -> {
-                    pojo.setProducts(productItemService.updateList(current.getProducts(), pojo.getId()));
-                    return pojo;
-                })
-                .map(handmadeMapper::toModel);
-    }
+//    public Optional<HandmadeModel> update(Long handmadeId, HandmadeModel request){
+//        HandmadeCost current = handmadeRepository.findById(handmadeId).orElseThrow(()-> new EntityNotFoundException("CANNOT FIND THE HANDMADE COST!"));
+//        handmadeMapper.update(request, current);
+//        return Optional.of(current)
+//                .map(handmadeRepository::save)
+//                .map((pojo) -> {
+//                    pojo.setProducts(productItemService.updateList(current.getProducts(), pojo.getId()));
+//                    return pojo;
+//                })
+//                .map(handmadeMapper::toModel);
+//    }
 }

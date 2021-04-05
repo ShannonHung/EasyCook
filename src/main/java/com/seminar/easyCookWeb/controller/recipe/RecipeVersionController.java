@@ -23,6 +23,7 @@ public class RecipeVersionController {
     @Autowired
     private RecipeVersionService recipeVersionService;
 
+
     @GetMapping("/{recipeId}")
     @ApiOperation("透過食譜ID尋找相關的食譜版本: Search Recipe By Id {EVERYONE CAN ACCESS}")
     public ResponseEntity<RecipeVersionModel> getById(@PathVariable Long recipeId){

@@ -17,10 +17,6 @@ public class ProductItem {
     @Column(name="product_id")
     private long productId;
 
-    @NotBlank
-    @Column(columnDefinition = "nvarchar(64)")
-    private String name;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "handmade_cost_id", referencedColumnName = "handmade_cost_id")
     private HandmadeCost handmadeCost;

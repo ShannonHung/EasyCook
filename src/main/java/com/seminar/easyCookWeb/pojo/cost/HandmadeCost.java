@@ -22,16 +22,15 @@ public class HandmadeCost {
     @Column(name="handmade_cost_id")
     private long id;
 
-    @NotBlank
     @Column(length = 45, unique = true, nullable = false)
     @Builder.Default
     private double cost = 0;
 
     @Column(columnDefinition = "nvarchar(128)")
-    private double name;
+    private String name;
 
     @OneToMany(mappedBy = "handmadeCost", fetch = FetchType.LAZY)
     @JsonManagedReference
     @Builder.Default
-    private List<Recipe> products = new LinkedList<>();
+    private List<ProductItem> products = new LinkedList<>();
 }
