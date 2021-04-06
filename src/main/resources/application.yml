@@ -36,7 +36,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    hibernate.ddl-auto: update
+    hibernate.ddl-auto: create
 
 
 # Server port is arbitrary
