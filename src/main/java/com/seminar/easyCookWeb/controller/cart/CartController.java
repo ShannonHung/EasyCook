@@ -60,7 +60,7 @@ public class CartController {
     public ResponseEntity<CartRecipeModel> getAllCart(@PathVariable("cartId") Long cartId){
         return cartRecipeService.getCartById(cartId)
                 .map(ResponseEntity::ok)
-                .orElseThrow(()-> new EntitiesErrorException("Cannot get all shopping cart list!"));
+                .orElseThrow(()-> new EntitiesErrorException("CANNOT FIND THE SHOPPING CART! ID " + cartId));
     }
 
     @DeleteMapping("/delete/{cartId}")

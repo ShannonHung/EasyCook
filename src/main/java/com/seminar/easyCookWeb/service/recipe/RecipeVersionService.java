@@ -4,8 +4,11 @@ import com.seminar.easyCookWeb.exception.EntityNotFoundException;
 import com.seminar.easyCookWeb.mapper.recipe.RecipeMapper;
 import com.seminar.easyCookWeb.model.recipe.search.RecipeVersionModel;
 import com.seminar.easyCookWeb.model.recipe.search.RecipeVersionRelativeModel;
+import com.seminar.easyCookWeb.pojo.cost.HandmadeCost;
 import com.seminar.easyCookWeb.pojo.recipe.Recipe;
+import com.seminar.easyCookWeb.repository.cost.HandmadeRepository;
 import com.seminar.easyCookWeb.repository.recipe.RecipeRepository;
+import com.seminar.easyCookWeb.service.cost.HandmadeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,8 @@ import java.util.stream.Collectors;
 public class RecipeVersionService {
     @Autowired
     private RecipeRepository recipeRepository;
+    @Autowired
+    private HandmadeService handmadeService;
     @Autowired
     private RecipeService recipeService;
 
@@ -40,8 +45,13 @@ public class RecipeVersionService {
                     }
 
                     return RecipeVersionModel.builder()
+                            .handmade(getHandmade())
                             .currentRecipe(recipeService.findById(recipeId).get())
                             .existedVersions(recipesModel).build();
                 }));
+    }
+
+    public Double getHandmade(){
+        return handmadeService.getInit().get().getCost();
     }
 }

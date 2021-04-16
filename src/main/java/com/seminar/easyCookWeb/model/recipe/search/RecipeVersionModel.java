@@ -18,6 +18,8 @@ import java.util.List;
 public class RecipeVersionModel {
     @ApiModelProperty(value = "目前的食譜")
     private RecipeModel currentRecipe;
+    @ApiModelProperty(value = "目前的人工價錢")
+    private Double handmade;
     @ApiModelProperty(value = "目前食譜相關的版本")
     private List<RecipeVersionRelativeModel> existedVersions;
 }
