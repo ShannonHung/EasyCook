@@ -26,19 +26,27 @@ public class CartController {
     @Autowired
     CartRecipeService cartRecipeService;
 
-    @PostMapping("/add")
-    @ApiOperation("加入購物車: Add Recipe into Shopping Cart ('ROLE_EMPLOYEE', 'ROLE_MEMBER', 'ROLE_ADMIN')")
-    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_MEMBER', 'ROLE_ADMIN')")
-    public ResponseEntity<CartRecipeModel> addRecipeToCart(@Valid @RequestBody CartRecipeRequest request, Authentication authentication){
+    @PostMapping("/customize/add")
+    @ApiOperation("加入購物車: Add Recipe into Shopping Cart ('ROLE_MEMBER', 'ROLE_VIP')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_VIP')")
+    public ResponseEntity<CartRecipeModel> addRecipeToCartCustomize(@Valid @RequestBody CartRecipeRequest request, Authentication authentication){
+        return cartRecipeService.addByCustomize(request, authentication)
+                .map(ResponseEntity::ok)
+                .orElseThrow(()-> new EntitiesErrorException("Cannot add this recipe Into Cart!"));
+    }
 
-        return cartRecipeService.add(request, authentication)
+    @GetMapping("/default/add/{recipeId}")
+    @ApiOperation("加入購物車: Add Recipe into Shopping Cart ('ROLE_MEMBER', 'ROLE_VIP')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_VIP')")
+    public ResponseEntity<CartRecipeModel> addRecipeToCartDefault(@PathVariable("recipeId") Long recipeId, Authentication authentication){
+        return cartRecipeService.addByDefault(recipeId, authentication)
                 .map(ResponseEntity::ok)
                 .orElseThrow(()-> new EntitiesErrorException("Cannot add this recipe Into Cart!"));
     }
 
     @GetMapping("/all")
     @ApiOperation("瀏覽所有購物車項目: Review All Shopping Cart List ('ROLE_MEMBER')")
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_VIP')")
     public ResponseEntity<Iterable<CartRecipeModel>> getAllCart(Authentication authentication){
 
         return cartRecipeService.findAllByMember(authentication)
@@ -46,9 +54,18 @@ public class CartController {
                 .orElseThrow(()-> new EntitiesErrorException("Cannot get all shopping cart list!"));
     }
 
+    @GetMapping("/get/{cartId}")
+    @ApiOperation("取得特定購物車項目: Get Shopping Cart By ID ('ROLE_MEMBER', 'ROLE_VIP')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_VIP')")
+    public ResponseEntity<CartRecipeModel> getAllCart(@PathVariable("cartId") Long cartId){
+        return cartRecipeService.getCartById(cartId)
+                .map(ResponseEntity::ok)
+                .orElseThrow(()-> new EntitiesErrorException("CANNOT FIND THE SHOPPING CART! ID " + cartId));
+    }
+
     @DeleteMapping("/delete/{cartId}")
     @ApiOperation("刪除購物車項目by id: Delete Shopping Cart Item By Id ('ROLE_MEMBER')")
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_VIP')")
     public ResponseEntity<CartRecipeModel> deleteCartById(@PathVariable("cartId") Long cartId, Authentication authentication){
         return cartRecipeService.deleteById(cartId, authentication)
                 .map(ResponseEntity::ok)
@@ -57,7 +74,7 @@ public class CartController {
 
     @PatchMapping("/update/{cartId}")
     @ApiOperation("更新購物車項目by id: Update Shopping Cart Item By Id ('ROLE_MEMBER')")
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_VIP')")
     public ResponseEntity<CartRecipeModel> updateCartById(@PathVariable("cartId") Long cartId, @Valid @RequestBody CartRecipeModel request, Authentication authentication){
         return cartRecipeService.update(cartId, request, authentication)
                 .map(ResponseEntity::ok)

@@ -43,7 +43,7 @@ public class Recipe {
     private String link;
 
     @Builder.Default
-    private int price = 0;
+    private double price = 0D;
 
     @Builder.Default
     private int likesCount = 0;

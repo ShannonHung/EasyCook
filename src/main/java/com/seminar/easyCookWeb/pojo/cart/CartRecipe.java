@@ -22,6 +22,9 @@ public class CartRecipe {
     @Column(name="cart_id")
     private long id;
 
+    @Builder.Default
+    private Boolean IsCustomize = false;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "member_id", referencedColumnName = "member_id", nullable = false)
     private Member member;

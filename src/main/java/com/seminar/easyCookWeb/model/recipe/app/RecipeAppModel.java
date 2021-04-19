@@ -34,7 +34,7 @@ public class RecipeAppModel {
 
     @ApiModelProperty(value = "食譜價格", example = "10.5")
     @Builder.Default
-    private int price = 0;
+    private double price = 0D;
 
     @ApiModelProperty(value = "食譜相片連結")
     private String photo;
