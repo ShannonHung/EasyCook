@@ -19,5 +19,5 @@ public interface RecipeImageRepository extends JpaRepository<RecipeImage, Long> 
     Optional<RecipeImage> findByName(String name);
 
     @Query("SELECT i FROM RecipeImage i WHERE i.recipe.id like :recipeId")
-    Iterable<RecipeImage> findByRecipeId(@Param("recipeId") Long recipeId);
+    List<RecipeImage> findByRecipeId(@Param("recipeId") Long recipeId);
 }

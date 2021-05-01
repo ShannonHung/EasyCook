@@ -80,7 +80,4 @@ public class CartController {
                 .map(ResponseEntity::ok)
                 .orElseThrow(()-> new EntitiesErrorException("Cannot delete this shopping cart item!"));
     }
-
-
-
 }

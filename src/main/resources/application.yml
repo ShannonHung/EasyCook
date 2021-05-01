@@ -12,8 +12,8 @@ spring:
       max-request-size: 100MB
 
   datasource:
-#    url: jdbc:mysql://localhost:3306/easyCook?serverTimezone=UTC
-    url: jdbc:mysql://140.118.9.145:3306/easycook?serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/easyCook?serverTimezone=UTC
+#    url: jdbc:mysql://140.118.9.145:3306/easycook?serverTimezone=UTC
     username: shannon
     password: hung0602
     initialization-mode: always
@@ -36,7 +36,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    hibernate.ddl-auto: update
+    hibernate.ddl-auto: create-drop
 
 
 # Server port is arbitrary
