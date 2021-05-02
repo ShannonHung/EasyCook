@@ -22,6 +22,9 @@ public class OrderForm {
     @Column(name="order_id")
     private long id;
 
+    @Column(columnDefinition = "nvarchar(30)")
+    private String orderNumber;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     @JsonBackReference

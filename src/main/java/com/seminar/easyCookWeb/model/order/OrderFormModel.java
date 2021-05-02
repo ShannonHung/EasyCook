@@ -24,6 +24,9 @@ public class OrderFormModel {
 
     private long id;
 
+    @ApiModelProperty(value = "訂單編號")
+    private String orderNumber;
+
     @ApiModelProperty(value = "訂單對象")
     private MemberResponse member;
 
