@@ -54,7 +54,7 @@ public class OrderController {
 
 
 
-    @GetMapping("/{orderId}")
+    @GetMapping("/id/{orderId}")
     @ApiOperation("取得訂單透過訂單編號: Get Order By Id {ROLE_MEMBER, 'ROLE_VIP'}")
     @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_VIP')")
     public ResponseEntity<OrderFormModel> getById(@PathVariable Long orderId){
@@ -62,6 +62,16 @@ public class OrderController {
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new EntitiesErrorException("GET ORDER FAILURE! Id="+orderId));
     }
+
+    @GetMapping("/orderNumber/{orderNumber}")
+    @ApiOperation("取得訂單透過訂單編號: Get Order By Id {ROLE_MEMBER, 'ROLE_VIP'}")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_VIP')")
+    public ResponseEntity<OrderFormModel> getByOrderNumber(@PathVariable String orderNumber){
+        return orderService.findByOrderNumber(orderNumber)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new EntitiesErrorException("GET ORDER FAILURE! orderNumber="+orderNumber));
+    }
+
 
     @DeleteMapping("/delete/{orderId}")
     @ApiOperation("刪除訂單by id: Delete Order By Id {ROLE_MEMBER, 'ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_VIP'}")

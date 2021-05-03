@@ -106,6 +106,12 @@ public class OrderService {
                 .map(orderMapper::toModel);
     }
 
+    public Optional<OrderFormModel> findByOrderNumber(String orderNumber){
+        return Optional.of(orderRepository.findByOrderNumber(orderNumber))
+                .map(Optional::get)
+                .map(orderMapper::toModel);
+    }
+
     /**
      * for Member update api, only can update status
      * @param orderId
