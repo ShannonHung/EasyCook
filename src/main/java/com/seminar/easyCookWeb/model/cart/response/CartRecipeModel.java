@@ -21,6 +21,14 @@ import java.util.List;
 public class CartRecipeModel {
     private Long id;
 
+    @ApiModelProperty(value = "是否為客製化購物車項目")
+    @Builder.Default
+    private Boolean IsCustomize = false;
+
+    @ApiModelProperty(value = "是否為客製化購物車項目")
+    @Builder.Default
+    private Double sum = 0D;
+
     @ApiModelProperty(value = "會員資料")
     private MemberResponse member;
 
@@ -30,4 +38,9 @@ public class CartRecipeModel {
     @ApiModelProperty(value = "食譜客製化食材")
     @Builder.Default
     private List<CartRecipeCustomModel> customize = new LinkedList<>();
+
+    @ApiModelProperty(value = "該食譜圖片")
+    private String RecipeImage;
+
+
 }

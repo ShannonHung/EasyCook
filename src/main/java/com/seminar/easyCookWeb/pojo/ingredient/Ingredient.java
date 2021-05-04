@@ -37,7 +37,8 @@ public class Ingredient {
     @Column(columnDefinition = "nvarchar(60)")
     private String city;
 
-    private int price;
+    @Builder.Default
+    private double price = 0;
 
     @Column(columnDefinition = "decimal(28,4)")
     @Builder.Default

@@ -31,14 +31,14 @@ public class CartCustomController {
 
     @PostMapping("/{cartId}/custom/create")
     @ApiOperation("新增購物車客製化食材: Create Shopping Cart Custom Ingredient {ROLE_MEMBER}")
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_VIP')")
     public ResponseEntity<CartRecipeCustomModel> create(@PathVariable Long cartId, @Valid @RequestBody CartRecipeCustomizeRequest request  ,Authentication authentication){
         return customService.create(cartId, request, authentication)
                 .map(ResponseEntity::ok)
                 .orElseThrow(()-> new EntitiesErrorException("Cannot create Recipe! Maybe have Duplicated Recipe Name"));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_VIP')")
     @ApiOperation("刪除購物車客製化食材: Remove Shopping Cart Custom Ingredient {ROLE_MEMBER}")
     @DeleteMapping(path = "/{cartId}/custom/delete/{customId}")
     public ResponseEntity<CartRecipeModel> deleteById(@PathVariable Long cartId, @PathVariable Long customId, Authentication authentication) {

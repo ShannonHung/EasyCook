@@ -11,6 +11,7 @@ import com.seminar.easyCookWeb.mapper.recipe.RecipeMapper;
 import com.seminar.easyCookWeb.model.ingredient.IngredientModel;
 import com.seminar.easyCookWeb.model.recipe.RecipeImageModel;
 import com.seminar.easyCookWeb.model.recipe.RecipeModel;
+import com.seminar.easyCookWeb.model.recipe.app.RecipeAppModel;
 import com.seminar.easyCookWeb.pojo.recipe.Recipe;
 import com.seminar.easyCookWeb.pojo.recipe.RecipeImage;
 import com.seminar.easyCookWeb.repository.recipe.RecipeImageRepository;
@@ -248,6 +249,16 @@ public class RecipeImageService {
                             .build();
 
                 }).collect(Collectors.toList());
+    }
+
+    public Optional<String> getFirstImageByRecipeId(Long recipeId){
+
+        return Optional.of(imageRepository.findByRecipeId(recipeId))
+                .map(files -> {
+                    if(files.isEmpty()) return "No Image";
+                    RecipeImage file = files.stream().findFirst().get();
+                    return getS3PhotoUrl(file.getName());
+                });
     }
 
 }

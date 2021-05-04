@@ -34,7 +34,7 @@ public class MemberController {
 
     @GetMapping(path = "/me")
     @ApiOperation("會員取得自己的資料: Member Get Self Info (Role: ROLE_MEMBER)")
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_VIP')")
     public ResponseEntity<MemberResponse> findSelf(Authentication authentication){
         return memberService.getMemberResponseByName(authentication.getName())
                 .map(ResponseEntity::ok)
@@ -71,7 +71,7 @@ public class MemberController {
     }
 
     @PatchMapping("/update/data/{memberId}")
-    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN', 'ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN', 'ROLE_MEMBER', 'ROLE_VIP')")
     @ApiOperation("透過id來更新員工(個人資料): Update Employees By Id (Role: ROLE_ADMIN, ROLE_EMPLOYEE, ROLE_MEMBER)")
     public ResponseEntity<MemberResponse> update(@PathVariable Long memberId, @RequestBody MemberRequest memberRequest, Authentication authentication) {
         return memberService.update(memberId, memberRequest, authentication)
@@ -90,7 +90,7 @@ public class MemberController {
     }
 
     @PatchMapping("/update/pwd/{memberId}")
-    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN', 'ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN', 'ROLE_MEMBER', 'ROLE_VIP')")
     @ApiOperation("透過id來更新會員密碼: Update Employees' password By Id (Role: 'ROLE_EMPLOYEE', 'ROLE_ADMIN', 'ROLE_MEMBER')")
     public ResponseEntity<MemberResponse> updatePassword(@PathVariable Long memberId,@Valid @RequestBody UpdatePwd updatePwd, Authentication authentication){
         return memberService.updatePwd(memberId, updatePwd, authentication)

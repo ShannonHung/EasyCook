@@ -19,7 +19,14 @@ public interface CartMapper {
 
     Iterable<CartRecipeModel> toIterableModel(Iterable<CartRecipe> cartRecipes);
 
+    @Mapping(target = "customize", source = "recipeIngredients")
     @Mapping(target = "id",ignore = true)
+    CartRecipe DefaultRecipeToCart(Recipe recipe);
+
+    @Mapping(target = "id",ignore = true)
+    @Mapping(target = "isCustomize",ignore = true)
+    @Mapping(target = "member",ignore = true)
+    @Mapping(target = "recipe",ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void update(CartRecipeModel oldPojo, @MappingTarget CartRecipe newPojo);
 
