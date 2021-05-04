@@ -15,4 +15,6 @@ public interface OrderRepository extends JpaRepository<OrderForm, Long> {
     @Query("SELECT c FROM OrderForm c WHERE ( c.member.id = :id )")
     Optional<List<OrderForm>> findAllByMemberId(@Param("id")Long id);
 
+    Optional<OrderForm> findByOrderNumber(String orderNumber);
+
 }

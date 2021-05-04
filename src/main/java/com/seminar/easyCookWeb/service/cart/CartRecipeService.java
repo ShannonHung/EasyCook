@@ -17,6 +17,8 @@ import com.seminar.easyCookWeb.repository.recipe.RecipeRepository;
 import com.seminar.easyCookWeb.repository.users.MemberRepository;
 import com.seminar.easyCookWeb.service.cost.HandmadeService;
 import com.seminar.easyCookWeb.service.ingredient.IngredientService;
+import com.seminar.easyCookWeb.service.recipe.RecipeImageService;
+import com.seminar.easyCookWeb.service.recipe.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -38,6 +40,10 @@ public class CartRecipeService {
     private CartRecipeCustomizeRepository customizeRepository;
     @Autowired
     private CartRecipeCustomService customService;
+    @Autowired
+    private RecipeService recipeService;
+    @Autowired
+    private RecipeImageService recipeImageService;
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
@@ -86,6 +92,7 @@ public class CartRecipeService {
                 })
                 .map((cart) -> {
                     CartRecipeModel model = cartMapper.toModel(cart);
+                    model.setRecipeImage(recipeImageService.getFirstImageByRecipeId(model.getRecipe().getId()).get());
                     return model;
                 })
                 .map(this::calculateCustomCartSum);
@@ -124,7 +131,7 @@ public class CartRecipeService {
                 })
                 .map((cart) -> {
                     CartRecipeModel model = cartMapper.toModel(cart);
-
+                    model.setRecipeImage(recipeImageService.getFirstImageByRecipeId(model.getRecipe().getId()).get());
                     return model;
                 })
                 .map(this::calculateDefaultCartSum);
@@ -133,6 +140,10 @@ public class CartRecipeService {
     public Optional<CartRecipeModel> getCartById(long cartId) {
         return cartRecipeRepository.findById(cartId)
                 .map(cartMapper::toModel)
+                .map((model) -> {
+                    model.setRecipeImage(recipeImageService.getFirstImageByRecipeId(model.getRecipe().getId()).get());
+                    return model;
+                })
                 .map(this::calculateDefaultCartSum);
     }
 
@@ -145,12 +156,15 @@ public class CartRecipeService {
      */
     public Optional<Iterable<CartRecipeModel>> findAllByMember(Authentication authentication) {
         Member member = memberRepository.findByAccount(authentication.getName()).orElseThrow(() -> new EntityNotFoundException("Cannot find user, or you are not the member"));
+
         return cartRecipeRepository.findAllByMemberId(member.getId())
                 .map(cartMapper::toIterableModel)
                 .map((models) -> {
                     //DONE 判斷isCustomize = true or false
                     return StreamSupport.stream(models.spliterator(), false)
                             .map((cart) -> {
+                                cart.setRecipeImage(recipeImageService.getFirstImageByRecipeId(cart.getRecipe().getId()).get());
+                                cart.setRecipe(recipeService.setRecipeOutOfStackIngredients(cart.getRecipe()).get());
                                 if (cart.getIsCustomize()) {
                                     //DONE if true, sum = handmade cost + every current ingredient price * quantities
                                     return calculateCustomCartSum(cart);
@@ -205,11 +219,16 @@ public class CartRecipeService {
         }
         cartRecipeRepository.deleteById(id);
         return Optional.of(model)
-                .map(cartMapper::toModel);
+                .map(cartMapper::toModel)
+                .map((model1) -> {
+                    model1.setRecipeImage(recipeImageService.getFirstImageByRecipeId(model1.getRecipe().getId()).get());
+                    return model1;
+                });
     }
 
     public Optional<CartRecipeModel> update(Long cartId, CartRecipeModel request, Authentication authentication) {
         CartRecipe origin = cartRecipeRepository.findById(cartId).orElseThrow(() -> new EntityNotFoundException("cannot find this cart item"));
+        checkAuth(authentication, origin.getMember().getAccount());
         return Optional.of(origin)
                 .map(it -> {
                     cartMapper.update(request, origin);
@@ -227,8 +246,14 @@ public class CartRecipeService {
                 })
                 .map(cartMapper::toModel)
                 .map((model) -> {
+                    model.setRecipeImage(recipeImageService.getFirstImageByRecipeId(model.getRecipe().getId()).get());
                     if(model.getIsCustomize())return calculateCustomCartSum(model);
                     else return calculateDefaultCartSum(model);
                 });
+    }
+    public void checkAuth(Authentication authentication, String owner){
+        if (!authentication.getName().equals(owner)) {
+            throw new BusinessException("These cart's owner is not you, so you don't have authority to access");
+        }
     }
 }

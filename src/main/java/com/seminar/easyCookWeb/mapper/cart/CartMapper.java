@@ -24,6 +24,9 @@ public interface CartMapper {
     CartRecipe DefaultRecipeToCart(Recipe recipe);
 
     @Mapping(target = "id",ignore = true)
+    @Mapping(target = "isCustomize",ignore = true)
+    @Mapping(target = "member",ignore = true)
+    @Mapping(target = "recipe",ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void update(CartRecipeModel oldPojo, @MappingTarget CartRecipe newPojo);
 

@@ -39,10 +39,15 @@ public class OrderService {
 
     DateTimeFormatter dtf = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
+    public String createOrderNumber(){
+        return "OR"+ (System.currentTimeMillis() / 1000);
+    }
+
     public Optional<OrderFormModel> create(OrderFormModel request, Authentication auth) {
         return Optional.of(orderMapper.toPOJO(request))
                 .map((pojo) -> {
                     return pojo.toBuilder()
+                            .orderNumber(createOrderNumber())
                             .member(memberRepository.findByAccount(auth.getName()).get())
                             .orderTime(OffsetDateTime.parse(OffsetDateTime.now().format(dtf)))
                             .build();
@@ -97,6 +102,12 @@ public class OrderService {
 
     public Optional<OrderFormModel> findById(Long orderId){
         return Optional.of(orderRepository.findById(orderId))
+                .map(Optional::get)
+                .map(orderMapper::toModel);
+    }
+
+    public Optional<OrderFormModel> findByOrderNumber(String orderNumber){
+        return Optional.of(orderRepository.findByOrderNumber(orderNumber))
                 .map(Optional::get)
                 .map(orderMapper::toModel);
     }
