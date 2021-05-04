@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 
@@ -22,8 +23,14 @@ import javax.persistence.*;
 public class OrderItemCustomModel {
     @ApiModelProperty(value = "訂單細項材料id")
     private long id;
-    @ApiModelProperty(value = "訂單食材")
-    private IngredientModel ingredient;
+
+    @ApiModelProperty(value = "訂單食材名稱")
+    private String ingredientName;
+
+    @ApiModelProperty(value = "訂單食材價格")
+    @Builder.Default
+    private double ingredientPrice = 0;
+
     @ApiModelProperty(value = "訂單食材數量")
     private Double quantityRequired = 0D;
 

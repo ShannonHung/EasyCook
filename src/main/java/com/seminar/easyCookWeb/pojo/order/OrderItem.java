@@ -32,6 +32,10 @@ public class OrderItem {
     @JoinColumn(name = "order_id", referencedColumnName = "order_id")
     private OrderForm orderForm;
 
+    @Builder.Default
+    @Column(columnDefinition = "decimal(28,4)")
+    private Double sum = 0D;
+
     @OneToMany(mappedBy = "orderItem", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     @Builder.Default
