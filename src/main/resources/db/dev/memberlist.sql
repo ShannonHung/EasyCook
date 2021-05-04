@@ -1,5 +1,5 @@
 insert into member (account, password, username, email, role) values ('shannon','$2a$10$4L2.8B0woZMR2oWvW7MM8OO6OcB3k3MYOkpMFcg0HZm9GLV67UypS', 'Hung' ,'email', 'MEMBER');
-insert into member (account, password, username, email, role) values ('member1','$2a$10$4L2.8B0woZMR2oWvW7MM8OO6OcB3k3MYOkpMFcg0HZm9GLV67UypS', 'Hung' ,'email', 'MEMBER');
+insert into member (account, password, username, email, role) values ('member1','$2a$10$4L2.8B0woZMR2oWvW7MM8OO6OcB3k3MYOkpMFcg0HZm9GLV67UypS', 'Hung' ,'email', 'VIP');
 insert into member (account, password, username, email, role) values ('member2','$2a$10$4L2.8B0woZMR2oWvW7MM8OO6OcB3k3MYOkpMFcg0HZm9GLV67UypS', 'Hung' ,'email', 'MEMBER');
 insert into member (account, password, username, email, role) values ('member3','$2a$10$4L2.8B0woZMR2oWvW7MM8OO6OcB3k3MYOkpMFcg0HZm9GLV67UypS', 'Hung' ,'email', 'MEMBER');
 insert into member (account, password, username, email, role) values ('member4','$2a$10$4L2.8B0woZMR2oWvW7MM8OO6OcB3k3MYOkpMFcg0HZm9GLV67UypS', 'Hung' ,'email', 'MEMBER');

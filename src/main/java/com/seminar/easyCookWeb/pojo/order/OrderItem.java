@@ -21,6 +21,9 @@ public class OrderItem {
     @Column(name="item_id")
     private long id;
 
+    @Builder.Default
+    private Boolean IsCustomize = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id", referencedColumnName = "recipe_id")
     private Recipe recipe;

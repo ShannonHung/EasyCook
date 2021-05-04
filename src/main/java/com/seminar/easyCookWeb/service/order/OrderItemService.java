@@ -63,7 +63,11 @@ public class OrderItemService {
                          //先轉乘orderItem List
                          orderItemMapper.carsToOrders(
                                  cartIds.stream()
-                                         .map((cartId) -> cartRecipeRepository.findById(cartId).get())
+                                         .map((cartId) -> {
+                                             CartRecipe cart = cartRecipeRepository.findById(cartId).orElseThrow(()-> new EntityNotFoundException("Cannot find the cart number " + cartId));
+                                             cartRecipeRepository.deleteById(cartId);
+                                             return cart;
+                                         })
                                          .collect(Collectors.toList()))
                                  //把List<OrderItem>裡面的每個Item裡面的塞好Form
                  .stream().map((orderItem) -> save(orderItem, orderForm.getId()).get())
