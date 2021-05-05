@@ -27,7 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/purchase/ingredient" , produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
-@Api(tags = "進貨-食材 PurchaseRecord連接口", description = "提供進貨-食材相關的 Rest API")
+@Api(tags = "進貨-食材 PurchaseIngredient連接口", description = "提供進貨-食材相關的 Rest API")
 public class PurchaseIngredientController {
     @Autowired
     private PurchaseIngredientService purchaseIngredientService;
@@ -45,6 +45,16 @@ public class PurchaseIngredientController {
         return purchaseIngredientService.create(purchaseRecordId,ingredientId,purchaseIngredientModel)
                 .map(ResponseEntity::ok)
                 .orElseThrow(()-> new EntitiesErrorException("Cannot create PurchaseIngredient!"));
+    }
+
+    @PostMapping("/add")
+    @ApiOperation("加入購物車: Add PurchaseRecord ('ROLE_MEMBER', 'ROLE_VIP')")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    public ResponseEntity<PurchaseIngredientModel> addRecipeToCartCustomize(@Valid @RequestBody PurchaseIngredientModel request){
+        log.error("[PurchaseRecord create] => " + request);
+        return purchaseIngredientService.add(request)
+                .map(ResponseEntity::ok)
+                .orElseThrow(()-> new EntitiesErrorException("Cannot add this recipe Into Cart!"));
     }
 
     @GetMapping("/all")

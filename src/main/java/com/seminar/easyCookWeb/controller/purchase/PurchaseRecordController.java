@@ -4,6 +4,8 @@ package com.seminar.easyCookWeb.controller.purchase;
 import com.seminar.easyCookWeb.exception.BusinessException;
 import com.seminar.easyCookWeb.exception.EntitiesErrorException;
 import com.seminar.easyCookWeb.exception.EntityNotFoundException;
+import com.seminar.easyCookWeb.model.cart.request.CartRecipeRequest;
+import com.seminar.easyCookWeb.model.cart.response.CartRecipeModel;
 import com.seminar.easyCookWeb.model.purchase.PurchaseRecordModel;
 import com.seminar.easyCookWeb.model.supplier.SupplierModel;
 import com.seminar.easyCookWeb.service.purchase.PurchaseRecordService;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -40,11 +43,22 @@ public class PurchaseRecordController {
     @ApiOperation("建立進貨紀錄: Create PurchaseRecord {ROLE_EMPLOYEE, ROLE_ADMIN}")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     public ResponseEntity<PurchaseRecordModel> create(@PathVariable Long supplierId, @Valid @RequestBody PurchaseRecordModel purchaseRecordModel){
-        log.error("[SupplierPerson create] => " + purchaseRecordModel);
+        log.error("[PurchaseRecord create] => " + purchaseRecordModel);
         return purchaseRecordService.create(supplierId,purchaseRecordModel)
                 .map(ResponseEntity::ok)
                 .orElseThrow(()-> new EntitiesErrorException("Cannot create PurchaseRecord!"));
     }
+
+    @PostMapping("/add")
+    @ApiOperation("加入購物車: Add PurchaseRecord ('ROLE_MEMBER', 'ROLE_VIP')")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    public ResponseEntity<PurchaseRecordModel> addRecipeToCartCustomize(@Valid @RequestBody PurchaseRecordModel request){
+        log.error("[PurchaseRecord create] => " + request);
+        return purchaseRecordService.add(request)
+                .map(ResponseEntity::ok)
+                .orElseThrow(()-> new EntitiesErrorException("Cannot add this recipe Into Cart!"));
+    }
+
 
     @GetMapping("/all")
     @ApiOperation("取得所有進貨紀錄清單: Get All SupplierPerson. {ROLE_EMPLOYEE, ROLE_ADMIN}")

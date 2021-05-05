@@ -13,17 +13,12 @@ import java.time.OffsetDateTime;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "supplier")
+//@ToString(exclude = "supplier")
 public class PurchaseRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="purchase_id")
     private long iid;
-
-//    @Column(columnDefinition = "nvarchar(256)",name = "ingredient_id")
-//    @Nationalized
-//    @NotBlank
-//    private String ingredient;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supplier_id")

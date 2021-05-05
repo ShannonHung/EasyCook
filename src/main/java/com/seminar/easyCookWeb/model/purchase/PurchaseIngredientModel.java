@@ -2,11 +2,17 @@ package com.seminar.easyCookWeb.model.purchase;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
 
 @Data
+@Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
 @ApiModel("進貨-食材 PurchaseIngredientModel請求Entity樣式")
 public class PurchaseIngredientModel {
     @ApiModelProperty(value = "進貨編號", required = true)
@@ -23,4 +29,12 @@ public class PurchaseIngredientModel {
 
     @ApiModelProperty(value = "進貨小計" , example = "150")
     private Double sum;
+
+    //其他FK以JSON傳入時要寫
+    //    @NotNull
+    @ApiModelProperty(value = "食材id", example = "6")
+    private Long ingredientId;
+
+    @ApiModelProperty(value = "進貨紀錄id", example = "1")
+    private Long recordId;
 }
