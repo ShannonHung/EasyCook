@@ -62,7 +62,7 @@ public class OrderService {
                 .map(orderRepository::save)
                 .map((pojo) -> {
                     //cart轉成orderItem並且塞好
-                    pojo.setOrderItems(orderItemService.saveList(pojo, request.getCartId()).get());
+                    pojo.setOrderItems(orderItemService.saveList(pojo, request.getCarts()).get());
                     return pojo;
                 }).map(orderRepository::save)
                 .map(orderMapper::toModel);

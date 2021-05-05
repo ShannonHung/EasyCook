@@ -21,10 +21,10 @@ public class OrderItemCustom {
     @Column(name="cart_recipe_customize_id")
     private long id;
 
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "ingredientordered_id")
-//    @JsonManagedReference
-//    private Ingredient ingredient;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ingredientordered_id")
+    @JsonManagedReference
+    private Ingredient ingredient;
 
     @Column(columnDefinition = "nvarchar(256)")
     @Nationalized
