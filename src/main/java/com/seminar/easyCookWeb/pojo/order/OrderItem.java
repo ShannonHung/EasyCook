@@ -21,6 +21,9 @@ public class OrderItem {
     @Column(name="item_id")
     private long id;
 
+    @Builder.Default
+    private Boolean IsCustomize = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id", referencedColumnName = "recipe_id")
     private Recipe recipe;
@@ -28,6 +31,10 @@ public class OrderItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", referencedColumnName = "order_id")
     private OrderForm orderForm;
+
+    @Builder.Default
+    @Column(columnDefinition = "decimal(28,4)")
+    private Double sum = 0D;
 
     @OneToMany(mappedBy = "orderItem", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference

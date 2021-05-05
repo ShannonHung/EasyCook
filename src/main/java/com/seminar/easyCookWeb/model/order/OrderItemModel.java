@@ -27,6 +27,16 @@ public class OrderItemModel {
     @ApiModelProperty(value = "訂單產品")
     private RecipeModel recipe;
 
+    @Builder.Default
+    private Boolean IsCustomize = false;
+
+    @ApiModelProperty(value = "產品照片")
+    private String recipeImage;
+
+    @ApiModelProperty(value = "單價")
+    @Builder.Default
+    private Double itemPrice = 0D;
+
     @ApiModelProperty(value = "產品內的食材")
     private List<OrderItemCustomModel> customize = new LinkedList<>();
 

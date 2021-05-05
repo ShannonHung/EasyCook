@@ -42,7 +42,7 @@ public class OrderUpdateEmployee {
 
     @ApiModelProperty(value = "訂單狀態", example = "尚未確認")
     @Builder.Default
-    private String status = "尚未確認";
+    private String status = "toConfirm";
 
     @ApiModelProperty(value = "地址", example = "台北市大安區基隆路四段")
     private String address;
