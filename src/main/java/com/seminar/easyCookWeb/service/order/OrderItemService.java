@@ -5,6 +5,7 @@ import com.seminar.easyCookWeb.mapper.cart.CartMapper;
 import com.seminar.easyCookWeb.mapper.order.CartToOrderCustomMapper;
 import com.seminar.easyCookWeb.mapper.order.OrderItemMapper;
 import com.seminar.easyCookWeb.model.cart.response.CartRecipeModel;
+import com.seminar.easyCookWeb.model.order.OrderCart;
 import com.seminar.easyCookWeb.pojo.cart.CartRecipe;
 import com.seminar.easyCookWeb.pojo.order.OrderForm;
 import com.seminar.easyCookWeb.pojo.order.OrderItem;
@@ -62,33 +63,32 @@ public class OrderItemService {
     /**
      * 目的在幫我把資料都塞好
      * @param orderForm
-     * @param cartIds
+     * @param carts
      * @return
      */
-    public Optional<List<OrderItem>> saveList(OrderForm orderForm, List<Long> cartIds){
+    public Optional<List<OrderItem>> saveList(OrderForm orderForm, List<OrderCart> carts){
                  return Optional.of(
                          //先轉乘orderItem List
                          orderItemMapper.carsToOrders(
-                                 cartIds.stream()
-                                         .map((cartId) -> {
-                                             CartRecipeModel cartModel = cartMapper.toModel(cartRecipeRepository.findById(cartId)
-                                                     .orElseThrow(()-> new EntityNotFoundException("Cannot find the cart number " + cartId)));
-                                             cartRecipeRepository.deleteById(cartId);
+                                 carts.stream()
+                                         .map((cart) -> {
+                                             CartRecipeModel cartModel = cartMapper.toModel(cartRecipeRepository.findById(cart.getCartId())
+                                                     .orElseThrow(()-> new EntityNotFoundException("Cannot find the cart number " + cart.getCartId())));
+                                             cartRecipeRepository.deleteById(cart.getCartId());
                                              //計算該訂單item的價格
-                                             if (cartModel.getIsCustomize()) {
-                                                 //DONE if true, sum = handmade cost + every current ingredient price * quantities
-                                                 return cartRecipeService.calculateCustomCartSum(cartModel);
-                                             } else {
-                                                 //DONE if false, sum = recipe price
-                                                 return cartRecipeService.calculateCustomCartSum(cartModel);
-                                             }
+                                             cartModel.setSum(cart.getCartSum());
+                                             return cartModel;
+//                                             if (cartModel.getIsCustomize()) {
+//                                                 //DONE if true, sum = handmade cost + every current ingredient price * quantities
+//                                                 return cartRecipeService.calculateCustomCartSum(cartModel);
+//                                             } else {
+//                                                 //DONE if false, sum = recipe price
+//                                                 return cartRecipeService.calculateCustomCartSum(cartModel);
+//                                             }
                                          })
                                          .collect(Collectors.toList()))
                                  //把List<OrderItem>裡面的每個Item裡面的塞好Form
                  .stream().map((orderItem) -> save(orderItem, orderForm.getId()).get())
                  .collect(Collectors.toList()));
-
     }
-
-
 }

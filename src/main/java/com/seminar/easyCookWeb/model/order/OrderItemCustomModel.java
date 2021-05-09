@@ -25,6 +25,9 @@ public class OrderItemCustomModel {
     private long id;
 
     @ApiModelProperty(value = "訂單食材名稱")
+    private IngredientModel ingredient;
+
+    @ApiModelProperty(value = "訂單食材名稱")
     private String ingredientName;
 
     @ApiModelProperty(value = "訂單食材價格")

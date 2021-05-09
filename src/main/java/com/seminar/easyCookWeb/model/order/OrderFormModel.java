@@ -31,7 +31,7 @@ public class OrderFormModel {
     private MemberResponse member;
 
     @ApiModelProperty(value = "購物車id")
-    private List<Long> cartId;
+    private List<OrderCart> carts;
 
     @ApiModelProperty(value = "訂單細項")
     private List<OrderItemModel> orderItems = new LinkedList<>();

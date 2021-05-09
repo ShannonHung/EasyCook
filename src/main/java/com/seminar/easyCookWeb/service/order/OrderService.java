@@ -62,7 +62,7 @@ public class OrderService {
                 .map(orderRepository::save)
                 .map((pojo) -> {
                     //cart轉成orderItem並且塞好
-                    pojo.setOrderItems(orderItemService.saveList(pojo, request.getCartId()).get());
+                    pojo.setOrderItems(orderItemService.saveList(pojo, request.getCarts()).get());
                     return pojo;
                 }).map(orderRepository::save)
                 .map(orderMapper::toModel);
@@ -74,12 +74,7 @@ public class OrderService {
         return Optional.of(orderRepository.findAllByMemberId(member.getId())
                 .map(orderMapper::toModels)
                 .map((lists) -> StreamSupport.stream(lists.spliterator(), false)
-                            .map((order) -> {
-                                order.getOrderItems().forEach((cart) -> {
-                                    cart.setRecipeImage(recipeImageService.getFirstImageByRecipeId(cart.getRecipe().getId()).orElseThrow(()-> new EntityNotFoundException("Cannot find the recipe image for orderItem")));
-                                });
-                                return order;
-                            }).collect(Collectors.toList())
+                            .map(this::setFirstRecipeImage).collect(Collectors.toList())
                 )
                 .orElseThrow(()-> new EntityNotFoundException("CANNOT FIND ANY ORDERS")));
     }
@@ -102,7 +97,15 @@ public class OrderService {
     public Optional<OrderFormModel> findById(Long orderId){
         return Optional.of(orderRepository.findById(orderId))
                 .map(Optional::get)
-                .map(orderMapper::toModel);
+                .map(orderMapper::toModel)
+                .map(this::setFirstRecipeImage);
+    }
+
+    public OrderFormModel setFirstRecipeImage(OrderFormModel order){
+        order.getOrderItems().forEach((cart) -> {
+            cart.setRecipeImage(recipeImageService.getFirstImageByRecipeId(cart.getRecipe().getId()).orElseThrow(()-> new EntityNotFoundException("Cannot find the recipe image for orderItem")));
+        });
+        return order;
     }
 
     public Optional<OrderFormModel> findByOrderNumber(String orderNumber){
