@@ -123,8 +123,8 @@ public class OrderService {
     public Optional<OrderFormModel> updateById(Long orderId, Authentication auth){
         OrderForm origin = orderRepository.findById(orderId).orElseThrow(() -> new EntityNotFoundException("CANNOT FIND ORDER! ID "+orderId));
         if(!origin.getMember().getAccount().equals(auth.getName())) throw new EntityNotFoundException("YOU ARE NOT THIS ORDER'S OWNER! ID "+orderId);
-        if(origin.getStatus().equals("尚未確認")) {
-            origin.setStatus("已取消");
+        if(origin.getStatus().equals("toConfirm")) {
+            origin.setStatus("canceled");
         }else{
             throw new BusinessException("SORRY! CANNOT CHANGE THE STATUS, YOUR ORDER IS BEING PREPARED.");
         }
