@@ -144,7 +144,17 @@ public class CartRecipeService {
                     model.setRecipeImage(recipeImageService.getFirstImageByRecipeId(model.getRecipe().getId()).get());
                     return model;
                 })
-                .map(this::calculateDefaultCartSum);
+                .map((cart) -> calculateSum(cart));
+    }
+
+    public CartRecipeModel calculateSum(CartRecipeModel cart){
+        if (cart.getIsCustomize()) {
+            //DONE if true, sum = handmade cost + every current ingredient price * quantities
+            return calculateCustomCartSum(cart);
+        } else {
+            //DONE if false, sum = recipe price
+            return calculateDefaultCartSum(cart);
+        }
     }
 
     /**
@@ -165,13 +175,7 @@ public class CartRecipeService {
                             .map((cart) -> {
                                 cart.setRecipeImage(recipeImageService.getFirstImageByRecipeId(cart.getRecipe().getId()).get());
                                 cart.setRecipe(recipeService.setRecipeOutOfStackIngredients(cart.getRecipe()).get());
-                                if (cart.getIsCustomize()) {
-                                    //DONE if true, sum = handmade cost + every current ingredient price * quantities
-                                    return calculateCustomCartSum(cart);
-                                } else {
-                                    //DONE if false, sum = recipe price
-                                    return calculateDefaultCartSum(cart);
-                                }
+                                return calculateSum(cart);
                             }).collect(Collectors.toList());
                 });
 

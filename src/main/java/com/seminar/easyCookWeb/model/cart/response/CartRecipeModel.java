@@ -25,7 +25,7 @@ public class CartRecipeModel {
     @Builder.Default
     private Boolean IsCustomize = false;
 
-    @ApiModelProperty(value = "是否為客製化購物車項目")
+    @ApiModelProperty(value = "該購物車的總價")
     @Builder.Default
     private Double sum = 0D;
 

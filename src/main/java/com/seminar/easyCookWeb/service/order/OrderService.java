@@ -8,9 +8,12 @@ import com.seminar.easyCookWeb.model.order.OrderFormModel;
 import com.seminar.easyCookWeb.model.order.update.OrderUpdateEmployee;
 import com.seminar.easyCookWeb.pojo.appUser.Member;
 import com.seminar.easyCookWeb.pojo.order.OrderForm;
+import com.seminar.easyCookWeb.pojo.order.OrderItem;
+import com.seminar.easyCookWeb.pojo.order.OrderItemCustom;
 import com.seminar.easyCookWeb.repository.cart.CartRecipeRepository;
 import com.seminar.easyCookWeb.repository.order.OrderRepository;
 import com.seminar.easyCookWeb.repository.users.MemberRepository;
+import com.seminar.easyCookWeb.service.recipe.RecipeImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,8 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class OrderService {
@@ -32,6 +37,8 @@ public class OrderService {
     private OrderRepository orderRepository;
     @Autowired
     private OrderItemService orderItemService;
+    @Autowired
+    private RecipeImageService recipeImageService;
     @Autowired
     private CartRecipeRepository cartRepository;
 
@@ -55,25 +62,8 @@ public class OrderService {
                 .map(orderRepository::save)
                 .map((pojo) -> {
                     //cart轉成orderItem並且塞好
-                    pojo.setOrderItems(orderItemService.saveList(pojo, request.getCartId()).get());
+                    pojo.setOrderItems(orderItemService.saveList(pojo, request.getCarts()).get());
                     return pojo;
-
-//                    List<CartRecipe> carts = new LinkedList<>();
-//                    List<OrderItem> orderItems = new LinkedList<>();
-//
-//                    request.getCartId().forEach((cartId) -> {
-//                        carts.add(cartRepository.findById(cartId).orElseThrow(() -> new EntityNotFoundException("Cannot find the shopping cartId " + cartId)));
-//                    });
-//
-//                    orderItems = orderItemMapper.carsToOrders(carts).stream().map(
-//                            (cart) -> {
-//                                cart.setOrderForm(pojo);
-//                                return cart;
-//                            }
-//                    ).collect(Collectors.toList());
-//
-//                    pojo.setOrderItems(orderItems);
-//                    return pojo;
                 }).map(orderRepository::save)
                 .map(orderMapper::toModel);
     }
@@ -83,12 +73,19 @@ public class OrderService {
 
         return Optional.of(orderRepository.findAllByMemberId(member.getId())
                 .map(orderMapper::toModels)
+                .map((lists) -> StreamSupport.stream(lists.spliterator(), false)
+                            .map(this::setFirstRecipeImage).collect(Collectors.toList())
+                )
                 .orElseThrow(()-> new EntityNotFoundException("CANNOT FIND ANY ORDERS")));
     }
+
 
     public Optional<List<OrderFormModel>> getAll(){
         return Optional.of(orderRepository.findAll())
                 .map(orderMapper::toModels)
+                .map((lists) -> StreamSupport.stream(lists.spliterator(), false)
+                        .map(this::setFirstRecipeImage).collect(Collectors.toList())
+                )
                 .map(Optional::of)
                 .orElseThrow(()-> new EntityNotFoundException("CANNOT FIND ANY ORDERS"));
     }
@@ -103,7 +100,15 @@ public class OrderService {
     public Optional<OrderFormModel> findById(Long orderId){
         return Optional.of(orderRepository.findById(orderId))
                 .map(Optional::get)
-                .map(orderMapper::toModel);
+                .map(orderMapper::toModel)
+                .map(this::setFirstRecipeImage);
+    }
+
+    public OrderFormModel setFirstRecipeImage(OrderFormModel order){
+        order.getOrderItems().forEach((cart) -> {
+            cart.setRecipeImage(recipeImageService.getFirstImageByRecipeId(cart.getRecipe().getId()).orElseThrow(()-> new EntityNotFoundException("Cannot find the recipe image for orderItem")));
+        });
+        return order;
     }
 
     public Optional<OrderFormModel> findByOrderNumber(String orderNumber){
@@ -121,8 +126,8 @@ public class OrderService {
     public Optional<OrderFormModel> updateById(Long orderId, Authentication auth){
         OrderForm origin = orderRepository.findById(orderId).orElseThrow(() -> new EntityNotFoundException("CANNOT FIND ORDER! ID "+orderId));
         if(!origin.getMember().getAccount().equals(auth.getName())) throw new EntityNotFoundException("YOU ARE NOT THIS ORDER'S OWNER! ID "+orderId);
-        if(origin.getStatus().equals("尚未確認")) {
-            origin.setStatus("已取消");
+        if(origin.getStatus().equals("toConfirm")) {
+            origin.setStatus("canceled");
         }else{
             throw new BusinessException("SORRY! CANNOT CHANGE THE STATUS, YOUR ORDER IS BEING PREPARED.");
         }

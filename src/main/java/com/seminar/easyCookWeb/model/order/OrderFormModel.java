@@ -31,7 +31,7 @@ public class OrderFormModel {
     private MemberResponse member;
 
     @ApiModelProperty(value = "購物車id")
-    private List<Long> cartId;
+    private List<OrderCart> carts;
 
     @ApiModelProperty(value = "訂單細項")
     private List<OrderItemModel> orderItems = new LinkedList<>();
@@ -54,9 +54,9 @@ public class OrderFormModel {
     @ApiModelProperty(value = "出貨時間")
     private OffsetDateTime shippingTime;
 
-    @ApiModelProperty(value = "訂單狀態", example = "尚未確認")
+    @ApiModelProperty(value = "訂單狀態", example = "toConfirm")
     @Builder.Default
-    private String status = "尚未確認";
+    private String status = "toConfirm";
 
     @ApiModelProperty(value = "地址", example = "台北市大安區基隆路四段")
     private String address;
