@@ -83,6 +83,9 @@ public class OrderService {
     public Optional<List<OrderFormModel>> getAll(){
         return Optional.of(orderRepository.findAll())
                 .map(orderMapper::toModels)
+                .map((lists) -> StreamSupport.stream(lists.spliterator(), false)
+                        .map(this::setFirstRecipeImage).collect(Collectors.toList())
+                )
                 .map(Optional::of)
                 .orElseThrow(()-> new EntityNotFoundException("CANNOT FIND ANY ORDERS"));
     }

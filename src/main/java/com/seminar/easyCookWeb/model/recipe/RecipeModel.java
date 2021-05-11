@@ -33,6 +33,9 @@ public class RecipeModel {
     @ApiModelProperty(value = "食譜影片連結", example = "https://youtu.be/QDXk0SYyagg")
     private String link;
 
+    @ApiModelProperty(value = "食譜封面照片", example = "https://youtu.be/QDXk0SYyagg")
+    private String recipeImage;
+
     @ApiModelProperty(value = "食譜按讚次數", example = "10")
     private int likesCount;
 
