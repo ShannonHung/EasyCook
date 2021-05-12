@@ -27,6 +27,7 @@ spring:
       - classpath:/db/product/recipe.sql
       - classpath:/db/product/recipe_ingredient.sql
       - classpath:/db/product/recipe_step.sql
+      - classpath:/db/product/recipe_image.sql
       - classpath:/db/customer/cart_recipe.sql
       - classpath:/db/customer/cart_recipe_customer.sql
 

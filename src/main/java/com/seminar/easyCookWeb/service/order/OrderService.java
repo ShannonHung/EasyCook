@@ -98,8 +98,7 @@ public class OrderService {
     }
 
     public Optional<OrderFormModel> findById(Long orderId){
-        return Optional.of(orderRepository.findById(orderId))
-                .map(Optional::get)
+        return Optional.of(orderRepository.findById(orderId).orElseThrow(()->new EntityNotFoundException("CANNOT FIND THE ORDER. ID = " + orderId)))
                 .map(orderMapper::toModel)
                 .map(this::setFirstRecipeImage);
     }

@@ -48,11 +48,11 @@ public class OrderUpdateEmployee {
     private String address;
 
     @ApiModelProperty(value = "運費", example = "60")
-    private Double transportFee = 0D;
+    private Double transportFee;
 
     @ApiModelProperty(value = "折扣", example = "160")
-    private Double discount = 0D;
+    private Double discount;
 
     @ApiModelProperty(value = "總額", example = "250")
-    private Double sum = 0D;
+    private Double sum;
 }
