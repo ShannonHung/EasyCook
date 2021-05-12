@@ -244,7 +244,6 @@ public class RecipeImageService {
                             .name(file.getName())
                             .blobUrl(blobUrl)
                             .s3Url(getS3PhotoUrl(file.getName()))
-                            .size(Long.valueOf(file.getPicByte().length))
                             .type(file.getType())
                             .build();
 
