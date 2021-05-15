@@ -38,4 +38,7 @@ public class RecipeAppModel {
 
     @ApiModelProperty(value = "食譜相片連結")
     private String photo;
+
+    @ApiModelProperty(value = "forBlob ImageId")
+    private String blobId;
 }

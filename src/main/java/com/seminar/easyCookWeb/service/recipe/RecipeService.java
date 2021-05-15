@@ -13,6 +13,7 @@ import com.seminar.easyCookWeb.model.recipe.app.RecipeAppModel;
 import com.seminar.easyCookWeb.model.recipe.update.RecipeUpdateModel;
 import com.seminar.easyCookWeb.pojo.ingredient.Ingredient;
 import com.seminar.easyCookWeb.pojo.recipe.Recipe;
+import com.seminar.easyCookWeb.pojo.recipe.RecipeImage;
 import com.seminar.easyCookWeb.pojo.recipe.RecipeIngredient;
 import com.seminar.easyCookWeb.pojo.recipe.RecipeStep;
 import com.seminar.easyCookWeb.repository.ingredient.IngredientRepository;
@@ -158,9 +159,12 @@ public class RecipeService {
         recipeRepository.findAll()
                 .forEach(recipe -> {
                     String image = "No Image";
-                    if(recipe.getPhotos().stream().findFirst().isPresent()){
+                    String blobInd = "No Image";
+                    Optional<RecipeImage> recipeImage = recipe.getPhotos().stream().findFirst();
+                    if(recipeImage.isPresent()){
                         image = recipeImageService
-                                .getS3PhotoUrl(recipe.getPhotos().stream().findFirst().get().getName());
+                                .getS3PhotoUrl(recipeImage.get().getName());
+                        blobInd = String.valueOf(recipeImage.get().getId());
                     }
 
                     recipeAppModels.add(
@@ -171,6 +175,7 @@ public class RecipeService {
                                     .name(recipe.getName())
                                     .price(recipe.getPrice())
                                     .photo(image)
+                                    .blobId(blobInd)
                             .build()
                     );
                 });

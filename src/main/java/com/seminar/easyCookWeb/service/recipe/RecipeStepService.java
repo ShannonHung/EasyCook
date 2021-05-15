@@ -85,7 +85,9 @@ public class RecipeStepService {
      * @return 回傳更新完成並且含有recipe_step_id的食譜步驟
      */
     public Optional<RecipeStep> updateStep(Long recipeId, RecipeStepModel recipeStepModel){
-        return Optional.of(mapper.toPOJO(recipeStepModel))
+        RecipeStep dbstep = recipeStepRepository.findById(recipeStepModel.getId()).orElseThrow(() -> new EntityNotFoundException("CANNOT FIND THIS RECIPE'S STEP ! ID = "+ recipeStepModel.getId()));
+        mapper.update(recipeStepModel, dbstep);
+        return Optional.of(dbstep)
                 .map(it -> {
                         Recipe recipe = recipeRepository.findById(recipeId)
                                 .orElseThrow(() -> new EntityNotFoundException("Cannot find recipe"));
