@@ -234,8 +234,7 @@ public class RecipeService {
 
                     return recipedb;
                 })
-                .map(mapper::toModel)
-                .map((re) -> setRecipeOutOfStackIngredients(re))
+                .map((recipedb) -> findById(recipedb.getId()))
                 .orElseThrow(() -> new EntityCreatedConflictException("Cannot find this Recipe!"));
 
     }

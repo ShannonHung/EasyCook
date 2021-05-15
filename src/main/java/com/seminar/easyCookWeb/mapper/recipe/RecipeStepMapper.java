@@ -6,15 +6,15 @@ import com.seminar.easyCookWeb.model.recipe.RecipeStepModel;
 import com.seminar.easyCookWeb.model.recipe.update.RecipeUpdateModel;
 import com.seminar.easyCookWeb.model.user.EmployeeRequest;
 import com.seminar.easyCookWeb.model.user.EmployeeResponse;
+import com.seminar.easyCookWeb.model.user.MemberRequest;
 import com.seminar.easyCookWeb.pojo.appUser.Employee;
+import com.seminar.easyCookWeb.pojo.appUser.Member;
 import com.seminar.easyCookWeb.pojo.recipe.Recipe;
 import com.seminar.easyCookWeb.pojo.recipe.RecipeStep;
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
+import javax.persistence.ManyToOne;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -25,6 +25,7 @@ public interface RecipeStepMapper {
 
     RecipeStep toPOJO(RecipeStepModel recipeStepModel);
 
+    @Mapping(target = "id",ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void update(RecipeStepModel recipeModel, @MappingTarget RecipeStep recipe);
 

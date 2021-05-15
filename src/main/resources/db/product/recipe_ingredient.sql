@@ -4,20 +4,6 @@ LIMIT 0, 1000
 
 -- Date: 2021-05-11 22:59
 */
-INSERT INTO recipe_ingredient (`recipe_ingredient_id`,`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (1,1.0000,1,1);
-INSERT INTO recipe_ingredient (`recipe_ingredient_id`,`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (2,1.0000,2,1);
-INSERT INTO recipe_ingredient (`recipe_ingredient_id`,`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (3,1.0000,3,1);
-INSERT INTO recipe_ingredient (`recipe_ingredient_id`,`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (4,0.5000,4,1);
-INSERT INTO recipe_ingredient (`recipe_ingredient_id`,`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (5,2.0000,5,1);
-INSERT INTO recipe_ingredient (`recipe_ingredient_id`,`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (6,2.0000,7,1);
-INSERT INTO recipe_ingredient (`recipe_ingredient_id`,`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (7,2.0000,8,1);
-INSERT INTO recipe_ingredient (`recipe_ingredient_id`,`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (8,1.0000,9,1);
-INSERT INTO recipe_ingredient (`recipe_ingredient_id`,`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (9,1.0000,10,1);
-INSERT INTO recipe_ingredient (`recipe_ingredient_id`,`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (10,1.0000,11,1);
-INSERT INTO recipe_ingredient (`recipe_ingredient_id`,`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (11,1.0000,12,1);
-INSERT INTO recipe_ingredient (`recipe_ingredient_id`,`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (12,1.0000,13,1);
-INSERT INTO recipe_ingredient (`recipe_ingredient_id`,`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (13,1.0000,14,1);
-INSERT INTO recipe_ingredient (`recipe_ingredient_id`,`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (14,1.0000,15,1);
 --INSERT INTO recipe_ingredient (`recipe_ingredient_id`,`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (15,1.0000,1,2);
 --INSERT INTO recipe_ingredient (`recipe_ingredient_id`,`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (16,1.0000,2,2);
 --INSERT INTO recipe_ingredient (`recipe_ingredient_id`,`quantity_required`,`ingredient_id`,`recipe_id`) VALUES (17,1.0000,3,2);

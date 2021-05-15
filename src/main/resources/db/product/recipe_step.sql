@@ -4,22 +4,6 @@ LIMIT 0, 1000
 
 -- Date: 2021-05-11 23:00
 */
-INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (1,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65000,0,1);
-INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (2,'平底鍋加入油，輕輕放入雞腿煎到金黃色',78000,0,1);
-INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (3,'翻面後轉小火',89000,0,1);
-INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (4,'清酒1大匙、味琳1大匙、水2大匙、砂糖1/2匙、醬油2大匙、白醋2大匙',98000,0,1);
-INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (5,'等到砂糖融化，翻面一下表面均等沾好後並且蓋起來小火繼續加熱三分鐘',116000,180,1);
-INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (6,'三分鐘後熄火，利用餘溫悶熱五分鐘(蓋子不要拿掉喔!)',130000,300,1);
-INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (7,'番茄一顆，去掉蒂頭切成薄片',135000,0,1);
-INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (8,'萵苣兩片，並且切成小片',145000,0,1);
-INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (9,'悶熱五分鐘之後的雞腿，開大火煮到醬汁濃縮',152000,0,1);
-INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (10,'將保鮮膜鋪平，吐司上擠美乃滋以及抹上黃芥末籽醬',200000,0,1);
-INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (11,'兩片吐司均等沾好後放上裝切好的生菜',217000,0,1);
-INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (12,'把雞肉放上去，上面淋上鍋子內剩餘的南蠻醬，再放一點生菜',225000,0,1);
-INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (13,'從側面將三明治緊包起來並且確認兩片麵包有好好包起來',235000,0,1);
-INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (14,'讓包好的三明治放置2~3分鐘定型',252000,0,1);
-INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (15,'連保鮮膜一起切，為了保持乾淨的斷面每次切完記得把刀子擦乾淨',261000,0,1);
-INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (16,'完成!',286000,0,1);
 --INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (17,'將雞腿均等沾太白粉，並且表面拍打一下去掉多餘的太白粉',65000,0,2);
 --INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (18,'平底鍋加入油，輕輕放入雞腿煎到金黃色',78000,0,2);
 --INSERT INTO recipe_step (`recipe_step_id`,`note`,`start_time`,`timer`,`recipe_id`) VALUES (19,'翻面後轉小火',89000,0,2);

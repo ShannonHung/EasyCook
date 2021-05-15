@@ -48,9 +48,4 @@ public class Ingredient {
     @Builder.Default
     private Double stock= 0D;
 
-    private Boolean status = false;
-
-    public void setStatus() {
-        this.status = (this.stock > this.safetyStock);
-    }
 }
