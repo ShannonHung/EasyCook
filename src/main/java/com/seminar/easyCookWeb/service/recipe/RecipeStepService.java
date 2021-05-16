@@ -21,6 +21,8 @@ public class RecipeStepService {
     @Autowired
     private RecipeRepository recipeRepository;
     @Autowired
+    private RecipeService recipeService;
+    @Autowired
     private RecipeStepMapper mapper;
 
     @Autowired
@@ -73,9 +75,8 @@ public class RecipeStepService {
         }catch (Exception e) {
             throw new EntityNotFoundException("Cannot find this Recipe Step");
         }
-        return Optional.of(recipeRepository.findById(recipeId)
-                .orElseThrow(()-> new EntityNotFoundException("Cannot find recipe")))
-                .map(recipeMapper::toModel);
+        return Optional.of(recipeService.findById(recipeId)
+                .orElseThrow(()-> new EntityNotFoundException("Cannot find recipe")));
     }
 
     /**
