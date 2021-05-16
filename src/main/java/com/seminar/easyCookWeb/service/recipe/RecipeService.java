@@ -104,7 +104,7 @@ public class RecipeService {
     public Optional<RecipeModel> findById(Long id) {
         return recipeRepository.findById(id)
                 .map((recipe) ->  {
-                    List<RecipeStep> steps = recipeStepRepository.findByRecipeId(recipe.getId()).get();
+                    List<RecipeStep> steps = recipeStepRepository.findByRecipeId(recipe.getId()).orElse(new LinkedList<>());
                     recipe.setRecipeSteps(steps);
                     return recipe;
                 })
