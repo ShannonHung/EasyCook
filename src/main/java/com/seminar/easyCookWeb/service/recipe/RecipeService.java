@@ -18,6 +18,7 @@ import com.seminar.easyCookWeb.pojo.recipe.RecipeIngredient;
 import com.seminar.easyCookWeb.pojo.recipe.RecipeStep;
 import com.seminar.easyCookWeb.repository.ingredient.IngredientRepository;
 import com.seminar.easyCookWeb.repository.recipe.RecipeRepository;
+import com.seminar.easyCookWeb.repository.recipe.RecipeStepRepository;
 import com.seminar.easyCookWeb.service.ingredient.IngredientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,8 @@ public class RecipeService {
     private RecipeStepService recipeStepService;
     @Autowired
     private IngredientRepository ingredientRepository;
+    @Autowired
+    private RecipeStepRepository recipeStepRepository;
     @Autowired
     private RecipeIngredientService recipeIngredientService;
     @Autowired
@@ -100,6 +103,11 @@ public class RecipeService {
      */
     public Optional<RecipeModel> findById(Long id) {
         return recipeRepository.findById(id)
+                .map((recipe) ->  {
+                    List<RecipeStep> steps = recipeStepRepository.findByRecipeId(recipe.getId()).get();
+                    recipe.setRecipeSteps(steps);
+                    return recipe;
+                })
                 .map(mapper::toModel)
                 .map((re) -> setRecipeOutOfStackIngredients(re))
                 .orElseThrow(() -> new EntityCreatedConflictException("Cannot Find the recipe! recipeid " + id));

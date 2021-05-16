@@ -19,9 +19,9 @@ public class RecipeStep {
     @Column(name="recipe_step_id")
     private long id;
 
-    private String startTime;
+    private long startTime;
 
-    private String timer;
+    private long timer;
 
     @Column(columnDefinition = "nvarchar(2000)")
     private String note;
