@@ -6,10 +6,13 @@ import com.seminar.easyCookWeb.mapper.order.OrderFormMapper;
 import com.seminar.easyCookWeb.mapper.order.OrderItemMapper;
 import com.seminar.easyCookWeb.model.order.OrderFormModel;
 import com.seminar.easyCookWeb.model.order.update.OrderUpdateEmployee;
+import com.seminar.easyCookWeb.model.recipe.RecipeModel;
 import com.seminar.easyCookWeb.pojo.appUser.Member;
 import com.seminar.easyCookWeb.pojo.order.OrderForm;
 import com.seminar.easyCookWeb.pojo.order.OrderItem;
 import com.seminar.easyCookWeb.pojo.order.OrderItemCustom;
+import com.seminar.easyCookWeb.pojo.recipe.Recipe;
+import com.seminar.easyCookWeb.pojo.recipe.RecipeImage;
 import com.seminar.easyCookWeb.repository.cart.CartRecipeRepository;
 import com.seminar.easyCookWeb.repository.order.OrderRepository;
 import com.seminar.easyCookWeb.repository.users.MemberRepository;
@@ -105,6 +108,8 @@ public class OrderService {
 
     public OrderFormModel setFirstRecipeImage(OrderFormModel order){
         order.getOrderItems().forEach((cart) -> {
+            RecipeModel recipe = cart.getRecipe();
+            cart.setRecipe(recipe.toBuilder().recipeImage(recipeImageService.getFirstBlobImageIdByRecipeId(recipe.getId()).get()).build());
             cart.setRecipeImage(recipeImageService.getFirstImageByRecipeId(cart.getRecipe().getId()).orElseThrow(()-> new EntityNotFoundException("Cannot find the recipe image for orderItem")));
         });
         return order;

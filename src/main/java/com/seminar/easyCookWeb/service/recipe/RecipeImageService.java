@@ -260,4 +260,12 @@ public class RecipeImageService {
                 });
     }
 
+    public Optional<String> getFirstBlobImageIdByRecipeId(Long recipeId){
+        return Optional.of(imageRepository.findByRecipeId(recipeId))
+                .map(files -> {
+                    if(files.isEmpty()) return "No Image";
+                    return files.stream().findFirst().get().getId().toString();
+                });
+    }
+
 }
