@@ -1,4 +1,12 @@
-# EasyCook
+# EasyCook (Tso-Hue 後端)
+![image](https://github.com/user-attachments/assets/4da0e816-976f-437d-b72a-7a7bb5413560)
+
+Tsohue 是一個送餐平台，讓客戶可以根據食譜訂購食材包。我們解決了許多問題，包括準備餐點的不便和減少食材浪費。本repo僅描述關於後端服務的啟動流程，完整專案運行請參考以下相關連結:
+
+E-commerce platform | Website | Front-end: https://github.com/cce932/tsohue
+E-commerce platform | App: https://github.com/amy5563891/EasyCookMobileApp
+Backstage Content Management | Website | Front-end: https://github.com/cce932/tsohue-manager
+Back-end: https://github.com/ShannonHung/EasyCook
 
 # 基本設定
 在下載該檔案的時候建議先下載maven並且設定環境變數
