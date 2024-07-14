@@ -1,7 +1,7 @@
 # EasyCook (Tso-Hue 後端)
 ![image](https://github.com/user-attachments/assets/4da0e816-976f-437d-b72a-7a7bb5413560)
 
-Tsohue 是一個送餐平台，讓客戶可以根據食譜訂購食材包。我們解決了許多問題，包括準備餐點的不便和減少食材浪費。本repo僅描述關於後端服務的啟動流程，完整專案運行請參考以下相關連結:
+Tsohue 是一個食譜分享與食材包販售平台，讓客戶可以根據食譜訂購食材包。我們解決了日常中採購會產生的許多問題，包括在採購餐點的不便和減少剩餘食材的浪費。本repo僅描述關於後端服務的啟動流程，完整專案運行請參考以下相關連結:
 
 E-commerce platform | Website | Front-end: https://github.com/cce932/tsohue
 
